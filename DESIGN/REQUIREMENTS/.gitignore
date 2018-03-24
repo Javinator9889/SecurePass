@@ -1,0 +1,6 @@
+# DOCX files (Microsoft Word)
+*.docx
+
+# Certificate files
+*.p12
+*.crt
