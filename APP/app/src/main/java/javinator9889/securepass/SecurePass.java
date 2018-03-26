@@ -1,6 +1,7 @@
 package javinator9889.securepass;
 
 import android.app.Application;
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 /**
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 
 public class SecurePass extends Application {
     private static SecurePass APPLICATION_INSTANCE;
+    //private Context applicationContext;
 
     @NonNull
     public static SecurePass getApplicationInstance() {
@@ -20,5 +22,6 @@ public class SecurePass extends Application {
     public void onCreate() {
         super.onCreate();
         APPLICATION_INSTANCE = this;
+        //this.applicationContext = getApplicationContext();
     }
 }
