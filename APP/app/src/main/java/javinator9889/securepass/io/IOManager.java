@@ -1,4 +1,4 @@
-package javinator9889.securepass.Utils.IO;
+package javinator9889.securepass.io;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,8 +7,6 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,8 +23,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
 import javinator9889.securepass.R;
-import javinator9889.securepass.Utils.Cipher.DataCipher;
-import javinator9889.securepass.Utils.Values.Constants;
+import javinator9889.securepass.util.cipher.DataCipher;
+import javinator9889.securepass.util.values.Constants;
 
 /**
  * Created by Javinator9889 on 26/03/2018.

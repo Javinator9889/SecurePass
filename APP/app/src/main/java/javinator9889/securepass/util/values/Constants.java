@@ -1,4 +1,4 @@
-package javinator9889.securepass.Utils.Values;
+package javinator9889.securepass.util.values;
 
 import android.os.Build;
 

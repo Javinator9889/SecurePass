@@ -1,4 +1,4 @@
-package javinator9889.securepass.Utils.Cipher;
+package javinator9889.securepass.util.cipher;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -33,7 +33,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.security.auth.x500.X500Principal;
 
-import javinator9889.securepass.Utils.Values.Constants.CIPHER;
+import javinator9889.securepass.util.values.Constants.CIPHER;
 
 /**
  * Created by Javinator9889 on 27/03/2018.

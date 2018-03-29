@@ -1,4 +1,4 @@
-package javinator9889.securepass.Utils.Database;
+package javinator9889.securepass.io.database;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,8 +9,8 @@ import net.sqlcipher.database.SQLiteDatabase;
 import java.io.File;
 import java.io.IOException;
 
-import javinator9889.securepass.Utils.IO.IOManager;
-import javinator9889.securepass.Utils.Values.Constants;
+import javinator9889.securepass.io.IOManager;
+import javinator9889.securepass.util.values.Constants;
 
 /**
  * Created by Javinator9889 on 26/03/2018.
