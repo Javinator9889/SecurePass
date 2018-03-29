@@ -53,6 +53,7 @@ public class DatabaseManager {
                 try {
                     databaseScript = IOManager.newInstance(databaseContext).loadSQLScript();
                     database.execSQL(databaseScript);
+                    database.execSQL(Constants.SQL.DB_DEFAULT_CATEGORY, new Object[] {"Global"});
                 } catch (IOException e) {
                     throw new RuntimeException(e.getCause());
                 } finally {

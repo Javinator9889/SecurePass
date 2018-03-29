@@ -11,6 +11,7 @@ public class Constants {
     public static class SQL {
         public static String DB_FILENAME = "SecurePass.db";
         public static String DB_INIT_THREAD_NAME = "DB Initializer";
+        public static String DB_DEFAULT_CATEGORY = "INSERT IF NOT EXISTS INTO Category VALUE ?";
 
         // INSERT SQL OPERATIONS
         public static String DB_NEW_ENTRY = "INSERT INTO Entry VALUES(?, ?, ?, ?, ?)";

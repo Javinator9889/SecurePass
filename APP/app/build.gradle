@@ -27,4 +27,7 @@ dependencies {
     // User compilations and libraries
     // SQLCipher - https://guardianproject.info/code/sqlcipher/
     implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
+
+    // AppIntro - https://github.com/apl-devs/AppIntro
+    implementation 'com.github.apl-devs:appintro:v4.2.3'
 }
