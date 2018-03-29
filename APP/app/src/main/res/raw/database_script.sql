@@ -12,7 +12,7 @@ USE `securepassdb` ;
 -- Table `securepassdb`.`Category`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `securepassdb`.`Category` (
-  `idCategory` INT NOT NULL AUTO_INCREMENT,
+  `idCategory` INT NOT NULL DEFAULT 0,
   `name` VARCHAR(45) NULL,
   PRIMARY KEY (`idCategory`))
 ENGINE = InnoDB;
@@ -27,7 +27,14 @@ CREATE TABLE IF NOT EXISTS `securepassdb`.`Entry` (
   `password` VARCHAR(180) NOT NULL,
   `icon` VARCHAR(180) NULL,
   `description` LONGBLOB NULL,
-  PRIMARY KEY (`idEntry`))
+  `cidCategory` INT NOT NULL,
+  PRIMARY KEY (`idEntry`, `cidCategory`),
+  INDEX `fk_Entry_Category1_idx` (`cidCategory` ASC),
+  CONSTRAINT `fk_Entry_Category1`
+    FOREIGN KEY (`cidCategory`)
+    REFERENCES `securepassdb`.`Category` (`idCategory`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -64,10 +71,11 @@ ENGINE = InnoDB;
 -- Table `securepassdb`.`Fields`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `securepassdb`.`Fields` (
+  `idField` INT NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(180) NOT NULL,
   `used` TINYINT NOT NULL DEFAULT 0,
   `fidSecurityCodes` INT NOT NULL,
-  PRIMARY KEY (`code`, `fidSecurityCodes`),
+  PRIMARY KEY (`idField`, `fidSecurityCodes`),
   INDEX `fk_Fields_SecurityCodes1_idx` (`fidSecurityCodes` ASC),
   CONSTRAINT `fk_Fields_SecurityCodes1`
     FOREIGN KEY (`fidSecurityCodes`)

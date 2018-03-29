@@ -21,6 +21,7 @@ public class DatabaseManager {
     private Context activityContext;
     private File databaseFile;
     private String userHashedPassword;
+    private Thread databaseInitializer;
 
     @NonNull
     public static DatabaseManager newInstance(Context activityContext,
@@ -36,7 +37,7 @@ public class DatabaseManager {
     }
 
     private void initDB() {
-        Thread databaseInitializer = new Thread(new Runnable() {
+        databaseInitializer = new Thread(new Runnable() {
             private final Context databaseContext = DatabaseManager.this.activityContext;
             private final String databasePassword = DatabaseManager.this.userHashedPassword;
             @Override
@@ -63,6 +64,15 @@ public class DatabaseManager {
         databaseInitializer.setName(Constants.SQL.DB_INIT_THREAD_NAME);
         databaseInitializer.setUncaughtExceptionHandler(new ThreadExceptionHandler());
         databaseInitializer.run();
+    }
+
+    public SQLiteDatabase getDatabaseInstance() {
+        SQLiteDatabase.loadLibs(activityContext);
+        return SQLiteDatabase.openOrCreateDatabase(databaseFile, userHashedPassword, null);
+    }
+
+    public Thread getDatabaseInitializer() {
+        return databaseInitializer;
     }
 
     private class ThreadExceptionHandler implements Thread.UncaughtExceptionHandler {
