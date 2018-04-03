@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SecurePass</string>
+    <string name="title_test">Title test</string>
+    <string name="desc_test">Description test</string>
 </resources>

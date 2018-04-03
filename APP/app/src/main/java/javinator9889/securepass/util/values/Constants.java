@@ -1,5 +1,6 @@
 package javinator9889.securepass.util.values;
 
+import android.graphics.Color;
 import android.os.Build;
 
 /**
@@ -64,5 +65,10 @@ public class Constants {
 
     public static class IO {
         public static String PASS_FILENAME = "userPass.dat";
+    }
+
+    public static class FIRST_SETUP {
+        public static final int TITLE_COLOR = Color.WHITE;
+        public static final int DESCRIPTION_COLOR = Color.WHITE;
     }
 }
