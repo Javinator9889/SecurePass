@@ -1,7 +1,11 @@
 package javinator9889.securepass.util.values;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Javinator9889 on 26/03/2018.
@@ -9,7 +13,7 @@ import android.os.Build;
  */
 
 public class Constants {
-    public static class SQL {
+    public static final class SQL {
         public static String DB_FILENAME = "SecurePass.db";
         public static String DB_INIT_THREAD_NAME = "DB Initializer";
         public static String DB_DEFAULT_CATEGORY = "INSERT IF NOT EXISTS INTO Category VALUE ?";
@@ -56,19 +60,27 @@ public class Constants {
         public static String DB_SELECT_FIELDS = "SELECT * FROM Fields";
     }
 
-    public static class CIPHER {
+    public static final class CIPHER {
         public static String KEYSTORE = "AndroidKeyStore";
         public static String ALGORITHM = "RSA";
         public static String TRANSFORMATION = "RSA/ECB/PKCS1Padding";
         public static String MASTER_KEY = "javinator9889.securepass." + Build.DEVICE;
     }
 
-    public static class IO {
+    public static final class IO {
         public static String PASS_FILENAME = "userPass.dat";
     }
 
-    public static class FIRST_SETUP {
+    public static final class FIRST_SETUP {
         public static final int TITLE_COLOR = Color.WHITE;
         public static final int DESCRIPTION_COLOR = Color.WHITE;
+    }
+
+    public static final class SHARED_PREF {
+        public static final String FILENAME = "userPreferences";
+        public static final int MODE = Context.MODE_PRIVATE;
+        public static final Object[][] VALUES = new Object[][] {
+                {"isApplicationFirstExecuted", false, boolean.class}
+        };
     }
 }

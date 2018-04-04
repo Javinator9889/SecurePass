@@ -1,8 +1,9 @@
 package javinator9889.securepass;
 
 import android.app.Application;
-import android.content.Context;
 import android.support.annotation.NonNull;
+
+import javinator9889.securepass.util.resources.SharedPreferencesManager;
 
 /**
  * Created by Javinator9889 on 25/03/2018.
@@ -22,6 +23,8 @@ public class SecurePass extends Application {
     public void onCreate() {
         super.onCreate();
         APPLICATION_INSTANCE = this;
-        //this.applicationContext = getApplicationContext();
+        SharedPreferencesManager sharedPreferencesInstantiation =
+                SharedPreferencesManager.newInstance();
+        sharedPreferencesInstantiation.initSharedPreferences();
     }
 }
