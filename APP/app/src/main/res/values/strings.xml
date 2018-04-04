@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">SecurePass</string>
-    <string name="title_test">Title test</string>
-    <string name="desc_test">Description test</string>
+    <string-array name="titles">
+        <item>Fast</item>
+        <item>Secure</item>
+        <item>Cloud safe</item>
+        <item>Personal</item>
+    </string-array>
+    <string-array name="descriptions">
+        <item>The fastest application for saving all your personal data, compatible with almost 100% devices</item>
+        <item>Keep everything secured with the latest encryption methods: no more worries ever</item>
+        <item>Sync your data with the cloud and restore it later. A personal and private storage will be able for you and only for this application</item>
+        <item>Save accounts, passwords, security codes: everything what you want. Personalize your application and enjoy your privacy</item>
+    </string-array>
 </resources>

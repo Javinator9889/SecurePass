@@ -8,9 +8,11 @@ import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javinator9889.securepass.R;
+import javinator9889.securepass.SecurePass;
 import javinator9889.securepass.views.fragments.SlidePage;
 
 import static javinator9889.securepass.util.values.Constants.FIRST_SETUP;
@@ -19,6 +21,7 @@ import static javinator9889.securepass.util.values.Constants.FIRST_SETUP;
  * Created by Javinator9889 on 29/03/2018.
  */
 public class FirstSetup extends AppIntro {
+    private SecurePass applicationInstance;
     private List<SlidePage> fragmentList;
     private String[] titles;
     private String[] descriptions;
@@ -29,11 +32,11 @@ public class FirstSetup extends AppIntro {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    private AppIntroFragment pageCreator() {
-        // this is for testing
-        return AppIntroFragment.newInstance("title", "typeface", "description", "descTypeface", R.drawable.secure_image, 0, 0, 0);
+        this.applicationInstance = SecurePass.getApplicationInstance();
+        initParams();
+        for (SlidePage aSlidePage : fragmentList) addSlide(aSlidePage);
+        showSkipButton(false);
+        setFlowAnimation();
     }
 
     private void initParams() {
@@ -45,30 +48,29 @@ public class FirstSetup extends AppIntro {
     }
 
     private void initTitles() {
-        this.titles = new String[]{
-                getString(R.string.title_test),
-                getString(R.string.library_appintro_licenseId)
-        };
+        this.titles = this.applicationInstance.getResources().getStringArray(R.array.titles);
     }
 
     private void initDescriptions() {
-        this.descriptions = new String[]{
-                getString(R.string.desc_test),
-                getString(R.string.library_appintro_licenseId)
-        };
+        this.descriptions = this.applicationInstance.getResources()
+                .getStringArray(R.array.descriptions);
     }
 
     private void initDrawables() {
         this.drawables = new int[]{
-                R.drawable.secure_image
+                R.drawable.speed,
+                R.drawable.secure_image,
+                R.drawable.data_security,
+                R.drawable.user_friendly
         };
     }
 
     private void initBackgroundColors() {
         this.backgroundColors = new int[]{
                 Color.BLUE,
-                Color.RED,
-                Color.GREEN
+                Color.CYAN,
+                Color.GREEN,
+                Color.YELLOW
         };
     }
 

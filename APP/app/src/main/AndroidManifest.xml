@@ -9,6 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".SecurePass">
-        <activity android:name=".views.activities.FirstSetup" />
+        <activity android:name=".views.activities.FirstSetup"
+            android:label="AppIntro"/>
     </application>
 </manifest>
