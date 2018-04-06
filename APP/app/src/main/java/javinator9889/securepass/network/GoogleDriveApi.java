@@ -1,4 +1,4 @@
-package javinator9889.securepass.util.network;
+package javinator9889.securepass.network;
 
 import android.app.Activity;
 import android.content.Context;
