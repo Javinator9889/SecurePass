@@ -4,7 +4,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -82,5 +85,21 @@ public class Constants {
         public static final Object[][] VALUES = new Object[][] {
                 {"isApplicationFirstExecuted", false, boolean.class}
         };
+    }
+
+    public static final class DRIVE {
+        public static final int REQUEST_CODE_SIGN_IN = 0;
+        public static final String GOOGLE_PLAY_NOT_AVAILABLE = "Google Play Services are not " +
+                "available on this device";
+        public static final String GOOGLE_ACCOUNT_NOT_SIGNED_IN = "Google Account has not signed" +
+                " in - impossible to use Google Drive API";
+        public static final String FILE_TITLE = "backup_";
+    }
+
+    public static final class TIME {
+        public static final String PATTERN = "DDMMyyyy_HHmm";
+        final static SimpleDateFormat dateFormat = new SimpleDateFormat(PATTERN, Locale.US);
+        public static final String ACTUAL_TIME = dateFormat
+                .format(Calendar.getInstance().getTime());
     }
 }

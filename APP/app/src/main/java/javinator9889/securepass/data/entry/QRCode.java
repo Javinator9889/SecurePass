@@ -3,10 +3,12 @@ package javinator9889.securepass.data.entry;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.io.Serializable;
+
 /**
  * Created by Javinator9889 on 29/03/2018.
  */
-public class QRCode {
+public class QRCode implements Serializable {
     private int id;
     private String name;
     private String description;

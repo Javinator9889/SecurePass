@@ -6,8 +6,8 @@ android {
         applicationId "javinator9889.securepass"
         minSdkVersion 18
         targetSdkVersion 27
-        versionCode 5
-        versionName "0.1-development"
+        versionCode 7
+        versionName "0.3-development"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -20,6 +20,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:27.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
@@ -30,4 +31,9 @@ dependencies {
 
     // AppIntro - https://github.com/apl-devs/AppIntro
     implementation 'com.github.apl-devs:appintro:v4.2.3'
+
+    // Google Play Services - https://developers.google.com/android/guides/setup
+    implementation 'com.google.android.gms:play-services-drive:12.0.1'
+    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+
 }

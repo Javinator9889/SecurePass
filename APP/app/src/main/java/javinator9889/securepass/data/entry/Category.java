@@ -1,9 +1,11 @@
 package javinator9889.securepass.data.entry;
 
+import java.io.Serializable;
+
 /**
  * Created by Javinator9889 on 29/03/2018.
  */
-public class Category {
+public class Category implements Serializable {
     private int id;
     private String name;
 

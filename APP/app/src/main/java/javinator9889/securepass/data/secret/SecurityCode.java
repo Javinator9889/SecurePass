@@ -2,10 +2,12 @@ package javinator9889.securepass.data.secret;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
+
 /**
  * Created by Javinator9889 on 29/03/2018.
  */
-public class SecurityCode {
+public class SecurityCode implements Serializable {
     private int id;
     private String accountName;
 
