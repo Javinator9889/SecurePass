@@ -4,11 +4,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by Javinator9889 on 26/03/2018.
@@ -68,6 +68,10 @@ public class Constants {
         public static String ALGORITHM = "RSA";
         public static String TRANSFORMATION = "RSA/ECB/PKCS1Padding";
         public static String MASTER_KEY = "javinator9889.securepass." + Build.DEVICE;
+
+        public static final class FILE {
+            public static final String TRANSFORMATION = "AES/GCM/PKCS5Padding";
+        }
     }
 
     public static final class IO {
@@ -93,13 +97,17 @@ public class Constants {
                 "available on this device";
         public static final String GOOGLE_ACCOUNT_NOT_SIGNED_IN = "Google Account has not signed" +
                 " in - impossible to use Google Drive API";
-        public static final String FILE_TITLE = "backup_";
+        public static final String FILE_TITLE = "secpass.bak";
     }
 
     public static final class TIME {
-        public static final String PATTERN = "DDMMyyyy_HHmm";
-        final static SimpleDateFormat dateFormat = new SimpleDateFormat(PATTERN, Locale.US);
+        private static final String PATTERN = "DDMMyyyy_HHmm";
+        private static final SimpleDateFormat dateFormat = new SimpleDateFormat(PATTERN, Locale.US);
         public static final String ACTUAL_TIME = dateFormat
                 .format(Calendar.getInstance().getTime());
+    }
+
+    public static final class HASH {
+        public static final String SHA2 = "SHA-256";
     }
 }

@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -18,7 +20,14 @@ import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveResourceClient;
+import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.MetadataBuffer;
 import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.events.DriveEventService;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
+import com.google.android.gms.drive.widget.DataBufferAdapter;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,9 +39,15 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.crypto.CipherOutputStream;
+import javax.crypto.SealedObject;
+
 import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.errors.GoogleAccountNotSignedInException;
 import javinator9889.securepass.errors.GoogleDriveNotAvailableException;
+import javinator9889.securepass.errors.NoSHA2AlgorithmException;
+import javinator9889.securepass.io.IOManager;
+import javinator9889.securepass.util.cipher.FileCipher;
 import javinator9889.securepass.util.values.Constants.TIME;
 import javinator9889.securepass.util.values.Constants.DRIVE;
 
@@ -45,6 +60,7 @@ public class GoogleDriveApi implements GoogleApiClient.OnConnectionFailedListene
     private GoogleSignInClient signInClient;
     private GoogleSignInAccount alreadySignedInAccount;
     private DriveResourceClient driveResourceClient;
+    private IOManager ioManager;
 
     @SuppressWarnings("deprecation")
     private GoogleDriveApi(@NonNull Context fragmentContext,
@@ -52,11 +68,12 @@ public class GoogleDriveApi implements GoogleApiClient.OnConnectionFailedListene
         this.fragmentContext = fragmentContext;
         this.sourceActivity = sourceActivity;
         alreadySignedInAccount = GoogleSignIn.getLastSignedInAccount(fragmentContext);
+        this.ioManager = IOManager.newInstance(fragmentContext);
     }
 
     public static GoogleDriveApi newInstance(@NonNull Context fragmentContext,
                                              @NonNull Activity sourceActivity)
-    throws GoogleDriveNotAvailableException {
+            throws GoogleDriveNotAvailableException {
         if (isGooglePlayServicesAvailable(fragmentContext))
             return new GoogleDriveApi(fragmentContext, sourceActivity);
         else
@@ -87,7 +104,7 @@ public class GoogleDriveApi implements GoogleApiClient.OnConnectionFailedListene
         return GoogleSignIn.getClient(fragmentContext, signInOptions);
     }
 
-    public void createNewBackup(@NonNull final ClassContainer dataToBackup) { // must encrypt data | to-do
+    public void createNewBackup(@NonNull final ClassContainer dataToBackup) {
         if (!isAnyAccountAlreadySignedIn())
             throw new GoogleAccountNotSignedInException(DRIVE.GOOGLE_ACCOUNT_NOT_SIGNED_IN);
         final Task<DriveFolder> appFolderTask = Drive
@@ -101,17 +118,26 @@ public class GoogleDriveApi implements GoogleApiClient.OnConnectionFailedListene
                     public Task<DriveFile> then(@NonNull Task<Void> task) throws Exception {
                         DriveFolder parent = appFolderTask.getResult();
                         DriveContents contents = createContentsTask.getResult();
-                        OutputStream outputStream = contents.getOutputStream();
-                        try {
-                            ObjectOutputStream classWriter =
-                                    new ObjectOutputStream(outputStream);
-                            classWriter.writeObject(dataToBackup);
-                            classWriter.close();
-                        } catch (Exception e) {
-                            outputStream.close();
+                        Map<SealedObject, CipherOutputStream> encryptedBackup;
+                        String password = ioManager.readPassword();
+                        try (OutputStream outputStream = contents.getOutputStream()) {
+                            if (password != null) {
+                                FileCipher cipher = FileCipher.newInstance(password);
+                                encryptedBackup = cipher.encrypt(dataToBackup, outputStream);
+                                CipherOutputStream createdCipher =
+                                        encryptedBackup.values().iterator().next();
+                                SealedObject createdSealedObject =
+                                        encryptedBackup.keySet().iterator().next();
+                                ObjectOutputStream encryptedClassWriter =
+                                        new ObjectOutputStream(createdCipher);
+                                encryptedClassWriter.writeObject(createdSealedObject);
+                                encryptedClassWriter.close();
+                            }
+                        } catch (NoSHA2AlgorithmException e) {
+                            e.printStackTrace();
                         }
                         MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                                .setTitle(DRIVE.FILE_TITLE + TIME.ACTUAL_TIME)
+                                .setTitle(DRIVE.FILE_TITLE)
                                 .setMimeType("text/plain")
                                 .setStarred(true)
                                 .build();
@@ -134,6 +160,31 @@ public class GoogleDriveApi implements GoogleApiClient.OnConnectionFailedListene
                                 //to-do
                             }
                         });
+    }
+
+    public ClassContainer getLatestBackup(@NonNull String password,
+                                          @Nullable MaterialDialog progressDialog) {
+        final DriveResourceClient resources = Drive.getDriveResourceClient(fragmentContext,
+                alreadySignedInAccount);
+        final Query query = new Query.Builder()
+                .addFilter(Filters.eq(SearchableField.MIME_TYPE, "text/plain"))
+                .build();
+        final Task<DriveFolder> appFolderTask = resources.getAppFolder();
+        Tasks.whenAll(appFolderTask)
+                .continueWithTask(new Continuation<Void, Task<DriveFile>>() {
+                    @Override
+                    public Task<DriveFile> then(@NonNull Task<Void> task) throws Exception {
+                        final DriveFolder parent = appFolderTask.getResult();
+                        Task<MetadataBuffer> queryTask = resources.queryChildren(parent, query);
+                        queryTask.addOnSuccessListener(sourceActivity,
+                                new OnSuccessListener<MetadataBuffer>() {
+                                    @Override
+                                    public void onSuccess(MetadataBuffer metadata) {
+
+                                    }
+                                });
+                    }
+                });
     }
 
     private static boolean isGooglePlayServicesAvailable(Context servicesContext) {

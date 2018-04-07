@@ -103,7 +103,8 @@ public class IOManager {
                     masterKey.getPrivate());
         } catch (NoSuchProviderException | NoSuchAlgorithmException |
                 InvalidAlgorithmParameterException | KeyStoreException | UnrecoverableKeyException
-                | BadPaddingException | IllegalBlockSizeException | InvalidKeyException e)
+                | BadPaddingException | IllegalBlockSizeException | InvalidKeyException
+                | NullPointerException e)
         {
             Log.e("PASSWORD-S", "Error while recovering-getting passwords. Message: "
                     + e.getMessage() + "\nFull trace: ");
