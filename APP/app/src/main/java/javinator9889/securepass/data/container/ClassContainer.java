@@ -39,7 +39,6 @@ public class ClassContainer implements Serializable {
 
     public ClassContainer(){}
 
-
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
@@ -63,4 +62,6 @@ public class ClassContainer implements Serializable {
     public void setUserSharedPreferences(Map<String, Object> userSharedPreferences) {
         this.userSharedPreferences = userSharedPreferences;
     }
+
+    public void storeDataInDB() {}
 }

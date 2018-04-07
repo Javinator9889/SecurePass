@@ -1,6 +1,7 @@
 package javinator9889.securepass.util.values;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 
@@ -93,10 +94,21 @@ public class Constants {
 
     public static final class DRIVE {
         public static final int REQUEST_CODE_SIGN_IN = 0;
+        public static final int REQUEST_CODE_OPEN_ITEM = 1;
+        public static final int HASHSET_INITIAL_CAPACITY = 2;
+        public static final String MIME_TYPE = "text/plain";
+        public static final Intent FILL_IN_INTENT = null;
+        public static final int FLAGS_MASK = 0;
+        public static final int FLAGS_VALUES = 0;
+        public static final int EXTRA_FLAGS = 0;
+        public static final boolean STARRED = true;
         public static final String GOOGLE_PLAY_NOT_AVAILABLE = "Google Play Services are not " +
                 "available on this device";
         public static final String GOOGLE_ACCOUNT_NOT_SIGNED_IN = "Google Account has not signed" +
                 " in - impossible to use Google Drive API";
+        public static final String GOOGLE_DRIVE_FILE_NOT_CREATED = "Unable to create a file on" +
+                " Google Drive";
+        public static final String GOOGLE_FILE_NO_SELECTED = "No file selected";
         public static final String FILE_TITLE = "secpass.bak";
     }
 

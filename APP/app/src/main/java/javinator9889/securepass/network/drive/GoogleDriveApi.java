@@ -1,4 +1,4 @@
-package javinator9889.securepass.network;
+package javinator9889.securepass.network.drive;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,14 +20,11 @@ import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveResourceClient;
-import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataBuffer;
 import com.google.android.gms.drive.MetadataChangeSet;
-import com.google.android.gms.drive.events.DriveEventService;
 import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
-import com.google.android.gms.drive.widget.DataBufferAdapter;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,7 +45,6 @@ import javinator9889.securepass.errors.GoogleDriveNotAvailableException;
 import javinator9889.securepass.errors.NoSHA2AlgorithmException;
 import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.util.cipher.FileCipher;
-import javinator9889.securepass.util.values.Constants.TIME;
 import javinator9889.securepass.util.values.Constants.DRIVE;
 
 /**

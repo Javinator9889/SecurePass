@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SecurePass</string>
+
+    <!-- Intro strings -->
     <string-array name="titles">
         <item>Fast</item>
         <item>Secure</item>
@@ -12,4 +14,14 @@
         <item>Sync your data with the cloud and restore it later. A personal and private storage will be able for you and only for this application</item>
         <item>Save accounts, passwords, security codes: everything what you want. Personalize your application and enjoy your privacy</item>
     </string-array>
+
+    <!-- Drive strings -->
+    <string name="data_backed_up">Data successfully backed-up</string>
+    <string name="backup_error">There was an error while trying to create a backup</string>
+    <string name="retrieving_data">Downloading latest backup…</string>
+    <string name="wait">Please, wait…</string>
+    <string name="no_file">There is not any backup available</string>
+    <string name="put_pass">Enter password:</string>
+    <string name="pass_need">Please, enter the password you used when you created this backup. It may not be the same as the one you have right now</string>
+    <string name="read_failed">There was an error while trying to restore data</string>
 </resources>
