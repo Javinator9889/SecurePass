@@ -2,11 +2,14 @@ package javinator9889.securepass.util.cipher;
 
 import android.support.annotation.NonNull;
 
+import com.google.common.hash.Hashing;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -36,12 +39,8 @@ public class FileCipher {
     }
 
     public static FileCipher newInstance(@NonNull String key) throws NoSHA2AlgorithmException {
-        try {
-            byte[] hashKey = Hash.SHA2(key);
-            return new FileCipher(hashKey);
-        } catch (NoSuchAlgorithmException e) {
-            throw new NoSHA2AlgorithmException("SHA2 hashing is not available on this device");
-        }
+        byte[] hashKey = Hashing.sha256().hashString(key, StandardCharsets.UTF_8).asBytes();
+        return new FileCipher(hashKey);
     }
 
     public Map<SealedObject, CipherOutputStream> encrypt(@NonNull Serializable classToEncrypt,
