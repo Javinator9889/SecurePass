@@ -3,16 +3,24 @@ package javinator9889.securepass.views.activities;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
+import com.google.common.hash.Hashing;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javinator9889.securepass.R;
 import javinator9889.securepass.SecurePass;
+import javinator9889.securepass.views.fragments.PasswordRegistration;
 import javinator9889.securepass.views.fragments.SlidePage;
 
 import static javinator9889.securepass.util.values.Constants.FIRST_SETUP;
@@ -21,6 +29,7 @@ import static javinator9889.securepass.util.values.Constants.FIRST_SETUP;
  * Created by Javinator9889 on 29/03/2018.
  */
 public class FirstSetup extends AppIntro {
+    private static final String TAG = "FirstSetup";
     private SecurePass applicationInstance;
     private List<SlidePage> fragmentList;
     private String[] titles;
@@ -32,9 +41,14 @@ public class FirstSetup extends AppIntro {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         this.applicationInstance = SecurePass.getApplicationInstance();
         initParams();
+        createFragmentList();
         for (SlidePage aSlidePage : fragmentList) addSlide(aSlidePage);
+        PasswordRegistration registrationFragment = PasswordRegistration
+                .newInstance(R.layout.request_intro);
+        addSlide(registrationFragment);
         showSkipButton(false);
         setFlowAnimation();
     }

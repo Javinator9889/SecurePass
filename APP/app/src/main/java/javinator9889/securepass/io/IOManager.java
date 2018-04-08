@@ -34,13 +34,11 @@ import javinator9889.securepass.util.values.Constants;
 public class IOManager {
     private Context activityContext;
     private File filesDir;
-    private File cacheDir;
     private InputStream sqlScriptInputFile;
 
     private IOManager(@NonNull Context activityContext) {
         this.activityContext = activityContext;
         this.filesDir = activityContext.getFilesDir();
-        this.cacheDir = activityContext.getCacheDir();
         int sqlScript = R.raw.database_script;
         this.sqlScriptInputFile = activityContext.getResources().openRawResource(sqlScript);
     }

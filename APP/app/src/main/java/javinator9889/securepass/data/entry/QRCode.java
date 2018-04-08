@@ -13,15 +13,15 @@ public class QRCode implements Serializable {
     private String name;
     private String description;
     private String qrData;
-    private int entryID;
+    private Entry parentEntry;
 
     public QRCode(int id, @NonNull String name, @Nullable String description,
-                  @NonNull String qrData, int entryID) {
+                  @NonNull String qrData, @NonNull Entry parentEntry) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.qrData = qrData;
-        this.entryID = entryID;
+        this.parentEntry = parentEntry;
     }
 
     public int getId() {
@@ -56,11 +56,11 @@ public class QRCode implements Serializable {
         this.qrData = qrData;
     }
 
-    public int getEntryID() {
-        return entryID;
+    public Entry getEntry() {
+        return parentEntry;
     }
 
-    public void setEntryID(int entryID) {
-        this.entryID = entryID;
+    public void setEntry(@NonNull Entry entry) {
+        this.parentEntry = parentEntry;
     }
 }

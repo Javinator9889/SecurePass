@@ -62,7 +62,7 @@ public class SharedPreferencesManager implements ISharedPreferencesManager {
                     String.valueOf(SHARED_PREF.VALUES[i][0]),
                     SHARED_PREF.VALUES[i][1]);
             keysType.put(String.valueOf(SHARED_PREF.VALUES[i][0]),
-                    SHARED_PREF.VALUES[2].getClass());
+                    SHARED_PREF.VALUES[i][2].getClass());
         }
     }
 }

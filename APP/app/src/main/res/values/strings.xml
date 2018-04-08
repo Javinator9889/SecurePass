@@ -14,6 +14,9 @@
         <item>Sync your data with the cloud and restore it later. A personal and private storage will be able for you and only for this application</item>
         <item>Save accounts, passwords, security codes: everything what you want. Personalize your application and enjoy your privacy</item>
     </string-array>
+    <string name="enter_password">Enter password…</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="save_password">Save password</string>
 
     <!-- Drive strings -->
     <string name="data_backed_up">Data successfully backed-up</string>

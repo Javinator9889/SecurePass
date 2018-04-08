@@ -135,7 +135,7 @@ public class DatabaseOperations {
                 modifiedQRCode.getName(),
                 modifiedQRCode.getDescription(),
                 modifiedQRCode.getQrData(),
-                modifiedQRCode.getEntryID(),
+                modifiedQRCode.getEntry().getId(),
                 modifiedQRCode.getId()
         };
         database.execSQL(SQL.DB_UPDATE_QR_CODE, params);
