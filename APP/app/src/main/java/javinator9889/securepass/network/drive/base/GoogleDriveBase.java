@@ -1,6 +1,7 @@
 package javinator9889.securepass.network.drive.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.support.annotation.NonNull;
@@ -11,6 +12,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveClient;
@@ -27,6 +30,7 @@ import com.google.android.gms.tasks.TaskCompletionSource;
 import java.util.HashSet;
 import java.util.Set;
 
+import javinator9889.securepass.errors.GoogleDriveNotAvailableException;
 import javinator9889.securepass.errors.GoogleDriveUnableToOpenFileException;
 import javinator9889.securepass.util.values.Constants.DRIVE;
 
@@ -43,7 +47,18 @@ public abstract class GoogleDriveBase extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        signIn();
+        if (isGooglePlayServicesAvailable(getApplicationContext()))
+            signIn();
+        else
+            throw new GoogleDriveNotAvailableException(DRIVE.GOOGLE_PLAY_NOT_AVAILABLE);
+    }
+
+    private static boolean isGooglePlayServicesAvailable(Context servicesContext) {
+        GoogleApiAvailability googleApiAvailabilityForPlayServices = GoogleApiAvailability
+                .getInstance();
+        int status = googleApiAvailabilityForPlayServices
+                .isGooglePlayServicesAvailable(servicesContext);
+        return status == ConnectionResult.SUCCESS;
     }
 
     @Override

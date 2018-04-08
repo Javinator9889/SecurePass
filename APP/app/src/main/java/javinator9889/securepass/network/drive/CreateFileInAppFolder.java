@@ -21,7 +21,6 @@ import javax.crypto.SealedObject;
 
 import javinator9889.securepass.R;
 import javinator9889.securepass.data.container.ClassContainer;
-import javinator9889.securepass.errors.NoSHA2AlgorithmException;
 import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.network.drive.base.GoogleDriveBase;
 import javinator9889.securepass.util.cipher.FileCipher;
@@ -69,8 +68,6 @@ public class CreateFileInAppFolder extends GoogleDriveBase {
                             encryptedClassWriter.writeObject(createdSealedObject);
                             encryptedClassWriter.close();
                         }
-                    } catch (NoSHA2AlgorithmException e) {
-                        e.printStackTrace();
                     }
                     MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
                             .setTitle(DRIVE.FILE_TITLE)

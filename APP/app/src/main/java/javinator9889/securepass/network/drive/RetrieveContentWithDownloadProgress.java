@@ -1,11 +1,10 @@
-package javinator9889.securepass.network.drive.base;
+package javinator9889.securepass.network.drive;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.InputType;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.drive.DriveContents;
@@ -23,7 +22,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import javinator9889.securepass.R;
 import javinator9889.securepass.data.container.ClassContainer;
-import javinator9889.securepass.errors.NoSHA2AlgorithmException;
+import javinator9889.securepass.network.drive.base.GoogleDriveBase;
 import javinator9889.securepass.util.cipher.FileCipher;
 import javinator9889.securepass.util.values.Constants.DRIVE;
 
@@ -33,7 +32,6 @@ import javinator9889.securepass.util.values.Constants.DRIVE;
 public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
     private static final String TAG = "RetrieveWithProgress";
     private MaterialDialog mProgressBar;
-    private TextView mFileContents;
     private ExecutorService mExecutorService;
 
     @Override
@@ -68,11 +66,12 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
     }
 
     private void retrieveContents(DriveFile file) {
+        mProgressBar.show();
         OpenFileCallback openCallback = new OpenFileCallback() {
             @Override
             public void onProgress(long bytesDownloaded, long bytesExpected) {
                 int progress = (int) (bytesDownloaded * 100 / bytesExpected);
-                Log.d(TAG, String.format("Loading progress: %d percent", progress));
+                Log.d(TAG, String.format("Download progress: %d percent", progress));
                 mProgressBar.setProgress(progress);
             }
 
@@ -96,7 +95,7 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
                     restoredData.storeDataInDB();
                     getDriveResourceClient().discardContents(driveContents);
                 } catch (IOException | NoSuchAlgorithmException | InvalidKeyException
-                        | NoSuchPaddingException | NoSHA2AlgorithmException e) {
+                        | NoSuchPaddingException e) {
                     e.printStackTrace();
                 }
             }

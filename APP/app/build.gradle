@@ -6,8 +6,8 @@ android {
         applicationId "javinator9889.securepass"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 9
-        versionName "0.3-development"
+        versionCode 10
+        versionName "d0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -46,9 +46,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-drive:12.0.1'
     implementation 'com.google.android.gms:play-services-auth:12.0.1'
 
-    // Material Dialog
+    // Material Dialog - https://github.com/afollestad/material-dialogs
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
-    // Google Guava
+    // Google Guava - https://github.com/google/guava
     implementation 'com.google.guava:guava:24.1-android'
 }

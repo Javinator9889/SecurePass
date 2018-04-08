@@ -18,6 +18,6 @@
         <activity android:name=".views.activities.FirstSetup"
             android:label="AppIntro"/>
         <activity android:name=".network.drive.CreateFileInAppFolder" />
-        <activity android:name=".network.drive.base.RetrieveContentWithDownloadProgress" />
+        <activity android:name=".network.drive.RetrieveContentWithDownloadProgress" />
     </application>
 </manifest>

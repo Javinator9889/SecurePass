@@ -24,9 +24,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SealedObject;
 import javax.crypto.spec.SecretKeySpec;
 
-import javinator9889.securepass.errors.NoSHA2AlgorithmException;
 import javinator9889.securepass.util.values.Constants.CIPHER.FILE;
-import javinator9889.securepass.util.values.Hash;
 
 /**
  * Created by Javinator9889 on 07/04/2018.
@@ -38,7 +36,7 @@ public class FileCipher {
         this.key = key;
     }
 
-    public static FileCipher newInstance(@NonNull String key) throws NoSHA2AlgorithmException {
+    public static FileCipher newInstance(@NonNull String key) {
         byte[] hashKey = Hashing.sha256().hashString(key, StandardCharsets.UTF_8).asBytes();
         return new FileCipher(hashKey);
     }
