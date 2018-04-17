@@ -14,14 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.github.paolorotolo.appintro.AppIntroBaseFragment;
 import com.github.paolorotolo.appintro.ISlideBackgroundColorHolder;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import javinator9889.securepass.R;
-import javinator9889.securepass.views.activities.FirstSetup;
 
 /**
  * Created by Javinator9889 on 08/04/2018.
@@ -41,7 +40,7 @@ public class PasswordRegistration extends Fragment implements ISlideBackgroundCo
 
         Bundle args = new Bundle();
         args.putInt(ARG_LAYOUT_RES_ID, layoutResId);
-        args.putInt(ARG_BG_COLOR, Color.WHITE);
+        args.putInt(ARG_BG_COLOR, Color.LTGRAY);
         passwordInstance.setArguments(args);
 
         return passwordInstance;
@@ -61,8 +60,7 @@ public class PasswordRegistration extends Fragment implements ISlideBackgroundCo
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
-        container.setBackgroundColor(Color.LTGRAY);
+        Objects.requireNonNull(container).setBackgroundColor(backgroundColor);
         return inflater.inflate(layoutResId, container, false);
     }
 
@@ -71,8 +69,6 @@ public class PasswordRegistration extends Fragment implements ISlideBackgroundCo
         Button confirmButton = view.findViewById(R.id.confirmButton);
         firstPasswordEntry = view.findViewById(R.id.firstPasswordEntry);
         passwordConfirmation = view.findViewById(R.id.passwordConfirmation);
-        //view.getRootView().setBackgroundColor(Color.WHITE);
-        //view.setBackgroundColor(Color.WHITE);
         confirmButton.setOnClickListener(this);
     }
 

@@ -21,5 +21,6 @@
             android:label="AppIntro"/>
         <activity android:name=".network.drive.CreateFileInAppFolder" />
         <activity android:name=".network.drive.RetrieveContentWithDownloadProgress" />
+        <activity android:name=".views.activities.ShowEulaActivity" />
     </application>
 </manifest>
