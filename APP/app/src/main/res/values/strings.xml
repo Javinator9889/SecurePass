@@ -19,12 +19,19 @@
         <item>Save accounts, passwords, security codes: everything what you want. Personalize
             your application and enjoy your privacy</item>
         <item>We take care of your privacy, so here you have all the Terms of Service you must
-            accept in order to use this application. Take a look at them carefully ;)</item>
+            accept in order to use this application. Take a look at them carefully</item>
     </string-array>
     <!-- Password register strings-->
+    <string name="password_title">Save your password</string>
+    <string name="password_information">The password that you are going to save will keep your
+    application secure. Do not forget it as it is necessary in order to use this app and recover
+    any backup later</string>
     <string name="enter_password">Enter password…</string>
     <string name="confirm_password">Confirm password</string>
     <string name="save_password">Save password</string>
+    <string name="saving_pass">Saving password…</string>
+    <string name="saving_pass_more_info">We are saving your password and keep it safe.
+        Please, wait</string>
     <!-- EULA accept strings-->
     <string name="eula_terms">EULA TERMS OF SERVICE\n\n
 

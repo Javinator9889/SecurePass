@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -67,7 +65,8 @@ public class Constants {
     public static final class CIPHER {
         public static String KEYSTORE = "AndroidKeyStore";
         public static String ALGORITHM = "RSA";
-        public static String TRANSFORMATION = "RSA/ECB/PKCS1Padding";
+        public static String COMPAT_TRANSFORMATION = "RSA/ECB/PKCS1Padding";
+        public static String TRANSFORMATION = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding";
         public static String MASTER_KEY = "javinator9889.securepass." + Build.DEVICE;
 
         public static final class FILE {

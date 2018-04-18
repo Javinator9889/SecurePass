@@ -46,10 +46,17 @@ public class DataCipher {
 
     private DataCipher(Context cipherContext) {
         this.cipherContext = cipherContext;
+        String transformation;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            transformation = CIPHER.TRANSFORMATION;
+        else
+            transformation = CIPHER.COMPAT_TRANSFORMATION;
         try {
-            this.classCipher = Cipher.getInstance(CIPHER.TRANSFORMATION, CIPHER.KEYSTORE);
+            createAndroidKeyStore();
+
+            this.classCipher = Cipher.getInstance(transformation);
             this.cipherKeyStore = createAndroidKeyStore();
-        } catch (NoSuchAlgorithmException | NoSuchProviderException | NoSuchPaddingException |
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException |
                 KeyStoreException | CertificateException | IOException e) {
             Log.e("Cipher", "Error while trying to init Cipher@DataCipher. Message: "
             + e.getMessage() + "\nFull trace:");
@@ -97,7 +104,8 @@ public class DataCipher {
             Calendar endDate = Calendar.getInstance();
             endDate.add(Calendar.YEAR, 20);
 
-            KeyPairGeneratorSpec.Builder keyBuilder = new KeyPairGeneratorSpec.Builder(cipherContext)
+            KeyPairGeneratorSpec.Builder keyBuilder = new KeyPairGeneratorSpec
+                    .Builder(cipherContext)
                     .setAlias(alias)
                     .setSerialNumber(BigInteger.ONE)
                     .setSubject(new X500Principal("CN=" + alias + " CA Certificate"))

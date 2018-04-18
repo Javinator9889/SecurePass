@@ -5,12 +5,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.scottyab.aescrypt.AESCrypt;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -59,7 +62,7 @@ public class IOManager {
     }
 
     public void storePassword(@NonNull String userPassword) {
-        try {
+        /*try {
             DataCipher cipher = DataCipher.newInstance(activityContext);
             cipher.createAndroidAsymmetricKey(Constants.CIPHER.MASTER_KEY);
             KeyPair masterKey = cipher.getAndroidKeyStoreAsymmetricKeyPair(
@@ -71,6 +74,12 @@ public class IOManager {
                 | BadPaddingException | IllegalBlockSizeException | InvalidKeyException e) {
             Log.e("PASSWORD-S", "Error while recovering-getting passwords. Message: "
                     + e.getMessage() + "\nFull trace: ");
+            e.printStackTrace();
+        }*/
+        try {
+            String encryptedPass = AESCrypt.encrypt(Constants.CIPHER.MASTER_KEY, userPassword);
+            storePasswordInFile(encryptedPass);
+        } catch (GeneralSecurityException e){
             e.printStackTrace();
         }
     }
@@ -92,7 +101,7 @@ public class IOManager {
 
     @Nullable
     public String readPassword() {
-        try {
+        /*try {
             DataCipher cipher = DataCipher.newInstance(activityContext);
             cipher.createAndroidAsymmetricKey(Constants.CIPHER.MASTER_KEY);
             KeyPair masterKey = cipher.getAndroidKeyStoreAsymmetricKeyPair(
@@ -106,6 +115,12 @@ public class IOManager {
         {
             Log.e("PASSWORD-S", "Error while recovering-getting passwords. Message: "
                     + e.getMessage() + "\nFull trace: ");
+            e.printStackTrace();
+            return null;
+        }*/
+        try {
+            return AESCrypt.decrypt(Constants.CIPHER.MASTER_KEY, readContentsFromPasswordFile());
+        } catch (GeneralSecurityException e) {
             e.printStackTrace();
             return null;
         }

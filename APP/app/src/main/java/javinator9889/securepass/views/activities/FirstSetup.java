@@ -5,9 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.github.paolorotolo.appintro.AppIntro;
@@ -23,8 +20,6 @@ import javinator9889.securepass.views.fragments.EulaConfirmation;
 import javinator9889.securepass.views.fragments.PasswordRegistration;
 import javinator9889.securepass.views.fragments.SlidePage;
 
-import static javinator9889.securepass.util.values.Constants.FIRST_SETUP;
-
 /**
  * Created by Javinator9889 on 29/03/2018.
  */
@@ -37,6 +32,7 @@ public class FirstSetup extends AppIntro {
     private String[] descriptions;
     private int[] drawables;
     private int[] backgroundColors;
+    private int[] fontColors;
     private int elementsCount = 0;
 
     @Override
@@ -53,7 +49,7 @@ public class FirstSetup extends AppIntro {
         //addSlide(registrationFragment);
         //addSlide(eulaConfirmation);
         showSkipButton(false);
-        setFlowAnimation();
+        setFadeAnimation();
     }
 
     private void initParams() {
@@ -61,6 +57,7 @@ public class FirstSetup extends AppIntro {
         initDescriptions();
         initDrawables();
         initBackgroundColors();
+        initFontColors();
         elementsCount = titles.length - 1;
     }
 
@@ -86,10 +83,20 @@ public class FirstSetup extends AppIntro {
     private void initBackgroundColors() {
         this.backgroundColors = new int[]{
                 Color.BLUE,
-                Color.CYAN,
+                Color.GRAY,
                 Color.GREEN,
                 Color.YELLOW,
                 Color.LTGRAY
+        };
+    }
+
+    private void initFontColors() {
+        this.fontColors = new int[] {
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                Color.BLACK,
+                Color.BLACK
         };
     }
 
@@ -101,18 +108,19 @@ public class FirstSetup extends AppIntro {
                     descriptions[i],
                     drawables[i],
                     backgroundColors[i],
-                    FIRST_SETUP.TITLE_COLOR,
-                    FIRST_SETUP.DESCRIPTION_COLOR
+                    fontColors[i],
+                    fontColors[i]
             );
             fragmentList.add(currentSlideFragmentToBeAdded);
         }
         int elementToAdd = titles.length - 1;
-        eulaConfirmation = EulaConfirmation.newInstance(titles[elementToAdd],
+        eulaConfirmation = EulaConfirmation.newInstance(
+                titles[elementToAdd],
                 descriptions[elementToAdd],
                 drawables[elementToAdd],
                 backgroundColors[elementToAdd],
-                Color.BLACK,
-                Color.BLACK);
+                fontColors[elementToAdd],
+                fontColors[elementToAdd]);
         eulaConfirmation.addPackageContext(this);
         fragmentList.add(eulaConfirmation);
     }
@@ -122,8 +130,11 @@ public class FirstSetup extends AppIntro {
         super.onDonePressed(currentFragment);
         boolean isCheckBoxChecked = eulaConfirmation.getCheckBox().isChecked();
         if (isCheckBoxChecked) {
-            Toast.makeText(this, "Correctly received", Toast.LENGTH_LONG).show();
-            //to-do | Load a new activity
+            //Toast.makeText(this, "Correctly received", Toast.LENGTH_LONG).show();
+            Intent startPasswordRegistration = new Intent(this,
+                    PasswordRegistration.class);
+            startActivity(startPasswordRegistration);
+            this.finish();
         } else {
             Toast.makeText(this, R.string.no_checkbox_clicked, Toast.LENGTH_LONG).show();
         }

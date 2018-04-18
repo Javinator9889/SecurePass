@@ -6,6 +6,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.paolorotolo.appintro.ISlideBackgroundColorHolder;
 import com.google.common.hash.Hashing;
 
@@ -21,21 +23,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import javinator9889.securepass.R;
+import javinator9889.securepass.io.IOManager;
 
 /**
  * Created by Javinator9889 on 08/04/2018.
  */
-public class PasswordRegistration extends Fragment implements ISlideBackgroundColorHolder,
+public class PasswordRegistration extends FragmentActivity implements ISlideBackgroundColorHolder,
         View.OnClickListener {
     private static final String TAG = "PasswordRegistration";
-    private static final String ARG_LAYOUT_RES_ID = "layoutResId";
-    private static final String ARG_BG_COLOR = "bg_color";
     private EditText firstPasswordEntry;
     private EditText passwordConfirmation;
-    private int layoutResId;
-    private int backgroundColor;
+    private int backgroundColor = Color.LTGRAY;
 
-    public static PasswordRegistration newInstance(@LayoutRes int layoutResId) {
+    /*public static PasswordRegistration newInstance(@LayoutRes int layoutResId) {
         PasswordRegistration passwordInstance = new PasswordRegistration();
 
         Bundle args = new Bundle();
@@ -44,33 +44,39 @@ public class PasswordRegistration extends Fragment implements ISlideBackgroundCo
         passwordInstance.setArguments(args);
 
         return passwordInstance;
-    }
+    }*/
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        setContentView(R.layout.request_intro);
+        Button confirmButton = findViewById(R.id.confirmButton);
+        firstPasswordEntry = findViewById(R.id.firstPasswordEntry);
+        passwordConfirmation = findViewById(R.id.passwordConfirmation);
+        confirmButton.setOnClickListener(this);
+        /*if (getArguments() != null) {
             layoutResId = getArguments().getInt(ARG_LAYOUT_RES_ID);
             backgroundColor = getArguments().getInt(ARG_BG_COLOR);
-        }
+        }*/
     }
 
-    @Nullable
+    /*@Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         Objects.requireNonNull(container).setBackgroundColor(backgroundColor);
+        int layoutResId = R.layout.request_intro;
         return inflater.inflate(layoutResId, container, false);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Button confirmButton = view.findViewById(R.id.confirmButton);
         firstPasswordEntry = view.findViewById(R.id.firstPasswordEntry);
         passwordConfirmation = view.findViewById(R.id.passwordConfirmation);
         confirmButton.setOnClickListener(this);
-    }
+    }*/
 
     @Override
     public int getDefaultBackgroundColor() {
@@ -86,9 +92,28 @@ public class PasswordRegistration extends Fragment implements ISlideBackgroundCo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.confirmButton:
-                if (validate())
-                    Toast.makeText(v.getContext(), "Passwords are the same",
-                            Toast.LENGTH_LONG).show();
+                if (validate()) {
+                    /*Toast.makeText(v.getContext(), "Passwords are the same",
+                            Toast.LENGTH_LONG).show();*/
+                    MaterialDialog savingPasswordProgress = new MaterialDialog
+                            .Builder(v.getContext())
+                            .title(R.string.saving_pass)
+                            .content(R.string.saving_pass_more_info)
+                            .progress(true, 0)
+                            .build();
+                    savingPasswordProgress.show();
+                    IOManager io = IOManager.newInstance(this);
+                    String passwordWithHashApplied = Hashing.sha256()
+                            .hashString(this.firstPasswordEntry.getText().toString(),
+                                    StandardCharsets.UTF_8).toString();
+                    Log.d("PASSREGISTRATION", "Password hash: " + passwordWithHashApplied);
+                    io.storePassword(passwordWithHashApplied);
+                    savingPasswordProgress.dismiss();
+                    Toast.makeText(v.getContext(), "Password saved", Toast.LENGTH_LONG).show();
+                    String hashedPass = io.readPassword();
+                    Toast.makeText(v.getContext(), "Pass hash: " + hashedPass, Toast.LENGTH_LONG).show();
+                    Log.d("PASSREGISTRATION", "Recovered password hash: " + hashedPass);
+                }
                 else
                     Toast.makeText(v.getContext(), "Passwords does not match",
                             Toast.LENGTH_LONG).show();
