@@ -26,7 +26,10 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
 import javinator9889.securepass.R;
+import javinator9889.securepass.errors.PasswordCipherException;
 import javinator9889.securepass.util.cipher.DataCipher;
+import javinator9889.securepass.util.cipher.PasswordCipher;
+import javinator9889.securepass.util.cipher.PasswordSaver;
 import javinator9889.securepass.util.values.Constants;
 
 /**
@@ -76,12 +79,18 @@ public class IOManager {
                     + e.getMessage() + "\nFull trace: ");
             e.printStackTrace();
         }*/
-        try {
+        /*try {
             String encryptedPass = AESCrypt.encrypt(Constants.CIPHER.MASTER_KEY, userPassword);
             storePasswordInFile(encryptedPass);
         } catch (GeneralSecurityException e){
             e.printStackTrace();
-        }
+        }*/
+        //try {
+            PasswordCipher passwordSaver = PasswordSaver.instantiate(activityContext);
+            passwordSaver.putPassword(userPassword);
+        //} catch (PasswordCipherException e) {
+          //  e.printStackTrace();
+        //}
     }
 
     private void storePasswordInFile(@NonNull String base64StringPassword) {
@@ -118,12 +127,20 @@ public class IOManager {
             e.printStackTrace();
             return null;
         }*/
-        try {
+        /*try {
             return AESCrypt.decrypt(Constants.CIPHER.MASTER_KEY, readContentsFromPasswordFile());
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
             return null;
-        }
+        }*/
+        //try {
+            PasswordCipher passwordReader = PasswordSaver.instantiate(activityContext);
+            return passwordReader.getPassword();
+        /*} catch (PasswordCipherException e) {
+            Log.e("READ_PASS", "Exception when recovering password. Message: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }*/
     }
 
     @Nullable

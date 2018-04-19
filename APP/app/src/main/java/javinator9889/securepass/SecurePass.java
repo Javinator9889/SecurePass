@@ -3,6 +3,8 @@ package javinator9889.securepass;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.chamber.java.library.SharedChamber;
+
 import javinator9889.securepass.util.resources.SharedPreferencesManager;
 
 /**
@@ -26,5 +28,6 @@ public class SecurePass extends Application {
         SharedPreferencesManager sharedPreferencesInstantiation =
                 SharedPreferencesManager.newInstance();
         sharedPreferencesInstantiation.initSharedPreferences();
+        SharedChamber.initChamber(this);
     }
 }
