@@ -6,7 +6,7 @@ android {
         applicationId "javinator9889.securepass"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 21
+        versionCode 25
         versionName "d0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -56,16 +56,6 @@ dependencies {
 
     // Markwon - https://github.com/noties/Markwon
     implementation 'ru.noties:markwon:1.0.4'
-
-    // AESCrypt - https://github.com/scottyab/AESCrypt-Android
-    implementation 'com.scottyab:aescrypt:0.0.1'
-
-    // Armadillo - https://github.com/patrickfav/armadillo
-    //implementation "at.favre.lib:bytes:0.4.6"
-    //implementation "at.favre.lib:hkdf:1.0.0"
-    //implementation 'at.favre.lib:armadillo:0.3.0'
-    // SecurePreferences - https://github.com/scottyab/secure-preferences
-    //implementation 'com.github.scottyab:secure-preferences:v0.1.6'
 
     // SharedChamber - https://github.com/afiqiqmal/SharedChamber
     implementation 'com.github.afiqiqmal:SharedChamber:2.5.0'

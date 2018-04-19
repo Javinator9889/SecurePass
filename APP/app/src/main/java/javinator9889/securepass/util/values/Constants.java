@@ -2,12 +2,6 @@ package javinator9889.securepass.util.values;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Created by Javinator9889 on 26/03/2018.
@@ -63,11 +57,6 @@ public class Constants {
     }
 
     public static final class CIPHER {
-        public static String KEYSTORE = "AndroidKeyStore";
-        public static String ALGORITHM = "RSA";
-        public static String COMPAT_TRANSFORMATION = "RSA/ECB/PKCS1Padding";
-        public static String TRANSFORMATION = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding";
-        public static String MASTER_KEY = "javinator9889.securepass." + Build.DEVICE;
 
         public static final class FILE {
             public static final String TRANSFORMATION = "AES/GCM/PKCS5Padding";
@@ -75,12 +64,9 @@ public class Constants {
     }
 
     public static final class IO {
-        public static String PASS_FILENAME = "userPass.dat";
     }
 
     public static final class FIRST_SETUP {
-        public static final int TITLE_COLOR = Color.WHITE;
-        public static final int DESCRIPTION_COLOR = Color.WHITE;
     }
 
     public static final class SHARED_PREF {
@@ -109,16 +95,5 @@ public class Constants {
                 " Google Drive";
         public static final String GOOGLE_FILE_NO_SELECTED = "No file selected";
         public static final String FILE_TITLE = "secpass.bak";
-    }
-
-    public static final class TIME {
-        private static final String PATTERN = "DDMMyyyy_HHmm";
-        private static final SimpleDateFormat dateFormat = new SimpleDateFormat(PATTERN, Locale.US);
-        public static final String ACTUAL_TIME = dateFormat
-                .format(Calendar.getInstance().getTime());
-    }
-
-    public static final class HASH {
-        public static final String SHA2 = "SHA-256";
     }
 }

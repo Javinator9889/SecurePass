@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 public interface PasswordCipher {
     String KEY = "password";
     String DEF_VALUE = "NONE";
-    String FILENAME = "privatePrefs";
     String FOLDER_NAME = "private";
     void putPassword(@NonNull String password);
     String getPassword();
