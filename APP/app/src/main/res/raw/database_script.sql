@@ -5,8 +5,8 @@
 -- -----------------------------------------------------
 -- Schema securepassdb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `securepassdb` DEFAULT CHARACTER SET utf8 ;
-USE `securepassdb` ;
+-- CREATE SCHEMA IF NOT EXISTS `securepassdb` DEFAULT CHARACTER SET utf8 ;
+-- USE `securepassdb` ;
 
 -- -----------------------------------------------------
 -- Table `securepassdb`.`Category`

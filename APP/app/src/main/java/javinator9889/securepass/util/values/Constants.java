@@ -74,7 +74,8 @@ public class Constants {
         public static final String FILENAME = "userPreferences";
         public static final int MODE = Context.MODE_PRIVATE;
         public static final Object[][] VALUES = new Object[][] {
-                {"isApplicationFirstExecuted", false, boolean.class}
+                {"isApplicationFirstExecuted", false, boolean.class},
+                {"isDatabaseInitialized", false, boolean.class}
         };
     }
 

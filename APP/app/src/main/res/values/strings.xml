@@ -32,6 +32,7 @@
     <string name="saving_pass">Saving password…</string>
     <string name="saving_pass_more_info">We are saving your password and keep it safe.
         Please, wait</string>
+    <string name="passwords_does_not_match">Passwords does not match. They must be the same</string>
     <!-- EULA accept strings-->
     <string name="eula_terms">EULA TERMS OF SERVICE\n\n
 

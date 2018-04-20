@@ -18,6 +18,9 @@ import java.nio.charset.StandardCharsets;
 
 import javinator9889.securepass.R;
 import javinator9889.securepass.io.IOManager;
+import javinator9889.securepass.io.database.DatabaseManager;
+import javinator9889.securepass.util.resources.ISharedPreferencesManager;
+import javinator9889.securepass.util.resources.SharedPreferencesManager;
 
 /**
  * Created by Javinator9889 on 08/04/2018.
@@ -65,16 +68,22 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                     String passwordWithHashApplied = Hashing.sha256()
                             .hashString(this.firstPasswordEntry.getText().toString(),
                                     StandardCharsets.UTF_8).toString();
-                    Log.d("PASSREGISTRATION", "Password hash: " + passwordWithHashApplied);
                     io.storePassword(passwordWithHashApplied);
-                    savingPasswordProgress.dismiss();
-                    Toast.makeText(v.getContext(), "Password saved", Toast.LENGTH_LONG).show();
-                    String hashedPass = io.readPassword();
-                    Toast.makeText(v.getContext(), "Pass hash: " + hashedPass, Toast.LENGTH_LONG).show();
-                    Log.d("PASSREGISTRATION", "Recovered password hash: " + hashedPass);
+                    DatabaseManager manager = DatabaseManager
+                            .newInstance(this, passwordWithHashApplied);
+                    Thread databaseThread = manager.getDatabaseInitializer();
+                    try {
+                        databaseThread.join();
+                        ISharedPreferencesManager preferencesManager = SharedPreferencesManager
+                                .newInstance();
+                        preferencesManager.databaseInitialized(true);
+                        savingPasswordProgress.dismiss();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else
-                    Toast.makeText(v.getContext(), "Passwords does not match",
+                    Toast.makeText(v.getContext(), R.string.passwords_does_not_match,
                             Toast.LENGTH_LONG).show();
                 break;
             default:

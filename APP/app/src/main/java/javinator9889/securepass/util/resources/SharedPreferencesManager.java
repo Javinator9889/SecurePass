@@ -54,6 +54,24 @@ public class SharedPreferencesManager implements ISharedPreferencesManager {
         return preferencesInstance.getBoolean(key, (boolean) sharedPreferencesKeys.get(key));
     }
 
+    @Override
+    public void applicationInitialized(boolean isInitialized) {
+        String key = String.valueOf(sharedPreferencesKeys.keySet().toArray()[0]);
+        preferencesInstance.edit().putBoolean(key, isInitialized).apply();
+    }
+
+    @Override
+    public boolean isDatabaseInitialized() {
+        String key = String.valueOf(sharedPreferencesKeys.keySet().toArray()[1]);
+        return preferencesInstance.getBoolean(key, (boolean) sharedPreferencesKeys.get(key));
+    }
+
+    @Override
+    public void databaseInitialized(boolean isInitialized) {
+        String key = String.valueOf(sharedPreferencesKeys.keySet().toArray()[1]);
+        preferencesInstance.edit().putBoolean(key, isInitialized).apply();
+    }
+
     private void loadSharedPreferencesKeys() {
         sharedPreferencesKeys = new HashMap<>();
         keysType = new HashMap<>();

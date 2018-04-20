@@ -5,4 +5,7 @@ package javinator9889.securepass.util.resources;
  */
 public interface ISharedPreferencesManager {
     boolean isApplicationInitialized();
+    void applicationInitialized(boolean isInitialized);
+    boolean isDatabaseInitialized();
+    void databaseInitialized(boolean isInitialized);
 }

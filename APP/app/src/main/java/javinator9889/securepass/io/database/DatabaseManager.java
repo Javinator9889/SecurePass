@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javinator9889.securepass.io.IOManager;
+import javinator9889.securepass.util.resources.ISharedPreferencesManager;
+import javinator9889.securepass.util.resources.SharedPreferencesManager;
 import javinator9889.securepass.util.values.Constants;
 
 /**
@@ -25,8 +27,7 @@ public class DatabaseManager {
 
     @NonNull
     public static DatabaseManager newInstance(Context activityContext,
-                                              @NonNull String userHashedPassword)
-    {
+                                              @NonNull String userHashedPassword) {
         return new DatabaseManager(activityContext, userHashedPassword);
     }
 
@@ -40,20 +41,30 @@ public class DatabaseManager {
         databaseInitializer = new Thread(new Runnable() {
             private final Context databaseContext = DatabaseManager.this.activityContext;
             private final String databasePassword = DatabaseManager.this.userHashedPassword;
+
             @Override
             public void run() {
                 SQLiteDatabase.loadLibs(databaseContext);
                 File tempDatabaseFile = databaseContext.getDatabasePath(Constants.SQL.DB_FILENAME);
-                tempDatabaseFile.mkdirs();
+                try {
+                    tempDatabaseFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //tempDatabaseFile.mkdirs();
                 SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(
                         tempDatabaseFile,
                         databasePassword,
                         null);
                 String databaseScript;
+                ISharedPreferencesManager preferencesManager = SharedPreferencesManager
+                        .newInstance();
                 try {
-                    databaseScript = IOManager.newInstance(databaseContext).loadSQLScript();
-                    database.execSQL(databaseScript);
-                    database.execSQL(Constants.SQL.DB_DEFAULT_CATEGORY, new Object[] {"Global"});
+                    if (!preferencesManager.isDatabaseInitialized()) {
+                        databaseScript = IOManager.newInstance(databaseContext).loadSQLScript();
+                        database.execSQL(databaseScript);
+                        database.execSQL(Constants.SQL.DB_DEFAULT_CATEGORY, new Object[]{"Global"});
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e.getCause());
                 } finally {
