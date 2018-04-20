@@ -63,4 +63,11 @@ public class QRCode implements Serializable {
     public void setEntry(@NonNull Entry entry) {
         this.parentEntry = parentEntry;
     }
+
+    @Override
+    public String toString() {
+        return "QRCode ID: " + id + "\nQRCode name: " + name + "\nQRCode description: " +
+                description + "\nQRCode data: " + qrData + "QRCode entry: " +
+                parentEntry.toString();
+    }
 }

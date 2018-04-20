@@ -59,7 +59,8 @@ public class Constants {
     public static final class CIPHER {
 
         public static final class FILE {
-            public static final String TRANSFORMATION = "AES/GCM/PKCS5Padding";
+            public static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
+            public static final String ALGORITHM = "AES";
         }
     }
 

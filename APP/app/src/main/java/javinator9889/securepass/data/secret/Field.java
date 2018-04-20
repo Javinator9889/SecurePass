@@ -35,4 +35,10 @@ public class Field implements Serializable {
     public int getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Field code: " + code + "\nField is used: " + isCodeUsed + "\nField field of: " +
+                fieldOf.toString();
+    }
 }

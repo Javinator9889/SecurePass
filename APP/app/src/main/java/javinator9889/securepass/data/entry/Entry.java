@@ -70,4 +70,11 @@ public class Entry implements Serializable {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    @Override
+    public String toString() {
+        return "Entry ID: " + id + "\nEntry account name: " + accountName + "\nEntry password: " +
+                accountPassword + "\nEntry icon: " + icon + "\nEntry description: " + description +
+                "\nEntry category: " + category.toString();
+    }
 }

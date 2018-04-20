@@ -13,6 +13,7 @@ import com.google.android.gms.drive.events.OpenFileCallback;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutorService;
@@ -95,7 +96,7 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
                     restoredData.storeDataInDB();
                     getDriveResourceClient().discardContents(driveContents);
                 } catch (IOException | NoSuchAlgorithmException | InvalidKeyException
-                        | NoSuchPaddingException e) {
+                        | NoSuchPaddingException | InvalidAlgorithmParameterException e) {
                     e.printStackTrace();
                 }
             }

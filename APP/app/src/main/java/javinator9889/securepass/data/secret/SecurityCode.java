@@ -23,4 +23,9 @@ public class SecurityCode implements Serializable {
     public String getAccountName() {
         return accountName;
     }
+
+    @Override
+    public String toString() {
+        return "SecurityCode ID: " + id + "\nSecurityCode account name: " + accountName + "\n";
+    }
 }
