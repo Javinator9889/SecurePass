@@ -69,7 +69,7 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                             .hashString(this.firstPasswordEntry.getText().toString(),
                                     StandardCharsets.UTF_8).toString();
                     io.storePassword(passwordWithHashApplied);
-                    DatabaseManager manager = DatabaseManager
+                    /*DatabaseManager manager = DatabaseManager
                             .newInstance(this, passwordWithHashApplied);
                     Thread databaseThread = manager.getDatabaseInitializer();
                     try {
@@ -80,7 +80,7 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                         savingPasswordProgress.dismiss();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 }
                 else
                     Toast.makeText(v.getContext(), R.string.passwords_does_not_match,
