@@ -32,6 +32,7 @@ import javinator9889.securepass.util.values.Constants.DRIVE;
 public class CreateFileInAppFolder extends GoogleDriveBase {
     private static final String TAG = "CreateFileInAppFolder";
     private ClassContainer dataToBackup;
+    private byte[] generatedIv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +58,8 @@ public class CreateFileInAppFolder extends GoogleDriveBase {
                     String password = ioManager.readPassword();
                     try (OutputStream outputStream = contents.getOutputStream()) {
                         if (password != null) {
-                            FileCipher cipher = FileCipher.newInstance(password);
+                            FileCipher cipher = FileCipher.newInstance(password, null);
+                            generatedIv = cipher.getIv();
                             encryptedBackup = cipher.encrypt(dataToBackup, outputStream);
                             CipherOutputStream createdCipher =
                                     encryptedBackup.values().iterator().next();
@@ -78,13 +80,44 @@ public class CreateFileInAppFolder extends GoogleDriveBase {
                 })
                 .addOnSuccessListener(this,
                         driveFile -> {
-                            showMessage(getString(R.string.data_backed_up));
-                            finish();
+                            createIvSaveFile();
+                            //showMessage(getString(R.string.data_backed_up));
+                            //finish();
                         })
                 .addOnFailureListener(this,
                         e -> {
                             Log.e(TAG, DRIVE.GOOGLE_DRIVE_FILE_NOT_CREATED, e);
                             showMessage(getString(R.string.backup_error));
+                            finish();
+                        });
+    }
+
+    private void createIvSaveFile() {
+        final Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
+        final Task<DriveContents> createContentsTask = getDriveResourceClient().createContents();
+        Tasks.whenAll(appFolderTask, createContentsTask)
+                .continueWith(task -> {
+                    DriveFolder parent = appFolderTask.getResult();
+                    DriveContents contents = createContentsTask.getResult();
+                    try (OutputStream outputStream = contents.getOutputStream()){
+                        outputStream.write(generatedIv);
+                    }
+                    MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                            .setTitle(DRIVE.IV_FILE)
+                            .setMimeType(DRIVE.MIME_TYPE)
+                            .setStarred(DRIVE.STARRED)
+                            .build();
+                    return getDriveResourceClient().createFile(parent, changeSet, contents);
+                })
+                .addOnFailureListener(this,
+                        e -> {
+                            Log.e(TAG, DRIVE.GOOGLE_DRIVE_FILE_NOT_CREATED, e);
+                            showMessage(getString(R.string.backup_error));
+                            finish();
+                        })
+                .addOnSuccessListener(this,
+                        driveFileTask -> {
+                            showMessage(getString(R.string.data_backed_up));
                             finish();
                         });
     }

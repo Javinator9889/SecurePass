@@ -42,7 +42,7 @@ public class ExampleUnitTest {
 
     @Test
     public void storeAClassInFile() throws Exception {
-        FileCipher cipher = FileCipher.newInstance(password);
+        FileCipher cipher = FileCipher.newInstance(password, null);
         ClassContainer container = new ClassContainer();
         List<Category> categories = new ArrayList<>();
         List<Entry> entries = new ArrayList<>();
@@ -94,7 +94,7 @@ public class ExampleUnitTest {
 
     @Test
     public void readContentsFromFile() throws Exception {
-        FileCipher cipher = FileCipher.newInstance(password);
+        FileCipher cipher = FileCipher.newInstance(password, null);
         InputStream stream = new FileInputStream(filename);
         ClassContainer restoredBackup = (ClassContainer) cipher.decrypt(stream);
         for (Category category : restoredBackup.getCategories())

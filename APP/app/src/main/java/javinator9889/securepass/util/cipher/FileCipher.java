@@ -1,6 +1,7 @@
 package javinator9889.securepass.util.cipher;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.common.hash.Hashing;
 
@@ -16,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,17 +38,40 @@ import javinator9889.securepass.util.values.Constants.CIPHER.FILE;
  */
 public class FileCipher {
     private byte[] key;
-    private final byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private final IvParameterSpec ivspec = new IvParameterSpec(iv);
+    //private final byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private final int ivSize = 16;
+    private byte[] iv;
+    private IvParameterSpec ivspec;
+    /*private final IvParameterSpec ivspec = new IvParameterSpec(iv);
+    SecureRandom random = new SecureRandom();*/
 
     private FileCipher(@NonNull byte[] key) {
         this.key = key;
         fixKeyLength();
+        iv = new byte[ivSize];
+        SecureRandom random = new SecureRandom();
+        random.nextBytes(iv);
+        ivspec = new IvParameterSpec(iv);
     }
 
-    public static FileCipher newInstance(@NonNull String key) {
+    private FileCipher(@NonNull byte[] key, @NonNull byte[] iv) {
+        this.key = key;
+        fixKeyLength();
+        this.iv = iv;
+        ivspec = new IvParameterSpec(iv);
+    }
+
+    public static FileCipher newInstance(@NonNull String key, @Nullable byte[] iv) {
         byte[] hashKey = Hashing.sha256().hashString(key, StandardCharsets.UTF_8).asBytes();
-        return new FileCipher(hashKey);
+        if (iv == null)
+            return new FileCipher(hashKey);
+        else
+            return new FileCipher(hashKey, iv);
+    }
+
+    @NonNull
+    public byte[] getIv() {
+        return iv;
     }
 
     public Map<SealedObject, CipherOutputStream> encrypt(@NonNull Serializable classToEncrypt,
@@ -127,7 +152,7 @@ public class FileCipher {
 
         if (actualMaxKeyLength < 256)
             throw new RuntimeException("Impossible to change key length");
-        else
-            System.out.println("Changed key length to: " + actualMaxKeyLength);
+        /*else
+            System.out.println("Changed key length to: " + actualMaxKeyLength);*/
     }
 }
