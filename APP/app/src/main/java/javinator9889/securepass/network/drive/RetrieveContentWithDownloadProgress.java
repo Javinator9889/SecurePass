@@ -91,7 +91,7 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
                         .show();
                 String password = passwordBuilder.toString();
                 try (InputStream fileInput = driveContents.getInputStream()) {
-                    FileCipher decrypt = FileCipher.newInstance(password);
+                    FileCipher decrypt = FileCipher.newInstance(password, null);
                     ClassContainer restoredData = (ClassContainer) decrypt.decrypt(fileInput);
                     restoredData.storeDataInDB();
                     getDriveResourceClient().discardContents(driveContents);

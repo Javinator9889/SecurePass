@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.google.common.io.ByteStreams;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -13,6 +15,7 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +39,15 @@ public class CipherTest {
     private Context context = InstrumentationRegistry.getTargetContext();
     private String password = "random_password";
     private String filename = context.getFilesDir().getAbsolutePath() + "/class.bck";
+    private String iv_filename = context.getFilesDir().getAbsolutePath() + "/iv";
+    private byte[] iv;
 
     @Test
     public void storeAClassInFile() throws Exception {
-        FileCipher cipher = FileCipher.newInstance(password);
+        FileCipher cipher = FileCipher.newInstance(password, null);
+        iv = cipher.getIv();
+        System.out.println(Arrays.toString(iv));
+        storeIv();
         ClassContainer container = new ClassContainer();
         List<Category> categories = new ArrayList<>();
         List<Entry> entries = new ArrayList<>();
@@ -91,7 +99,9 @@ public class CipherTest {
 
     @Test
     public void readContentsFromFile() throws Exception {
-        FileCipher cipher = FileCipher.newInstance(password);
+        readIv();
+        FileCipher cipher = FileCipher.newInstance(password, iv);
+        System.out.println(Arrays.toString(iv));
         InputStream stream = new FileInputStream(filename);
         ClassContainer restoredBackup = (ClassContainer) cipher.decrypt(stream);
         for (Category category : restoredBackup.getCategories())
@@ -105,5 +115,16 @@ public class CipherTest {
         for (SecurityCode code : restoredBackup.getSecurityCodes())
             System.out.println(code.toString());
         System.out.println(restoredBackup.getUserSharedPreferences().toString());
+    }
+
+    private void storeIv() throws Exception {
+        OutputStream ivStream = new FileOutputStream(iv_filename);
+        ivStream.write(iv);
+        ivStream.close();
+    }
+
+    private void readIv() throws Exception {
+        InputStream ivStream = new FileInputStream(iv_filename);
+        this.iv = ByteStreams.toByteArray(ivStream);
     }
 }
