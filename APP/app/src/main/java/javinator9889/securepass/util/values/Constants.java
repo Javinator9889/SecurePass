@@ -97,6 +97,6 @@ public class Constants {
                 " Google Drive";
         public static final String GOOGLE_FILE_NO_SELECTED = "No file selected";
         public static final String FILE_TITLE = "secpass.bak";
-        public static final String IV_FILE = "latestIv";
+        public static final String IV_FILE = "latestIv.vector";
     }
 }

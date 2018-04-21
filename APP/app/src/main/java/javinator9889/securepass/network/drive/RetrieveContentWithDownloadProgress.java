@@ -10,6 +10,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.events.OpenFileCallback;
+import com.google.android.gms.tasks.Task;
+import com.google.common.io.ByteStreams;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +36,7 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
     private static final String TAG = "RetrieveWithProgress";
     private MaterialDialog mProgressBar;
     private ExecutorService mExecutorService;
+    private byte[] iv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,21 +52,49 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
 
     @Override
     protected void onDriveClientReady() {
-        pickTextFile()
+        pickIvFile()
                 .addOnSuccessListener(this,
-                        driveId -> retrieveContents(driveId.asDriveFile()))
-                .addOnFailureListener(this,
-                        e -> {
-                            Log.e(TAG, DRIVE.GOOGLE_FILE_NO_SELECTED, e);
-                            showMessage(getString(R.string.no_file));
-                            finish();
-                        });
+                        driveId -> retrieveIvVector(driveId.asDriveFile()));
+        try {
+            wait();
+            pickClassFile()
+                    .addOnSuccessListener(this,
+                            driveId -> retrieveContents(driveId.asDriveFile()))
+                    .addOnFailureListener(this,
+                            e -> {
+                                Log.e(TAG, DRIVE.GOOGLE_FILE_NO_SELECTED, e);
+                                showMessage(getString(R.string.no_file));
+                                finish();
+                            });
+        } catch (InterruptedException e) {
+            Log.e(TAG, "Interrupted while waiting. Message: " + e.getMessage());
+            finish();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mExecutorService.shutdown();
+    }
+
+    private void retrieveIvVector(DriveFile file) {
+        Task<DriveContents> openFileTask = getDriveResourceClient()
+                .openFile(file, DriveFile.MODE_READ_ONLY);
+        openFileTask
+                .continueWithTask(task -> {
+                    DriveContents contents = task.getResult();
+                    try (InputStream stream = contents.getInputStream()){
+                        this.iv = ByteStreams.toByteArray(stream);
+                        notify();
+                        return getDriveResourceClient().discardContents(contents);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, DRIVE.GOOGLE_FILE_NO_SELECTED, e);
+                    showMessage(getString(R.string.no_file));
+                    finish();
+                });
     }
 
     private void retrieveContents(DriveFile file) {
@@ -91,7 +122,7 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
                         .show();
                 String password = passwordBuilder.toString();
                 try (InputStream fileInput = driveContents.getInputStream()) {
-                    FileCipher decrypt = FileCipher.newInstance(password, null);
+                    FileCipher decrypt = FileCipher.newInstance(password, iv);
                     ClassContainer restoredData = (ClassContainer) decrypt.decrypt(fileInput);
                     restoredData.storeDataInDB();
                     getDriveResourceClient().discardContents(driveContents);

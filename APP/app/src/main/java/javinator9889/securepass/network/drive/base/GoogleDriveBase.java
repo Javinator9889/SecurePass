@@ -21,13 +21,18 @@ import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.OpenFileActivityOptions;
+import com.google.android.gms.drive.query.Filter;
 import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.SearchableField;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import javinator9889.securepass.errors.GoogleDriveNotAvailableException;
@@ -120,10 +125,24 @@ public abstract class GoogleDriveBase extends Activity {
         onDriveClientReady();
     }
 
-    protected Task<DriveId> pickTextFile() {
+    protected Task<DriveId> pickClassFile() {
+        List<Filter> filters = new ArrayList<>(2);
+        filters.add(Filters.eq(SearchableField.MIME_TYPE, DRIVE.MIME_TYPE));
+        filters.add(Filters.eq(SearchableField.TITLE, DRIVE.FILE_TITLE));
         OpenFileActivityOptions openOptions =
                 new OpenFileActivityOptions.Builder()
-                .setSelectionFilter(Filters.eq(SearchableField.MIME_TYPE, DRIVE.MIME_TYPE))
+                .setSelectionFilter(Filters.and(filters))
+                .build();
+        return pickItem(openOptions);
+    }
+
+    protected Task<DriveId> pickIvFile() {
+        List<Filter> filters = new ArrayList<>(2);
+        filters.add(Filters.eq(SearchableField.MIME_TYPE, DRIVE.MIME_TYPE));
+        filters.add(Filters.eq(SearchableField.TITLE, DRIVE.IV_FILE));
+        OpenFileActivityOptions openOptions =
+                new OpenFileActivityOptions.Builder()
+                .setSelectionFilter(Filters.and(filters))
                 .build();
         return pickItem(openOptions);
     }
