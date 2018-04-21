@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import javinator9889.securepass.R;
 import javinator9889.securepass.SecurePass;
+import javinator9889.securepass.views.fragments.DriveContent;
 import javinator9889.securepass.views.fragments.EulaConfirmation;
 import javinator9889.securepass.views.fragments.PasswordRegistration;
 import javinator9889.securepass.views.fragments.SlidePage;
@@ -131,8 +132,9 @@ public class FirstSetup extends AppIntro {
         boolean isCheckBoxChecked = eulaConfirmation.getCheckBox().isChecked();
         if (isCheckBoxChecked) {
             //Toast.makeText(this, "Correctly received", Toast.LENGTH_LONG).show();
-            Intent startPasswordRegistration = new Intent(this,
-                    PasswordRegistration.class);
+            /*Intent startPasswordRegistration = new Intent(this,
+                    PasswordRegistration.class);*/
+            Intent startPasswordRegistration = new Intent(this, DriveContent.class);
             startActivity(startPasswordRegistration);
             this.finish();
         } else {

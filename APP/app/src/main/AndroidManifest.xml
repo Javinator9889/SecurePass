@@ -23,6 +23,7 @@
         <activity android:name=".network.drive.RetrieveContentWithDownloadProgress" />
         <activity android:name=".views.activities.ShowEulaActivity" />
         <activity android:name=".views.fragments.PasswordRegistration" />
+        <activity android:name=".views.fragments.DriveContent" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -52,10 +52,10 @@ public abstract class GoogleDriveBase extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (isGooglePlayServicesAvailable(getApplicationContext()))
-            signIn();
-        else
-            throw new GoogleDriveNotAvailableException(DRIVE.GOOGLE_PLAY_NOT_AVAILABLE);
+        //if (isGooglePlayServicesAvailable(getApplicationContext()))
+        signIn();
+        /*else
+            throw new GoogleDriveNotAvailableException(DRIVE.GOOGLE_PLAY_NOT_AVAILABLE);*/
     }
 
     private static boolean isGooglePlayServicesAvailable(Context servicesContext) {
@@ -107,15 +107,15 @@ public abstract class GoogleDriveBase extends Activity {
         if (signInAccount != null && signInAccount.getGrantedScopes().containsAll(requiredScopes))
             initializeDriveClient(signInAccount);
         else {
-            GoogleSignInOptions signInOptions =
-                    new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestScopes(Drive.SCOPE_FILE)
-                    .requestScopes(Drive.SCOPE_APPFOLDER)
-                    .build();
-            GoogleSignInClient googleSignInClient =
-                    GoogleSignIn.getClient(this, signInOptions);
-            startActivityForResult(googleSignInClient.getSignInIntent(),
-                    DRIVE.REQUEST_CODE_SIGN_IN);
+        GoogleSignInOptions signInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestScopes(Drive.SCOPE_FILE)
+                        .requestScopes(Drive.SCOPE_APPFOLDER)
+                        .build();
+        GoogleSignInClient googleSignInClient =
+                GoogleSignIn.getClient(this, signInOptions);
+        startActivityForResult(googleSignInClient.getSignInIntent(),
+                DRIVE.REQUEST_CODE_SIGN_IN);
         }
     }
 
