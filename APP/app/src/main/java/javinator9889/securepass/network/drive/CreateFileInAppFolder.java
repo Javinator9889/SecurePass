@@ -42,7 +42,15 @@ public class CreateFileInAppFolder extends GoogleDriveBase {
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        //super.newSignIn();
+    }
+
+    @Override
     protected void onDriveClientReady() {
+        if (!isSignedIn())
+            signIn();
         createFileInAppFolder(dataToBackup);
     }
 

@@ -50,6 +50,9 @@ dependencies {
     // Google Play Services - https://developers.google.com/android/guides/setup
     implementation 'com.google.android.gms:play-services-drive:15.0.0'
     implementation 'com.google.android.gms:play-services-auth:15.0.0'
+    implementation 'com.google.android.gms:play-services-identity:15.0.0'
+    implementation 'com.google.android.gms:play-services-base:15.0.0'
+    implementation 'com.google.android.gms:play-services-gcm:15.0.0'
 
     // Material Dialog - https://github.com/afollestad/material-dialogs
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
@@ -62,4 +65,7 @@ dependencies {
 
     // SharedChamber - https://github.com/afiqiqmal/SharedChamber
     implementation 'com.github.afiqiqmal:SharedChamber:2.5.0'
+
+    // CloudRail - https://github.com/CloudRail/cloudrail-si-android-sdk
+    implementation 'com.cloudrail:cloudrail-si-android:2.21.6'
 }

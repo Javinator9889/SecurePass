@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -44,7 +46,9 @@ import javinator9889.securepass.util.values.Constants.DRIVE;
  */
 public abstract class GoogleDriveBase extends Activity {
     private static final String TAG = "DriveBaseActivity";
+    private boolean isSignedIn = false;
 
+    private GoogleSignInClient mGoogleSignInClient;
     private DriveClient mDriveClient;
     private DriveResourceClient mDriveResourceClient;
     private TaskCompletionSource<DriveId> mOpenItemTaskSource;
@@ -52,10 +56,22 @@ public abstract class GoogleDriveBase extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
         //if (isGooglePlayServicesAvailable(getApplicationContext()))
-        signIn();
+        //signIn();
         /*else
             throw new GoogleDriveNotAvailableException(DRIVE.GOOGLE_PLAY_NOT_AVAILABLE);*/
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        /*GoogleSignInOptions gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);*/
     }
 
     private static boolean isGooglePlayServicesAvailable(Context servicesContext) {
@@ -72,16 +88,19 @@ public abstract class GoogleDriveBase extends Activity {
         switch (requestCode) {
             case DRIVE.REQUEST_CODE_SIGN_IN:
                 if (resultCode != RESULT_OK) {
-                    Log.e(TAG, DRIVE.GOOGLE_ACCOUNT_NOT_SIGNED_IN);
+                    Log.e(TAG, DRIVE.GOOGLE_ACCOUNT_NOT_SIGNED_IN + " | Result code: "
+                            + resultCode);
                     finish();
                     return;
                 }
                 Task<GoogleSignInAccount> getAccountTask =
                         GoogleSignIn.getSignedInAccountFromIntent(data);
-                if (getAccountTask.isSuccessful())
+                if (getAccountTask.isSuccessful()) {
                     initializeDriveClient(getAccountTask.getResult());
+                    isSignedIn = true;
+                }
                 else {
-                    Log.e(TAG, DRIVE.GOOGLE_ACCOUNT_NOT_SIGNED_IN);
+                    Log.e(TAG, DRIVE.GOOGLE_ACCOUNT_NOT_SIGNED_IN + " | Task unsuccessful");
                     finish();
                 }
                 break;
@@ -99,6 +118,11 @@ public abstract class GoogleDriveBase extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    protected void newSignIn() {
+        Intent intent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(intent, DRIVE.REQUEST_CODE_SIGN_IN);
+    }
+
     protected void signIn() {
         Set<Scope> requiredScopes = new HashSet<>(DRIVE.HASHSET_INITIAL_CAPACITY);
         requiredScopes.add(Drive.SCOPE_FILE);
@@ -111,6 +135,7 @@ public abstract class GoogleDriveBase extends Activity {
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestScopes(Drive.SCOPE_FILE)
                         .requestScopes(Drive.SCOPE_APPFOLDER)
+                        .requestEmail()
                         .build();
         GoogleSignInClient googleSignInClient =
                 GoogleSignIn.getClient(this, signInOptions);
@@ -183,5 +208,9 @@ public abstract class GoogleDriveBase extends Activity {
 
     protected DriveResourceClient getDriveResourceClient() {
         return mDriveResourceClient;
+    }
+
+    protected boolean isSignedIn() {
+        return isSignedIn;
     }
 }

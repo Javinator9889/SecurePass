@@ -2,6 +2,8 @@
     package="javinator9889.securepass">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,6 +26,7 @@
         <activity android:name=".views.activities.ShowEulaActivity" />
         <activity android:name=".views.fragments.PasswordRegistration" />
         <activity android:name=".views.fragments.DriveContent" />
+        <activity android:name=".data.backup.GoogleDriveActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
