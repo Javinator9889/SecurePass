@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import javinator9889.securepass.data.backup.GoogleDriveActivity;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.SharedPreferencesManager;
+import javinator9889.securepass.views.fragments.DriveContent;
 
 /**
  * Created by Javinator9889 on 04/04/2018.
@@ -19,7 +20,7 @@ public class LauncherActivity extends AppCompatActivity {
         ISharedPreferencesManager preferencesManager = SharedPreferencesManager.newInstance();
         if (!preferencesManager.isApplicationInitialized()) {
             //Intent firstSetupLauncher = new Intent(this, FirstSetup.class);
-            Intent firstSetupLauncher = new Intent(this, GoogleDriveActivity.class);
+            Intent firstSetupLauncher = new Intent(this, DriveContent.class);
             startActivity(firstSetupLauncher);
         } else {
             //to-do

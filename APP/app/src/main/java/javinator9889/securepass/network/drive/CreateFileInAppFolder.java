@@ -14,13 +14,15 @@ import com.google.android.gms.tasks.Tasks;
 
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.crypto.CipherOutputStream;
 import javax.crypto.SealedObject;
 
-import javinator9889.securepass.R;
 import javinator9889.securepass.data.container.ClassContainer;
+import javinator9889.securepass.errors.NoArgsSpecifiedException;
+import javinator9889.securepass.errors.NoBackupSpecifiedException;
 import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.network.drive.base.GoogleDriveBase;
 import javinator9889.securepass.util.cipher.FileCipher;
@@ -29,32 +31,33 @@ import javinator9889.securepass.util.values.Constants.DRIVE;
 /**
  * Created by Javinator9889 on 07/04/2018.
  */
-public class CreateFileInAppFolder extends GoogleDriveBase {
+public class CreateFileInAppFolder extends GoogleDriveBase implements IDriveUploadOperations {
     private static final String TAG = "CreateFileInAppFolder";
-    private ClassContainer dataToBackup;
     private byte[] generatedIv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent args = getIntent();
-        dataToBackup = (ClassContainer) args.getExtras().getSerializable("data");
+        Bundle obtainedArgs = args.getExtras();
+        if (obtainedArgs != null) {
+            Serializable classContainer = obtainedArgs.getSerializable("data");
+            ClassContainer dataToBackup;
+            if (classContainer != null)
+                dataToBackup = (ClassContainer) classContainer;
+            else
+                throw new NoBackupSpecifiedException("Class " + this.getClass().getSimpleName() +
+                        " must specify a " + ClassContainer.class.getName() + " class as \"data\"" +
+                        " parameter");
+            createFileInAppFolder(dataToBackup);
+        } else
+            throw new NoArgsSpecifiedException("Class " + this.getClass().getSimpleName() +
+                    " must specify arguments: \"data\" (Serializable)");
+
     }
 
     @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        //super.newSignIn();
-    }
-
-    @Override
-    protected void onDriveClientReady() {
-        if (!isSignedIn())
-            signIn();
-        createFileInAppFolder(dataToBackup);
-    }
-
-    private void createFileInAppFolder(@NonNull final ClassContainer dataToBackup) {
+    public void createFileInAppFolder(@NonNull final ClassContainer dataToBackup) {
         final Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
         final Task<DriveContents> createContentsTask = getDriveResourceClient().createContents();
         final IOManager ioManager = IOManager.newInstance(this);
@@ -87,27 +90,23 @@ public class CreateFileInAppFolder extends GoogleDriveBase {
                     return getDriveResourceClient().createFile(parent, changeSet, contents);
                 })
                 .addOnSuccessListener(this,
-                        driveFile -> {
-                            createIvSaveFile();
-                            //showMessage(getString(R.string.data_backed_up));
-                            //finish();
-                        })
+                        driveFile -> createIvSaveFile())
                 .addOnFailureListener(this,
                         e -> {
                             Log.e(TAG, DRIVE.GOOGLE_DRIVE_FILE_NOT_CREATED, e);
-                            showMessage(getString(R.string.backup_error));
                             finish();
                         });
     }
 
-    private void createIvSaveFile() {
+    @Override
+    public void createIvSaveFile() {
         final Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
         final Task<DriveContents> createContentsTask = getDriveResourceClient().createContents();
         Tasks.whenAll(appFolderTask, createContentsTask)
                 .continueWith(task -> {
                     DriveFolder parent = appFolderTask.getResult();
                     DriveContents contents = createContentsTask.getResult();
-                    try (OutputStream outputStream = contents.getOutputStream()){
+                    try (OutputStream outputStream = contents.getOutputStream()) {
                         outputStream.write(generatedIv);
                     }
                     MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
@@ -120,13 +119,9 @@ public class CreateFileInAppFolder extends GoogleDriveBase {
                 .addOnFailureListener(this,
                         e -> {
                             Log.e(TAG, DRIVE.GOOGLE_DRIVE_FILE_NOT_CREATED, e);
-                            showMessage(getString(R.string.backup_error));
                             finish();
                         })
                 .addOnSuccessListener(this,
-                        driveFileTask -> {
-                            showMessage(getString(R.string.data_backed_up));
-                            finish();
-                        });
+                        driveFileTask -> finish());
     }
 }

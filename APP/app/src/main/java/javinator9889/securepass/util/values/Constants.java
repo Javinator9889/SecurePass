@@ -80,8 +80,8 @@ public class Constants {
     }
 
     public static final class DRIVE {
-        public static final int REQUEST_CODE_SIGN_IN = 0;
-        public static final int REQUEST_CODE_OPEN_ITEM = 1;
+        //public static final int REQUEST_CODE_SIGN_IN = 0;
+        //public static final int REQUEST_CODE_OPEN_ITEM = 1;
         public static final int HASHSET_INITIAL_CAPACITY = 2;
         public static final String MIME_TYPE = "text/plain";
         public static final Intent FILL_IN_INTENT = null;

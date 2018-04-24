@@ -20,6 +20,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.crypto.NoSuchPaddingException;
 
@@ -32,7 +33,8 @@ import javinator9889.securepass.util.values.Constants.DRIVE;
 /**
  * Created by Javinator9889 on 07/04/2018.
  */
-public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
+public class RetrieveContentWithDownloadProgress extends GoogleDriveBase
+        implements IDriveDownloadOperations {
     private static final String TAG = "RetrieveWithProgress";
     private MaterialDialog mProgressBar;
     private ExecutorService mExecutorService;
@@ -48,24 +50,26 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
                 .progress(false, 100)
                 .build();
         mExecutorService = Executors.newSingleThreadExecutor();
+        launchActivities();
     }
 
-    @Override
-    protected void onDriveClientReady() {
+    private void launchActivities() {
         pickIvFile()
                 .addOnSuccessListener(this,
-                        driveId -> retrieveIvVector(driveId.asDriveFile()));
+                        driveId -> retrieveIvVector(driveId.asDriveFile()))
+                .addOnFailureListener(this, e -> {
+                    Log.e(TAG, "Fail when recovering IV vector. Message: " + e.getMessage());
+                    finish();
+                });
         try {
-            wait();
+            wait(TimeUnit.SECONDS.toMillis(10));
             pickClassFile()
                     .addOnSuccessListener(this,
                             driveId -> retrieveContents(driveId.asDriveFile()))
-                    .addOnFailureListener(this,
-                            e -> {
-                                Log.e(TAG, DRIVE.GOOGLE_FILE_NO_SELECTED, e);
-                                showMessage(getString(R.string.no_file));
-                                finish();
-                            });
+                    .addOnFailureListener(this, e -> {
+                        Log.e(TAG, DRIVE.GOOGLE_FILE_NO_SELECTED, e);
+                        finish();
+                    });
         } catch (InterruptedException e) {
             Log.e(TAG, "Interrupted while waiting. Message: " + e.getMessage());
             finish();
@@ -78,13 +82,14 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
         mExecutorService.shutdown();
     }
 
-    private void retrieveIvVector(DriveFile file) {
+    @Override
+    public void retrieveIvVector(DriveFile file) {
         Task<DriveContents> openFileTask = getDriveResourceClient()
                 .openFile(file, DriveFile.MODE_READ_ONLY);
         openFileTask
                 .continueWithTask(task -> {
                     DriveContents contents = task.getResult();
-                    try (InputStream stream = contents.getInputStream()){
+                    try (InputStream stream = contents.getInputStream()) {
                         this.iv = ByteStreams.toByteArray(stream);
                         notify();
                         return getDriveResourceClient().discardContents(contents);
@@ -92,12 +97,12 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, DRIVE.GOOGLE_FILE_NO_SELECTED, e);
-                    showMessage(getString(R.string.no_file));
                     finish();
                 });
     }
 
-    private void retrieveContents(DriveFile file) {
+    @Override
+    public void retrieveContents(DriveFile file) {
         mProgressBar.show();
         OpenFileCallback openCallback = new OpenFileCallback() {
             @Override
@@ -135,7 +140,6 @@ public class RetrieveContentWithDownloadProgress extends GoogleDriveBase {
             @Override
             public void onError(@NonNull Exception e) {
                 Log.e(TAG, "Unable to read contents", e);
-                showMessage(getString(R.string.read_failed));
                 finish();
             }
         };

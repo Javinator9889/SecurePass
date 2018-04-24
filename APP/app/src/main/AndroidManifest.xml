@@ -27,6 +27,7 @@
         <activity android:name=".views.fragments.PasswordRegistration" />
         <activity android:name=".views.fragments.DriveContent" />
         <activity android:name=".data.backup.GoogleDriveActivity" />
+        <activity android:name=".network.drive.base.GoogleDriveBase" />
 
         <meta-data
             android:name="preloaded_fonts"
