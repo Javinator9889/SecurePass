@@ -134,7 +134,9 @@ public class FirstSetup extends AppIntro {
             //Toast.makeText(this, "Correctly received", Toast.LENGTH_LONG).show();
             /*Intent startPasswordRegistration = new Intent(this,
                     PasswordRegistration.class);*/
-            Intent startPasswordRegistration = new Intent(this, DriveContent.class);
+            Intent startPasswordRegistration = new Intent(
+                    this,
+                    PasswordRegistration.class);
             startActivity(startPasswordRegistration);
             this.finish();
         } else {

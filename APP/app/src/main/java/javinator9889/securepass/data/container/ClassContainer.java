@@ -118,4 +118,22 @@ public class ClassContainer implements Serializable {
     public Map<String, Object> getUserSharedPreferences() {
         return userSharedPreferences;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (Category category : categories)
+            builder.append(category.toString());
+        for (Entry entry : entries)
+            builder.append(entry.toString());
+        for (QRCode qrCode : qrCodes)
+            builder.append(qrCode.toString());
+        for (Field field : fields)
+            builder.append(field.toString());
+        for (SecurityCode securityCode : securityCodes)
+            builder.append(securityCode.toString());
+        builder.append(userSharedPreferences.toString());
+        return builder.toString();
+        //return super.toString();
+    }
 }

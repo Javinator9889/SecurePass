@@ -1,13 +1,17 @@
 package javinator9889.securepass.network.drive;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -31,11 +35,23 @@ import javinator9889.securepass.util.values.Constants.DRIVE;
 /**
  * Created by Javinator9889 on 07/04/2018.
  */
-public class CreateFileInAppFolder extends GoogleDriveBase implements IDriveUploadOperations {
+public class CreateFileInAppFolder implements IDriveUploadOperations {
     private static final String TAG = "CreateFileInAppFolder";
+
+    private Context driveContext;
+    private Activity mainActivity;
+    private DriveResourceClient resourceClient;
     private byte[] generatedIv;
 
-    @Override
+    public CreateFileInAppFolder(@NonNull Context driveContext,
+                                 @NonNull Activity mainActivity,
+                                 @NonNull DriveResourceClient resourceClient) {
+        this.driveContext = driveContext;
+        this.mainActivity = mainActivity;
+        this.resourceClient = resourceClient;
+    }
+
+    /*@Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent args = getIntent();
@@ -54,13 +70,13 @@ public class CreateFileInAppFolder extends GoogleDriveBase implements IDriveUplo
             throw new NoArgsSpecifiedException("Class " + this.getClass().getSimpleName() +
                     " must specify arguments: \"data\" (Serializable)");
 
-    }
+    }*/
 
     @Override
     public void createFileInAppFolder(@NonNull final ClassContainer dataToBackup) {
-        final Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
-        final Task<DriveContents> createContentsTask = getDriveResourceClient().createContents();
-        final IOManager ioManager = IOManager.newInstance(this);
+        final Task<DriveFolder> appFolderTask = resourceClient.getAppFolder();
+        final Task<DriveContents> createContentsTask = resourceClient.createContents();
+        final IOManager ioManager = IOManager.newInstance(driveContext);
         Tasks.whenAll(appFolderTask, createContentsTask)
                 .continueWith(task -> {
                     DriveFolder parent = appFolderTask.getResult();
@@ -87,21 +103,21 @@ public class CreateFileInAppFolder extends GoogleDriveBase implements IDriveUplo
                             .setMimeType(DRIVE.MIME_TYPE)
                             .setStarred(DRIVE.STARRED)
                             .build();
-                    return getDriveResourceClient().createFile(parent, changeSet, contents);
+                    return resourceClient.createFile(parent, changeSet, contents);
                 })
-                .addOnSuccessListener(this,
+                .addOnSuccessListener(mainActivity,
                         driveFile -> createIvSaveFile())
-                .addOnFailureListener(this,
+                .addOnFailureListener(mainActivity,
                         e -> {
                             Log.e(TAG, DRIVE.GOOGLE_DRIVE_FILE_NOT_CREATED, e);
-                            finish();
+                            mainActivity.finish();
                         });
     }
 
     @Override
     public void createIvSaveFile() {
-        final Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
-        final Task<DriveContents> createContentsTask = getDriveResourceClient().createContents();
+        final Task<DriveFolder> appFolderTask = resourceClient.getAppFolder();
+        final Task<DriveContents> createContentsTask = resourceClient.createContents();
         Tasks.whenAll(appFolderTask, createContentsTask)
                 .continueWith(task -> {
                     DriveFolder parent = appFolderTask.getResult();
@@ -114,14 +130,15 @@ public class CreateFileInAppFolder extends GoogleDriveBase implements IDriveUplo
                             .setMimeType(DRIVE.MIME_TYPE)
                             .setStarred(DRIVE.STARRED)
                             .build();
-                    return getDriveResourceClient().createFile(parent, changeSet, contents);
+                    return resourceClient.createFile(parent, changeSet, contents);
                 })
-                .addOnFailureListener(this,
+                .addOnFailureListener(mainActivity,
                         e -> {
                             Log.e(TAG, DRIVE.GOOGLE_DRIVE_FILE_NOT_CREATED, e);
-                            finish();
+                            //mainActivity.finish();
                         })
-                .addOnSuccessListener(this,
-                        driveFileTask -> finish());
+                .addOnSuccessListener(mainActivity,
+                        driveFileTask -> Toast.makeText(driveContext, "Done", Toast.LENGTH_LONG).show()
+        );//mainActivity.finish());
     }
 }

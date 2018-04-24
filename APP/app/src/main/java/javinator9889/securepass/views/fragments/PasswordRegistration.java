@@ -1,5 +1,6 @@
 package javinator9889.securepass.views.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -69,6 +70,10 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                             .hashString(this.firstPasswordEntry.getText().toString(),
                                     StandardCharsets.UTF_8).toString();
                     io.storePassword(passwordWithHashApplied);
+                    Intent googleDriveLauncher = new Intent(this, DriveContent.class);
+                    startActivity(googleDriveLauncher);
+                    savingPasswordProgress.dismiss();
+                    finish();
                     /*DatabaseManager manager = DatabaseManager
                             .newInstance(this, passwordWithHashApplied);
                     Thread databaseThread = manager.getDatabaseInitializer();

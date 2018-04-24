@@ -22,6 +22,7 @@ public class LauncherActivity extends AppCompatActivity {
             //Intent firstSetupLauncher = new Intent(this, FirstSetup.class);
             Intent firstSetupLauncher = new Intent(this, DriveContent.class);
             startActivity(firstSetupLauncher);
+            this.finish();
         } else {
             //to-do
         }

@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 
 import com.google.common.hash.Hashing;
 
+import java.io.BufferedInputStream;
+import java.io.EOFException;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -104,7 +107,8 @@ public class FileCipher {
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivspec);
 
         CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
-        ObjectInputStream decryptedClass = new ObjectInputStream(cipherInputStream);
+        ObjectInputStream decryptedClass = new ObjectInputStream(
+                new BufferedInputStream(cipherInputStream));
         SealedObject sealedObject;
         try {
             sealedObject = (SealedObject) decryptedClass.readObject();
