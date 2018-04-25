@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.errors.GoogleDriveNotAvailableException;
-import javinator9889.securepass.network.drive.CreateFileInAppFolder;
+import javinator9889.securepass.backup.drive.CreateFileInAppFolder;
 
 /**
  * Created by Javinator9889 on 21/04/2018.

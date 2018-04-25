@@ -1,14 +1,11 @@
-package javinator9889.securepass.network.drive.base;
+package javinator9889.securepass.backup.drive.base;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResourceClient;
-import com.google.android.gms.drive.OpenFileActivityOptions;
-import com.google.android.gms.tasks.Task;
 
 import javinator9889.securepass.data.container.ClassContainer;
 
@@ -36,4 +33,5 @@ public interface IDriveBase {
     void setDriveClient(DriveClient client);
     void setResult(DriveId id);
     void setException(Exception e);
+    void setLoggedIn(boolean isLoggedIn);
 }

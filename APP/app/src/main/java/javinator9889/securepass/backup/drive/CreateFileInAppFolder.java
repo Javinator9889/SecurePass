@@ -1,11 +1,8 @@
-package javinator9889.securepass.network.drive;
+package javinator9889.securepass.backup.drive;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,17 +15,14 @@ import com.google.android.gms.tasks.Tasks;
 
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.crypto.CipherOutputStream;
 import javax.crypto.SealedObject;
 
 import javinator9889.securepass.data.container.ClassContainer;
-import javinator9889.securepass.errors.NoArgsSpecifiedException;
-import javinator9889.securepass.errors.NoBackupSpecifiedException;
 import javinator9889.securepass.io.IOManager;
-import javinator9889.securepass.network.drive.base.GoogleDriveBase;
 import javinator9889.securepass.util.cipher.FileCipher;
 import javinator9889.securepass.util.values.Constants.DRIVE;
 
@@ -87,6 +81,7 @@ public class CreateFileInAppFolder implements IDriveUploadOperations {
                         if (password != null) {
                             FileCipher cipher = FileCipher.newInstance(password, null);
                             generatedIv = cipher.getIv();
+                            Log.d(TAG, Arrays.toString(generatedIv));
                             encryptedBackup = cipher.encrypt(dataToBackup, outputStream);
                             CipherOutputStream createdCipher =
                                     encryptedBackup.values().iterator().next();
@@ -106,7 +101,10 @@ public class CreateFileInAppFolder implements IDriveUploadOperations {
                     return resourceClient.createFile(parent, changeSet, contents);
                 })
                 .addOnSuccessListener(mainActivity,
-                        driveFile -> createIvSaveFile())
+                        driveFile -> {
+                            createIvSaveFile();
+                            Toast.makeText(driveContext, "Class uploaded", Toast.LENGTH_LONG).show();
+                        })
                 .addOnFailureListener(mainActivity,
                         e -> {
                             Log.e(TAG, DRIVE.GOOGLE_DRIVE_FILE_NOT_CREATED, e);

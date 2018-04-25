@@ -21,13 +21,13 @@
         </activity>
         <activity android:name=".views.activities.FirstSetup"
             android:label="AppIntro"/>
-        <activity android:name=".network.drive.CreateFileInAppFolder" />
-        <activity android:name=".network.drive.RetrieveContentWithDownloadProgress" />
+        <activity android:name=".backup.drive.CreateFileInAppFolder" />
+        <activity android:name=".backup.drive.RetrieveContentWithDownloadProgress" />
         <activity android:name=".views.activities.ShowEulaActivity" />
         <activity android:name=".views.fragments.PasswordRegistration" />
         <activity android:name=".views.fragments.DriveContent" />
-        <activity android:name=".data.backup.GoogleDriveActivity" />
-        <activity android:name=".network.drive.base.GoogleDriveBase" />
+        <activity android:name=".backup.GoogleDriveActivity" />
+        <activity android:name=".backup.drive.base.GoogleDriveBase" />
 
         <meta-data
             android:name="preloaded_fonts"

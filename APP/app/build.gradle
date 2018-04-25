@@ -6,12 +6,23 @@ android {
         applicationId "javinator9889.securepass"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 30
-        versionName "d0.5"
+        versionCode 37
+        versionName "d0.53"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    /*flavorDimensions "versions"
+    productFlavors {
+        development {
+            versionNameSuffix "-d"
+            dimension "versions"
+        }
+        final_release {
+            dimension "versions"
+        }
+    }*/
     buildTypes {
         release {
+            //shrinkResources true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

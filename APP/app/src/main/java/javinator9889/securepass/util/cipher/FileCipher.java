@@ -107,8 +107,7 @@ public class FileCipher {
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivspec);
 
         CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
-        ObjectInputStream decryptedClass = new ObjectInputStream(
-                new BufferedInputStream(cipherInputStream));
+        ObjectInputStream decryptedClass = new ObjectInputStream(cipherInputStream);
         SealedObject sealedObject;
         try {
             sealedObject = (SealedObject) decryptedClass.readObject();

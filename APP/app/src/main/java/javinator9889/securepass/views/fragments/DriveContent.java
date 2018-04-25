@@ -23,14 +23,12 @@ import com.google.android.gms.drive.OpenFileActivityOptions;
 import javinator9889.securepass.R;
 import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.errors.GoogleDriveUnableToOpenFileException;
-import javinator9889.securepass.network.drive.CreateFileInAppFolder;
-import javinator9889.securepass.network.drive.DataClassForTests;
-import javinator9889.securepass.network.drive.RetrieveContentWithDownloadProgress;
-import javinator9889.securepass.network.drive.base.GoogleDriveBase;
-import javinator9889.securepass.network.drive.base.IDriveBase;
+import javinator9889.securepass.backup.drive.DataClassForTests;
+import javinator9889.securepass.backup.drive.base.GoogleDriveBase;
+import javinator9889.securepass.backup.drive.base.IDriveBase;
 
-import static javinator9889.securepass.network.drive.base.IDriveBase.REQUEST_CODE_OPEN_ITEM;
-import static javinator9889.securepass.network.drive.base.IDriveBase.REQUEST_CODE_SIGN_IN;
+import static javinator9889.securepass.backup.drive.base.IDriveBase.REQUEST_CODE_OPEN_ITEM;
+import static javinator9889.securepass.backup.drive.base.IDriveBase.REQUEST_CODE_SIGN_IN;
 
 /**
  * Created by Javinator9889 on 21/04/2018.
@@ -98,6 +96,7 @@ public class DriveContent extends FragmentActivity implements Button.OnClickList
                                 Drive.getDriveResourceClient(this, latestSignedInAccount);
                         googleDrive.setDriveClient(mDriveClient);
                         googleDrive.setDriveResourceClient(mDriveResourceClient);
+                        googleDrive.setLoggedIn(true);
                     } /*else
                         startActivityForResult(mGoogleSignInClient.getSignInIntent(),
                                 REQUEST_CODE_SIGN_IN);*/

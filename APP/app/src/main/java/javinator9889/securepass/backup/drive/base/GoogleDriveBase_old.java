@@ -1,45 +1,19 @@
-package javinator9889.securepass.network.drive.base;
+package javinator9889.securepass.backup.drive.base;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveClient;
-import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResourceClient;
-import com.google.android.gms.drive.OpenFileActivityOptions;
-import com.google.android.gms.drive.query.Filter;
-import com.google.android.gms.drive.query.Filters;
-import com.google.android.gms.drive.query.SearchableField;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
-import com.google.android.gms.tasks.Tasks;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import javinator9889.securepass.errors.GoogleDriveNotAvailableException;
-import javinator9889.securepass.errors.GoogleDriveUnableToOpenFileException;
-import javinator9889.securepass.util.values.Constants.DRIVE;
 
 /**
  * Created by Javinator9889 on 07/04/2018.

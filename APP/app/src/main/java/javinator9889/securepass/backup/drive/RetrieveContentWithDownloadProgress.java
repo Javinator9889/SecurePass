@@ -1,43 +1,29 @@
-package javinator9889.securepass.network.drive;
+package javinator9889.securepass.backup.drive;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.InputType;
 import android.util.Log;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.cloudrail.si.servicecode.commands.Clone;
-import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveResourceClient;
-import com.google.android.gms.drive.events.OpenFileCallback;
 import com.google.android.gms.tasks.Task;
 import com.google.common.io.ByteStreams;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import javax.crypto.NoSuchPaddingException;
 
 import javinator9889.securepass.R;
 import javinator9889.securepass.data.container.ClassContainer;
-import javinator9889.securepass.network.drive.base.GoogleDriveBase;
-import javinator9889.securepass.util.Cloner;
+import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.util.cipher.FileCipher;
 import javinator9889.securepass.util.values.Constants.DRIVE;
-import javinator9889.securepass.views.fragments.DriveContent;
 
 /**
  * Created by Javinator9889 on 07/04/2018.
@@ -137,9 +123,12 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
                 .continueWith(task -> {
                     DriveContents contents = task.getResult();
                     try (InputStream obtainedFile = contents.getInputStream()) {
-                        InputStream clonedStream = Cloner.clone(obtainedFile);
-                        completeDownload(clonedStream);
+                        IOManager io = IOManager.newInstance(driveContext);
+                        io.writeDownloadedClass(obtainedFile);
+                        //InputStream clonedStream = Cloner.clone(obtainedFile);
+                        //completeDownload(clonedStream);
                     }
+                    completeDownload();
                     return resourceClient.discardContents(contents);
                 });
         /*mProgressBar.show();
@@ -191,7 +180,9 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
         //resourceClient.openFile(file, DriveFile.MODE_READ_ONLY, openCallback);*/
     }
 
-    private void completeDownload(@NonNull InputStream obtainedStream) {
+    private void completeDownload() {
+        IOManager io = IOManager.newInstance(driveContext);
+        InputStream obtainedStream = io.readDownloadedClass();
         final StringBuilder passwordBuilder = new StringBuilder();
         new MaterialDialog.Builder(driveContext)
                 .title(R.string.put_pass)

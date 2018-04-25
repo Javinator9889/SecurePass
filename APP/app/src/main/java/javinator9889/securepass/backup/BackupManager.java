@@ -1,4 +1,4 @@
-package javinator9889.securepass.data.backup;
+package javinator9889.securepass.backup;
 
 /**
  * Created by Javinator9889 on 06/04/2018.
