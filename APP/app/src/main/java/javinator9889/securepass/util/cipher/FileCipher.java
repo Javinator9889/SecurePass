@@ -8,9 +8,11 @@ import com.google.common.hash.Hashing;
 import java.io.BufferedInputStream;
 import java.io.EOFException;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -21,6 +23,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +37,7 @@ import javax.crypto.SealedObject;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.util.values.Constants.CIPHER.FILE;
 
 /**
@@ -80,8 +84,7 @@ public class FileCipher {
     public Map<SealedObject, CipherOutputStream> encrypt(@NonNull Serializable classToEncrypt,
                                                          @NonNull OutputStream outputStream)
             throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-            IOException, InvalidAlgorithmParameterException
-    {
+            IOException, InvalidAlgorithmParameterException {
         try {
             SecretKeySpec secretKeySpec = new SecretKeySpec(key, FILE.ALGORITHM);
             Cipher cipher = Cipher.getInstance(FILE.TRANSFORMATION);
@@ -98,10 +101,30 @@ public class FileCipher {
         }
     }
 
+    public void newEncrypt(@NonNull ClassContainer dataToEncrypt,
+                           @NonNull OutputStream outputStream) throws IOException,
+            NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
+            InvalidKeyException {
+        try {
+            System.out.print("Password in bytes: " + Arrays.toString(key));
+            SecretKeySpec keySpec = new SecretKeySpec(key, FILE.ALGORITHM);
+            Cipher cipher = Cipher.getInstance(FILE.TRANSFORMATION);
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivspec);
+            SealedObject sealedObject = new SealedObject(dataToEncrypt, cipher);
+
+            CipherOutputStream cipherFile = new CipherOutputStream(outputStream, cipher);
+            ObjectOutputStream outputFile = new ObjectOutputStream(cipherFile);
+            outputFile.writeObject(sealedObject);
+            outputFile.close();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Object decrypt(@NonNull InputStream inputStream) throws IOException,
             NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-            InvalidAlgorithmParameterException
-    {
+            InvalidAlgorithmParameterException {
+        System.out.print("Password in bytes: " + Arrays.toString(key));
         SecretKeySpec secretKeySpec = new SecretKeySpec(key, FILE.ALGORITHM);
         Cipher cipher = Cipher.getInstance(FILE.TRANSFORMATION);
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivspec);

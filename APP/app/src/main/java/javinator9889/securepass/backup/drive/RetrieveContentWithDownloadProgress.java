@@ -10,11 +10,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveResourceClient;
+import com.google.android.gms.drive.events.OpenFileCallback;
 import com.google.android.gms.tasks.Task;
+import com.google.common.hash.Hashing;
 import com.google.common.io.ByteStreams;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -118,7 +121,7 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
 
     @Override
     public void retrieveContents(DriveFile file) {
-        Task<DriveContents> openFileTask = resourceClient.openFile(file, DriveFile.MODE_READ_ONLY);
+        /*Task<DriveContents> openFileTask = resourceClient.openFile(file, DriveFile.MODE_READ_ONLY);
         openFileTask
                 .continueWith(task -> {
                     DriveContents contents = task.getResult();
@@ -130,8 +133,8 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
                     }
                     completeDownload();
                     return resourceClient.discardContents(contents);
-                });
-        /*mProgressBar.show();
+                });*/
+        mProgressBar.show();
         resourceClient.openFile(file, DriveFile.MODE_READ_ONLY, new OpenFileCallback() {
             @Override
             public void onProgress(long bytesDownloaded, long bytesExpected) {
@@ -144,7 +147,17 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
             public void onContents(@NonNull DriveContents driveContents) {
                 mProgressBar.setProgress(100);
                 mProgressBar.dismiss();
-                final StringBuilder passwordBuilder = new StringBuilder();
+                try {
+                    try (InputStream obtainedFile = driveContents.getInputStream()){
+                        IOManager io = IOManager.newInstance(driveContext);
+                        io.writeDownloadedClass(obtainedFile);
+                        completeDownload();
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "IOException when retrieving contents", e);
+                }
+                //return resourceClient.discardContents(driveContents);
+                /*final StringBuilder passwordBuilder = new StringBuilder();
                 new MaterialDialog.Builder(
                         driveContext)
                         .title(R.string.put_pass)
@@ -168,7 +181,7 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
                                 e.printStackTrace();
                             }
                         })
-                        .show();
+                        .show();*/
             }
 
             @Override
@@ -191,7 +204,9 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
                 .input(null, null, false,
                         ((dialog, input) -> passwordBuilder.append(input)))
                 .onAny(((dialog, which) -> {
-                    String password = passwordBuilder.toString();
+                    String password = Hashing.sha256()
+                            .hashString(passwordBuilder.toString(), StandardCharsets.UTF_8)
+                            .toString();
                     System.out.println(password);
                     try {
                         FileCipher fileDecrypt = FileCipher.newInstance(password,
@@ -199,6 +214,7 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
                         ClassContainer restoredData =
                                 (ClassContainer) fileDecrypt.decrypt(obtainedStream);
                         Log.d(TAG, restoredData.toString());
+                        io.deleteDownloadedClass();
                     } catch (IOException e) {
                         Log.e(TAG, "IOException captured. Message: " +
                                 e.getMessage(), e);

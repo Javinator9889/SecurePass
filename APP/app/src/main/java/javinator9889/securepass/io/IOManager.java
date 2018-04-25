@@ -84,4 +84,12 @@ public class IOManager {
             return null;
         }
     }
+
+    public void deleteDownloadedClass() {
+        String filename = filesDir.getAbsolutePath() + "/class.bck";
+
+        File fileToDelete = new File(filename);
+        if (!fileToDelete.delete())
+            Log.e("Delete IO", "There was an error while trying to delete class.bck");
+    }
 }

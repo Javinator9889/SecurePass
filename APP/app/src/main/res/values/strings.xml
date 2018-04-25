@@ -671,4 +671,5 @@ copy of the Program in return for a fee.\n\n
     <string name="put_pass">Enter password:</string>
     <string name="pass_need">Please, enter the password you used when you created this backup. It may not be the same as the one you have right now</string>
     <string name="read_failed">There was an error while trying to restore data</string>
+    <string name="sign_in_first">Please, sign-in first</string>
 </resources>

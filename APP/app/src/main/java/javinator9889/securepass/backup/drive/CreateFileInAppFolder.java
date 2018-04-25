@@ -75,14 +75,15 @@ public class CreateFileInAppFolder implements IDriveUploadOperations {
                 .continueWith(task -> {
                     DriveFolder parent = appFolderTask.getResult();
                     DriveContents contents = createContentsTask.getResult();
-                    Map<SealedObject, CipherOutputStream> encryptedBackup;
+                    //Map<SealedObject, CipherOutputStream> encryptedBackup;
                     String password = ioManager.readPassword();
+                    Log.d(TAG, "Password: " + password);
                     try (OutputStream outputStream = contents.getOutputStream()) {
                         if (password != null) {
                             FileCipher cipher = FileCipher.newInstance(password, null);
                             generatedIv = cipher.getIv();
                             Log.d(TAG, Arrays.toString(generatedIv));
-                            encryptedBackup = cipher.encrypt(dataToBackup, outputStream);
+                            /*encryptedBackup = cipher.encrypt(dataToBackup, outputStream);
                             CipherOutputStream createdCipher =
                                     encryptedBackup.values().iterator().next();
                             SealedObject createdSealedObject =
@@ -90,7 +91,8 @@ public class CreateFileInAppFolder implements IDriveUploadOperations {
                             ObjectOutputStream encryptedClassWriter =
                                     new ObjectOutputStream(createdCipher);
                             encryptedClassWriter.writeObject(createdSealedObject);
-                            encryptedClassWriter.close();
+                            encryptedClassWriter.close();*/
+                            cipher.newEncrypt(dataToBackup, outputStream);
                         }
                     }
                     MetadataChangeSet changeSet = new MetadataChangeSet.Builder()

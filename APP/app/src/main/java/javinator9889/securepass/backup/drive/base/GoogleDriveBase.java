@@ -2,14 +2,13 @@ package javinator9889.securepass.backup.drive.base;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.IntentSender;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveFolder;
@@ -17,20 +16,15 @@ import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataBuffer;
-import com.google.android.gms.drive.OpenFileActivityOptions;
-import com.google.android.gms.drive.query.Filter;
 import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
 import com.google.android.gms.drive.query.SortOrder;
 import com.google.android.gms.drive.query.SortableField;
 import com.google.android.gms.drive.widget.DataBufferAdapter;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javinator9889.securepass.R;
@@ -67,28 +61,46 @@ public class GoogleDriveBase implements IDriveBase {
         mSignInClient.signIn();
     }
 
-    @Override
-    public void uploadFile(@NonNull ClassContainer dataToBackup) {
-        if (!mSignInClient.isSignedIn())
-            signIn();
-        CreateFileInAppFolder createFileTask = new CreateFileInAppFolder(
-                driveContext,
-                mainActivity,
-                mDriveResourceClient);
-        //createFileTask.createFileInAppFolder(dataToBackup);
-        queryFilesAndDelete(createFileTask, dataToBackup);
+    private boolean isAbleToSignIn() {
+        if (!mSignInClient.isSignedIn()) {
+            GoogleSignInAccount latestSignedInAccount = GoogleSignIn
+                    .getLastSignedInAccount(driveContext);
+            if (latestSignedInAccount != null) {
+                mDriveResourceClient = Drive
+                        .getDriveResourceClient(driveContext, latestSignedInAccount);
+                return true;
+            }
+            else {
+                Toast.makeText(driveContext, driveContext.getString(R.string.sign_in_first),
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+        } else
+            return true;
     }
 
     @Override
-    public synchronized void restoreData() {
-        if (!mSignInClient.isSignedIn())
-            signIn();
-        MaterialDialog md = new MaterialDialog.Builder(driveContext)
-                .progress(true, 0)
-                .title(R.string.wait)
-                .build();
-        md.show();
-        queryFiles(md);
+    public void uploadFile(@NonNull ClassContainer dataToBackup) {
+        if (isAbleToSignIn()) {
+            CreateFileInAppFolder createFileTask = new CreateFileInAppFolder(
+                    driveContext,
+                    mainActivity,
+                    mDriveResourceClient);
+            //createFileTask.createFileInAppFolder(dataToBackup);
+            queryFilesAndDelete(createFileTask, dataToBackup);
+        }
+    }
+
+    @Override
+    public void restoreData() {
+        if (isAbleToSignIn()) {
+            /*MaterialDialog md = new MaterialDialog.Builder(driveContext)
+                    .progress(true, 0)
+                    .title(R.string.wait)
+                    .build();
+            md.show();*/
+            queryFiles();
+        }
     }
 
     private void deleteFiles(@NonNull CreateFileInAppFolder createFileTask,
@@ -111,7 +123,7 @@ public class GoogleDriveBase implements IDriveBase {
             createFileTask.createFileInAppFolder(dataToBackup);
     }
 
-    private void continueWithDownload(MaterialDialog md) {
+    private void continueWithDownload() {
         RetrieveContentWithDownloadProgress retrieveContentClass =
                 new RetrieveContentWithDownloadProgress(
                         driveContext,
@@ -138,7 +150,7 @@ public class GoogleDriveBase implements IDriveBase {
                     break;
             }
         }
-        md.dismiss();
+        //md.dismiss();
         try {
             retrieveContentClass.retrieveIvVector(ivId.asDriveFile());
             retrieveContentClass.retrieveContents(classId.asDriveFile());
@@ -169,7 +181,7 @@ public class GoogleDriveBase implements IDriveBase {
                 });
     }
 
-    private void queryFiles(MaterialDialog md) {
+    private void queryFiles() {
         SortOrder sortOrder = new SortOrder.Builder().addSortAscending(SortableField.CREATED_DATE)
                 .build();
         Query query = new Query.Builder()
@@ -185,7 +197,7 @@ public class GoogleDriveBase implements IDriveBase {
                             .addOnSuccessListener(mainActivity,
                                     metadata -> {
                                         resultsAdapter.append(metadata);
-                                        continueWithDownload(md);
+                                        continueWithDownload();
                                     });
                 });
     }
