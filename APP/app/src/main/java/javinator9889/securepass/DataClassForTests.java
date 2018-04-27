@@ -1,4 +1,4 @@
-package javinator9889.securepass.backup.drive;
+package javinator9889.securepass;
 
 import java.util.ArrayList;
 import java.util.HashMap;

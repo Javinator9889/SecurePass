@@ -30,8 +30,5 @@ public interface IDriveBase {
     void uploadFile(@NonNull ClassContainer dataToBackup);
     void restoreData();
     void setDriveResourceClient(DriveResourceClient resourceClient);
-    void setDriveClient(DriveClient client);
-    void setResult(DriveId id);
-    void setException(Exception e);
     void setLoggedIn(boolean isLoggedIn);
 }

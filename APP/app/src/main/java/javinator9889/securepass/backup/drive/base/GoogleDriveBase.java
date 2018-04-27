@@ -6,11 +6,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResourceClient;
@@ -23,7 +21,6 @@ import com.google.android.gms.drive.query.SortOrder;
 import com.google.android.gms.drive.query.SortableField;
 import com.google.android.gms.drive.widget.DataBufferAdapter;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -42,10 +39,7 @@ public class GoogleDriveBase implements IDriveBase {
 
     private Context driveContext;
     private Activity mainActivity;
-    //private GoogleSignInClient mGoogleSignInClient;
-    private DriveClient mDriveClient;
     private DriveResourceClient mDriveResourceClient;
-    private TaskCompletionSource<DriveId> mOpenItemTaskSource;
     private DataBufferAdapter<Metadata> resultsAdapter;
     private SignIn mSignInClient;
 
@@ -86,7 +80,6 @@ public class GoogleDriveBase implements IDriveBase {
                     driveContext,
                     mainActivity,
                     mDriveResourceClient);
-            //createFileTask.createFileInAppFolder(dataToBackup);
             queryFilesAndDelete(createFileTask, dataToBackup);
         }
     }
@@ -94,11 +87,6 @@ public class GoogleDriveBase implements IDriveBase {
     @Override
     public void restoreData() {
         if (isAbleToSignIn()) {
-            /*MaterialDialog md = new MaterialDialog.Builder(driveContext)
-                    .progress(true, 0)
-                    .title(R.string.wait)
-                    .build();
-            md.show();*/
             queryFiles();
         }
     }
@@ -150,7 +138,6 @@ public class GoogleDriveBase implements IDriveBase {
                     break;
             }
         }
-        //md.dismiss();
         try {
             retrieveContentClass.retrieveIvVector(ivId.asDriveFile());
             retrieveContentClass.retrieveContents(classId.asDriveFile());
@@ -203,23 +190,8 @@ public class GoogleDriveBase implements IDriveBase {
     }
 
     @Override
-    public void setResult(DriveId id) {
-        mOpenItemTaskSource.setResult(id);
-    }
-
-    @Override
-    public void setException(Exception e) {
-        mOpenItemTaskSource.setException(e);
-    }
-
-    @Override
     public void setDriveResourceClient(DriveResourceClient mDriveResourceClient) {
         this.mDriveResourceClient = mDriveResourceClient;
-    }
-
-    @Override
-    public void setDriveClient(DriveClient mDriveClient) {
-        this.mDriveClient = mDriveClient;
     }
 
     public void setLoggedIn(boolean isLoggedIn) {

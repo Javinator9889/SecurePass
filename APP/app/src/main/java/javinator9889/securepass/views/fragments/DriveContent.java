@@ -23,7 +23,7 @@ import com.google.android.gms.drive.OpenFileActivityOptions;
 import javinator9889.securepass.R;
 import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.errors.GoogleDriveUnableToOpenFileException;
-import javinator9889.securepass.backup.drive.DataClassForTests;
+import javinator9889.securepass.DataClassForTests;
 import javinator9889.securepass.backup.drive.base.GoogleDriveBase;
 import javinator9889.securepass.backup.drive.base.IDriveBase;
 
@@ -94,7 +94,7 @@ public class DriveContent extends FragmentActivity implements Button.OnClickList
                                 .getDriveClient(this, latestSignedInAccount);
                         DriveResourceClient mDriveResourceClient =
                                 Drive.getDriveResourceClient(this, latestSignedInAccount);
-                        googleDrive.setDriveClient(mDriveClient);
+                        //googleDrive.setDriveClient(mDriveClient);
                         googleDrive.setDriveResourceClient(mDriveResourceClient);
                         googleDrive.setLoggedIn(true);
                     } /*else
@@ -105,14 +105,14 @@ public class DriveContent extends FragmentActivity implements Button.OnClickList
                     //finish();
                 }
                 break;
-            case REQUEST_CODE_OPEN_ITEM:
+            case REQUEST_CODE_OPEN_ITEM: // not necessary
                 if (resultCode == RESULT_OK) {
                     DriveId id = data.getParcelableExtra(
                             OpenFileActivityOptions.EXTRA_RESPONSE_DRIVE_ID);
-                    googleDrive.setResult(id);
+                    //googleDrive.setResult(id);
                 } else
-                    googleDrive.setException(new GoogleDriveUnableToOpenFileException(
-                            "Unable to open file"));
+                    /*googleDrive.setException(new GoogleDriveUnableToOpenFileException(
+                            "Unable to open file"));*/
                 break;
             default:
                 Log.e(TAG, "Result for activity no contemplated. RequestCode: " + requestCode +
