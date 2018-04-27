@@ -70,22 +70,23 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                             .hashString(this.firstPasswordEntry.getText().toString(),
                                     StandardCharsets.UTF_8).toString();
                     io.storePassword(passwordWithHashApplied);
-                    Intent googleDriveLauncher = new Intent(this, DriveContent.class);
+                    /*Intent googleDriveLauncher = new Intent(this, DriveContent.class);
                     startActivity(googleDriveLauncher);
-                    savingPasswordProgress.dismiss();
-                    finish();
-                    /*DatabaseManager manager = DatabaseManager
+                    savingPasswordProgress.dismiss();*/
+                    //finish();
+                    // This will try to create a DB
+                    DatabaseManager manager = DatabaseManager
                             .newInstance(this, passwordWithHashApplied);
                     Thread databaseThread = manager.getDatabaseInitializer();
                     try {
                         databaseThread.join();
-                        ISharedPreferencesManager preferencesManager = SharedPreferencesManager
+                        /*ISharedPreferencesManager preferencesManager = SharedPreferencesManager
                                 .newInstance();
-                        preferencesManager.databaseInitialized(true);
+                        preferencesManager.databaseInitialized(true);*/
                         savingPasswordProgress.dismiss();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }*/
+                    }
                 }
                 else
                     Toast.makeText(v.getContext(), R.string.passwords_does_not_match,

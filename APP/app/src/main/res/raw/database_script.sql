@@ -1,27 +1,23 @@
 -- -----------------------------------------------------
 -- Schema securepassdb
 -- -----------------------------------------------------
-
+-- SCHEMAS ARE NOT ALLOWED ON SQLite
 -- -----------------------------------------------------
--- Schema securepassdb
--- -----------------------------------------------------
--- CREATE SCHEMA IF NOT EXISTS `securepassdb` DEFAULT CHARACTER SET utf8 ;
--- USE `securepassdb` ;
 
 -- -----------------------------------------------------
 -- Table `securepassdb`.`Category`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `securepassdb`.`Category` (
-  `idCategory` INT NOT NULL DEFAULT 0,
+CREATE TABLE IF NOT EXISTS `Category` (
+  `idCategory` INT NOT NULL DEFAULT 0, -- NO SENSE - MUST BE AUTOINCREMENT
   `name` VARCHAR(45) NULL,
-  PRIMARY KEY (`idCategory`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`idCategory`));
+-- ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `securepassdb`.`Entry`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `securepassdb`.`Entry` (
+CREATE TABLE IF NOT EXISTS `Entry` (
   `idEntry` INT NOT NULL AUTO_INCREMENT,
   `account` VARCHAR(180) NOT NULL,
   `password` VARCHAR(180) NOT NULL,
@@ -32,16 +28,16 @@ CREATE TABLE IF NOT EXISTS `securepassdb`.`Entry` (
   INDEX `fk_Entry_Category1_idx` (`cidCategory` ASC),
   CONSTRAINT `fk_Entry_Category1`
     FOREIGN KEY (`cidCategory`)
-    REFERENCES `securepassdb`.`Category` (`idCategory`)
+    REFERENCES `Category` (`idCategory`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+    ON UPDATE CASCADE);
+-- ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `securepassdb`.`QRCode`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `securepassdb`.`QRCode` (
+CREATE TABLE IF NOT EXISTS `QRCode` (
   `idQRCode` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(180) NULL,
@@ -51,26 +47,26 @@ CREATE TABLE IF NOT EXISTS `securepassdb`.`QRCode` (
   INDEX `fk_QRCode_Entry1_idx` (`fidEntry` ASC),
   CONSTRAINT `fk_QRCode_Entry1`
     FOREIGN KEY (`fidEntry`)
-    REFERENCES `securepassdb`.`Entry` (`idEntry`)
+    REFERENCES `Entry` (`idEntry`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION);
+-- ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `securepassdb`.`SecurityCodes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `securepassdb`.`SecurityCodes` (
+CREATE TABLE IF NOT EXISTS `SecurityCodes` (
   `idSecurityCodes` INT NOT NULL AUTO_INCREMENT,
   `accountName` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idSecurityCodes`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`idSecurityCodes`));
+-- ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `securepassdb`.`Fields`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `securepassdb`.`Fields` (
+CREATE TABLE IF NOT EXISTS `Fields` (
   `idField` INT NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(180) NOT NULL,
   `used` TINYINT NOT NULL DEFAULT 0,
@@ -79,10 +75,10 @@ CREATE TABLE IF NOT EXISTS `securepassdb`.`Fields` (
   INDEX `fk_Fields_SecurityCodes1_idx` (`fidSecurityCodes` ASC),
   CONSTRAINT `fk_Fields_SecurityCodes1`
     FOREIGN KEY (`fidSecurityCodes`)
-    REFERENCES `securepassdb`.`SecurityCodes` (`idSecurityCodes`)
+    REFERENCES `SecurityCodes` (`idSecurityCodes`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION);
+-- ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

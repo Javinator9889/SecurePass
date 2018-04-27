@@ -29,11 +29,11 @@ import javinator9889.securepass.util.cipher.PasswordSaver;
 public class IOManager {
     private Context activityContext;
     private InputStream sqlScriptInputFile;
-    private File filesDir;
+    private File filesCache;
 
     private IOManager(@NonNull Context activityContext) {
         this.activityContext = activityContext;
-        this.filesDir = activityContext.getFilesDir();
+        this.filesCache = activityContext.getCacheDir();
         int sqlScript = R.raw.database_script;
         this.sqlScriptInputFile = activityContext.getResources().openRawResource(sqlScript);
     }
@@ -65,7 +65,7 @@ public class IOManager {
     }
 
     public void writeDownloadedClass(@NonNull InputStream from) {
-        String filename = filesDir.getAbsolutePath() + "/class.bck";
+        String filename = filesCache.getAbsolutePath() + "/class.bck";
         try {
             OutputStream to = new FileOutputStream(filename);
             IOUtils.copyStream(from, to);
@@ -76,7 +76,7 @@ public class IOManager {
     }
 
     public InputStream readDownloadedClass() {
-        String filename = filesDir.getAbsolutePath() + "/class.bck";
+        String filename = filesCache.getAbsolutePath() + "/class.bck";
         try {
             return new FileInputStream(filename);
         } catch (FileNotFoundException e) {
@@ -86,7 +86,7 @@ public class IOManager {
     }
 
     public void deleteDownloadedClass() {
-        String filename = filesDir.getAbsolutePath() + "/class.bck";
+        String filename = filesCache.getAbsolutePath() + "/class.bck";
 
         File fileToDelete = new File(filename);
         if (!fileToDelete.delete())

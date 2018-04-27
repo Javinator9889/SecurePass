@@ -51,7 +51,6 @@ public class DatabaseManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //tempDatabaseFile.mkdirs();
                 SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(
                         tempDatabaseFile,
                         databasePassword,
