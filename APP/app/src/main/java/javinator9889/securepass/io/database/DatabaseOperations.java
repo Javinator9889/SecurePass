@@ -39,7 +39,7 @@ public class DatabaseOperations {
         return new DatabaseOperations(databaseManagerInstance);
     }
 
-    public void registerNewAccount(@NonNull String accountName, @NonNull String accountPassword,
+    public long registerNewAccount(@NonNull String accountName, @NonNull String accountPassword,
                                    @NonNull String icon, @Nullable String description,
                                    @NonNull Category entryCategory) {
         /*Object[] params = new Object[]{
@@ -55,7 +55,7 @@ public class DatabaseOperations {
         params.put("icon", icon);
         params.put("description", description);
         params.put("cidCategory", entryCategory.getId());
-        database.insert("Entry", null, params);
+        return database.insert("Entry", null, params);
         //database.execSQL(SQL.DB_NEW_ENTRY, params);
     }
 
