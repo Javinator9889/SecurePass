@@ -13,13 +13,13 @@ public class Constants {
         public static String DB_FILENAME = "SecurePass.db";
         public static String DB_INIT_THREAD_NAME = "DB Initializer";
         public static String DB_DEFAULT_CATEGORY = "INSERT IF NOT EXISTS INTO " +
-                "Category(name) VALUE ?";
+                "Category(name) VALUES (?)";
 
         // INSERT SQL OPERATIONS
         public static String DB_NEW_ENTRY = "INSERT INTO Entry VALUES(?, ?, ?, ?, ?)";
-        public static String DB_NEW_CATEGORY = "INSERT INTO Category VALUE(?)";
+        public static String DB_NEW_CATEGORY = "INSERT INTO Category VALUES (?)";
         public static String DB_NEW_QR = "INSERT INTO QRCode VALUES (?, ?, ?, ?)";
-        public static String DB_NEW_SECURITY_CODE = "INSERT INTO SecurityCodes VALUE (?)";
+        public static String DB_NEW_SECURITY_CODE = "INSERT INTO SecurityCodes VALUES (?)";
         public static String DB_NEW_FIELD = "INSERT INTO Fields VALUES (?, ?, ?)";
 
         //DELETE SQL OPERATIONS

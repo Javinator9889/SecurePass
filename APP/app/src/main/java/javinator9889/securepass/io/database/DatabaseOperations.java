@@ -1,5 +1,6 @@
 package javinator9889.securepass.io.database;
 
+import android.content.ContentValues;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -41,14 +42,21 @@ public class DatabaseOperations {
     public void registerNewAccount(@NonNull String accountName, @NonNull String accountPassword,
                                    @NonNull String icon, @Nullable String description,
                                    @NonNull Category entryCategory) {
-        Object[] params = new Object[]{
+        /*Object[] params = new Object[]{
                 accountName,
                 accountPassword,
                 icon,
                 description,
                 entryCategory.getId()
-        };
-        database.execSQL(SQL.DB_NEW_ENTRY, params);
+        };*/
+        ContentValues params = new ContentValues();
+        params.put("account", accountName);
+        params.put("password", accountPassword);
+        params.put("icon", icon);
+        params.put("description", description);
+        params.put("cidCategory", entryCategory.getId());
+        database.insert("Entry", null, params);
+        //database.execSQL(SQL.DB_NEW_ENTRY, params);
     }
 
     public void registerNewCategory(@NonNull String name) {
