@@ -8,7 +8,7 @@
 -- Table `securepassdb`.`Category`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Category` (
-  `idCategory` INT NOT NULL DEFAULT 0, -- NO SENSE - MUST BE AUTOINCREMENT
+  `idCategory` INT NOT NULL DEFAULT 0,
   `name` VARCHAR(45) NULL,
   PRIMARY KEY (`idCategory`));
 -- ENGINE = InnoDB;

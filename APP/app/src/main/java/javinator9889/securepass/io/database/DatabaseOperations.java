@@ -39,6 +39,12 @@ public class DatabaseOperations {
         return new DatabaseOperations(databaseManagerInstance);
     }
 
+    public long registerDefaultCategory() {
+        ContentValues params = new ContentValues();
+        params.put("name", "Global");
+        return database.insert("Category", null, params);
+    }
+
     public long registerNewAccount(@NonNull String accountName, @NonNull String accountPassword,
                                    @NonNull String icon, @Nullable String description,
                                    @NonNull Category entryCategory) {
