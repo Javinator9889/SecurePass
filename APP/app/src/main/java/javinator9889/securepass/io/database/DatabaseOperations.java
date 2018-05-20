@@ -13,10 +13,10 @@ import java.util.List;
 
 import javinator9889.securepass.data.entry.Category;
 import javinator9889.securepass.data.entry.Entry;
-import javinator9889.securepass.data.entry.QRCode;
 import javinator9889.securepass.data.secret.Field;
 import javinator9889.securepass.data.secret.SecurityCode;
 import javinator9889.securepass.util.values.Constants.SQL;
+import javinator9889.securepass.util.values.DatabaseTables;
 
 /**
  * Created by Javinator9889 on 29/03/2018.
@@ -40,136 +40,123 @@ public class DatabaseOperations {
     }
 
     public long registerDefaultCategory() {
-        ContentValues params = new ContentValues();
-        params.put("name", "Global");
-        return database.insert("Category", null, params);
+        ContentValues params = setParams(DatabaseTables.CATEGORY, "Global");
+        return database.insert(SQL.CATEGORY.NAME, null, params);
     }
 
     public long registerNewAccount(@NonNull String accountName, @NonNull String accountPassword,
                                    @NonNull String icon, @Nullable String description,
                                    @NonNull Category entryCategory) {
-        /*Object[] params = new Object[]{
+        ContentValues params = setParams(DatabaseTables.ENTRY, accountName, accountPassword, icon,
+                description, entryCategory.getId());
+        return database.insert(SQL.ENTRY.NAME, null, params);
+    }
+
+    public long registerNewCategory(@NonNull String name) {
+        ContentValues params = setParams(DatabaseTables.CATEGORY, name);
+        return database.insert(SQL.CATEGORY.NAME, null, params);
+    }
+
+    public long registerQRCode(@NonNull Entry sourceEntry, @NonNull String name,
+                               @Nullable String description, @NonNull String qrData) {
+        ContentValues params = setParams(DatabaseTables.QR_CODE, name, description, qrData,
+                sourceEntry.getId());
+        return database.insert(SQL.QR_CODE.NAME, null, params);
+    }
+
+    public long registerNewSecurityCodeSource(@NonNull SecurityCode securityCodeSource) {
+        ContentValues params = setParams(DatabaseTables.SECURITY_CODE,
+                securityCodeSource.getAccountName());
+        return database.insert(SQL.SECURITY_CODE.NAME, null, params);
+    }
+
+    public long registerNewFieldForSecurityCodeSource(@NonNull Field newField) {
+        ContentValues params = setParams(DatabaseTables.FIELD,
+                newField.getCode(), newField.isCodeUsed(), newField.getSecurityCodeID());
+        return database.insert(SQL.FIELD.NAME, null, params);
+    }
+
+    public void deleteAccount(int accountID) {
+        String[] selectionArgs = setSelectionArgs(accountID);
+        database.delete(SQL.ENTRY.NAME, SQL.DB_DELETE_ENTRY_WHERE_CLAUSE, selectionArgs);
+    }
+
+    public void deleteCategory(int categoryID) {
+        String[] selectionArgs = setSelectionArgs(categoryID);
+        ContentValues entryUpdatedValues = new ContentValues();
+        entryUpdatedValues.put(SQL.ENTRY.E_PARENT_CATEGORY, 0);
+        database.update(
+                SQL.ENTRY.NAME, entryUpdatedValues,
+                SQL.DB_UPDATE_FOR_DELETED_CATEGORY_WHERE_CLAUSE,
+                selectionArgs);
+        database.delete(SQL.CATEGORY.NAME, SQL.DB_DELETE_CATEGORY_WHERE_CLAUSE, selectionArgs);
+    }
+
+    public void deleteQRCode(int qrID) {
+        String[] selectionArgs = setSelectionArgs(qrID);
+        database.delete(SQL.QR_CODE.NAME, SQL.DB_DELETE_QR_CODE_WHERE_CLAUSE, selectionArgs);
+    }
+
+    public void deleteSecurityCode(int securityCodeID) {
+        String[] selectionArgs = setSelectionArgs(securityCodeID);
+        database.delete(SQL.FIELD.NAME,
+                SQL.DB_DELETE_FIELD_FROM_SECURITY_CODE_WHERE_CLAUSE, selectionArgs);
+        database.delete(SQL.SECURITY_CODE.NAME, SQL.DB_DELETE_CATEGORY_WHERE_CLAUSE, selectionArgs);
+    }
+
+    public void deleteField(int fieldCodeID) {
+        String[] selectionArgs = setSelectionArgs(fieldCodeID);
+        database.delete(SQL.FIELD.NAME, SQL.DB_DELETE_FIELD_WHERE_CLAUSE, selectionArgs);
+    }
+
+    public void updateInformationForEntry(@NonNull String accountName,
+                                          @NonNull String accountPassword,
+                                          @NonNull String icon,
+                                          @Nullable String description,
+                                          @NonNull Category entryCategory,
+                                          int entryId) {
+        ContentValues params = setParams(DatabaseTables.ENTRY,
                 accountName,
                 accountPassword,
                 icon,
                 description,
-                entryCategory.getId()
-        };*/
-        ContentValues params = new ContentValues();
-        params.put("account", accountName);
-        params.put("password", accountPassword);
-        params.put("icon", icon);
-        params.put("description", description);
-        params.put("cidCategory", entryCategory.getId());
-        return database.insert("Entry", null, params);
-        //database.execSQL(SQL.DB_NEW_ENTRY, params);
+                entryCategory.getId());
+        String[] selectionArgs = setSelectionArgs(entryId);
+        database.update(SQL.ENTRY.NAME, params, SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE, selectionArgs);
     }
 
-    public void registerNewCategory(@NonNull String name) {
-        Object[] params = new Object[]{name};
-        database.execSQL(SQL.DB_NEW_CATEGORY, params);
+    public void updateInformationForCategory(@NonNull String categoryName, int categoryId) {
+        ContentValues params = setParams(DatabaseTables.CATEGORY, categoryName);
+        String[] selectionArgs = setSelectionArgs(categoryId);
+        database.update(SQL.CATEGORY.NAME, params, SQL.DB_UPDATE_CATEGORY_WHERE_CLAUSE,
+                selectionArgs);
     }
 
-    public void registerQRCode(@NonNull Entry sourceEntry, @NonNull String name,
-                               @Nullable String description, @NonNull String qrData) {
-        Object[] params = new Object[]{
-                name,
+    public void updateInformationForQRCode(@NonNull Entry sourceEntry, @NonNull String name,
+                                           @Nullable String description, @NonNull String qrData,
+                                           int qrCodeId) {
+        ContentValues params = setParams(DatabaseTables.QR_CODE, name,
                 description,
                 qrData,
-                sourceEntry.getId()
-        };
-        database.execSQL(SQL.DB_NEW_QR, params);
-    }
-
-    public void registerNewSecurityCodeSource(@NonNull SecurityCode securityCodeSource) {
-        Object[] params = new Object[]{
-                securityCodeSource.getAccountName()
-        };
-        database.execSQL(SQL.DB_NEW_SECURITY_CODE, params);
-    }
-
-    public void registerNewFieldForSecurityCodeSource(@NonNull Field newField) {
-        Object[] params = new Object[]{
-                newField.getCode(),
-                newField.isCodeUsed(),
-                newField.getSecurityCodeID()
-        };
-        database.execSQL(SQL.DB_NEW_FIELD, params);
-    }
-
-    public void deleteAccount(int accountID) {
-        Object[] params = new Object[]{accountID};
-        database.execSQL(SQL.DB_DELETE_ENTRY, params);
-    }
-
-    public void deleteCategory(int categoryID) {
-        Object[] params = new Object[]{categoryID};
-        database.execSQL(SQL.DB_UPDATE_FOR_DELETED_CATEGORY, params);
-        database.execSQL(SQL.DB_DELETE_CATEGORY, params);
-    }
-
-    public void deleteQRCode(int qrID) {
-        Object[] params = new Object[]{qrID};
-        database.execSQL(SQL.DB_DELETE_QR_CODE, params);
-    }
-
-    public void deleteSecurityCode(int securityCodeID) {
-        Object[] params = new Object[]{securityCodeID};
-        database.execSQL(SQL.DB_DELETE_FIELD_FROM_SECURITY_CODE, params);
-        database.execSQL(SQL.DB_DELETE_SECURITY_CODE, params);
-    }
-
-    public void deleteField(@NonNull String fieldCode) {
-        Object[] params = new Object[]{fieldCode};
-        database.execSQL(SQL.DB_DELETE_FIELD, params);
-    }
-
-    public void updateInformationForEntry(@NonNull Entry modifiedEntry) {
-        Object[] params = new Object[]{
-                modifiedEntry.getAccountName(),
-                modifiedEntry.getAccountPassword(),
-                modifiedEntry.getIcon(),
-                modifiedEntry.getDescription(),
-                modifiedEntry.getCategory().getId(),
-                modifiedEntry.getId()
-        };
-        database.execSQL(SQL.DB_UPDATE_ENTRY, params);
-    }
-
-    public void updateInformationForCategory(@NonNull Category modifiedCategory) {
-        Object[] params = new Object[]{
-                modifiedCategory.getName(),
-                modifiedCategory.getId()
-        };
-        database.execSQL(SQL.DB_UPDATE_CATEGORY, params);
-    }
-
-    public void updateInformationForQRCode(@NonNull QRCode modifiedQRCode) {
-        Object[] params = new Object[]{
-                modifiedQRCode.getName(),
-                modifiedQRCode.getDescription(),
-                modifiedQRCode.getQrData(),
-                modifiedQRCode.getEntry().getId(),
-                modifiedQRCode.getId()
-        };
-        database.execSQL(SQL.DB_UPDATE_QR_CODE, params);
+                sourceEntry.getId());
+        String[] selectionArgs = setSelectionArgs(qrCodeId);
+        database.update(SQL.QR_CODE.NAME, params, SQL.DB_UPDATE_QR_CODE_WHERE_CLAUSE,
+                selectionArgs);
     }
 
     public void updateInformationForSecurityCode(@NonNull SecurityCode modifiedSecurityCode) {
-        Object[] params = new Object[]{
-                modifiedSecurityCode.getAccountName(),
-                modifiedSecurityCode.getId()
-        };
-        database.execSQL(SQL.DB_UPDATE_SECURITY_CODE, params);
+        ContentValues params = setParams(DatabaseTables.SECURITY_CODE,
+                modifiedSecurityCode.getAccountName());
+        String[] selectionArgs = setSelectionArgs(modifiedSecurityCode.getId());
+        database.update(SQL.SECURITY_CODE.NAME, params, SQL.DB_UPDATE_SECURITY_CODE_WHERE_CLAUSE,
+                selectionArgs);
     }
 
     public void updateInformationForField(@NonNull Field modifiedField) {
-        Object[] params = new Object[]{
-                modifiedField.getCode(),
-                modifiedField.isCodeUsed(),
-                modifiedField.getId()
-        };
-        database.execSQL(SQL.DB_UPDATE_FIELD, params);
+        ContentValues params = setParams(DatabaseTables.FIELD, modifiedField.getCode(),
+                modifiedField.isCodeUsed());
+        String[] selectionArgs = setSelectionArgs(modifiedField.getId());
+        database.update(SQL.FIELD.NAME, params, SQL.DB_UPDATE_FIELD_WHERE_CLAUSE, selectionArgs);
     }
 
     private String[] loadDataIntoArray(Cursor sourceData) {
@@ -189,7 +176,14 @@ public class DatabaseOperations {
     }
 
     public List<String[]> getAllCategories() {
-        Cursor categoriesCursor = database.rawQuery(SQL.DB_SELECT_CATEGORIES, null);
+        String sortOrder = SQL.CATEGORY.C_ID + " DESC";
+        Cursor categoriesCursor = database.query(SQL.CATEGORY.NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                sortOrder);
         List<String[]> categoriesList = new ArrayList<>();
         if (categoriesCursor.moveToFirst()) {
             do {
@@ -201,7 +195,14 @@ public class DatabaseOperations {
     }
 
     public List<String[]> getAllEntries() {
-        Cursor entriesCursor = database.rawQuery(SQL.DB_SELECT_ENTRIES, null);
+        String sortOrder = SQL.ENTRY.E_ID + " DESC";
+        Cursor entriesCursor = database.query(SQL.ENTRY.NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                sortOrder);
         List<String[]> entriesList = new ArrayList<>();
         if (entriesCursor.moveToFirst()) {
             do {
@@ -213,7 +214,14 @@ public class DatabaseOperations {
     }
 
     public List<String[]> getAllQRCodes() {
-        Cursor qrCodesCursor = database.rawQuery(SQL.DB_SELECT_QR_CODES, null);
+        String sortOrder = SQL.QR_CODE.Q_ID + " DESC";
+        Cursor qrCodesCursor = database.query(SQL.QR_CODE.NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                sortOrder);
         List<String[]> qrCodesList = new ArrayList<>();
         if (qrCodesCursor.moveToFirst()) {
             do {
@@ -225,7 +233,14 @@ public class DatabaseOperations {
     }
 
     public List<String[]> getAllSecurityCodes() {
-        Cursor securityCodesCursor = database.rawQuery(SQL.DB_SELECT_SECURITY_CODES, null);
+        String sortOrder = SQL.SECURITY_CODE.S_ID + " DESC";
+        Cursor securityCodesCursor = database.query(SQL.SECURITY_CODE.NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                sortOrder);
         List<String[]> securityCodesList = new ArrayList<>();
         if (securityCodesCursor.moveToFirst()) {
             do {
@@ -237,7 +252,14 @@ public class DatabaseOperations {
     }
 
     public List<String[]> getAllFields() {
-        Cursor fieldsCursor = database.rawQuery(SQL.DB_SELECT_FIELDS, null);
+        String sortOrder = SQL.FIELD.F_ID + " DESC";
+        Cursor fieldsCursor = database.query(SQL.FIELD.NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                sortOrder);
         List<String[]> fieldsList = new ArrayList<>();
         if (fieldsCursor.moveToFirst()) {
             do {
@@ -250,5 +272,40 @@ public class DatabaseOperations {
 
     public void finishConnection() {
         database.close();
+    }
+
+    private ContentValues setParams(DatabaseTables table, Object... values) {
+        ContentValues params = new ContentValues();
+        switch (table) {
+            case CATEGORY:
+                params.put(SQL.CATEGORY.C_NAME, (String) values[0]);
+                break;
+            case ENTRY:
+                params.put(SQL.ENTRY.E_ACCOUNT, (String) values[0]);
+                params.put(SQL.ENTRY.E_PASSWORD, (String) values[1]);
+                params.put(SQL.ENTRY.E_ICON, (String) values[2]);
+                params.put(SQL.ENTRY.E_DESCRIPTION, (String) values[3]);
+                params.put(SQL.ENTRY.E_PARENT_CATEGORY, (int) values[4]);
+                break;
+            case QR_CODE:
+                params.put(SQL.QR_CODE.NAME, (String) values[0]);
+                params.put(SQL.QR_CODE.Q_DESCRIPTION, (String) values[1]);
+                params.put(SQL.QR_CODE.Q_DATA, (String) values[3]);
+                params.put(SQL.QR_CODE.Q_PARENT_ENTRY, (int) values[4]);
+                break;
+            case SECURITY_CODE:
+                params.put(SQL.SECURITY_CODE.S_ACCOUNT_NAME, (String) values[0]);
+                break;
+            case FIELD:
+                params.put(SQL.FIELD.F_CODE, (String) values[0]);
+                params.put(SQL.FIELD.F_USED, (boolean) values[1]);
+                params.put(SQL.FIELD.F_PARENT_SECURITY_CODE, (int) values[3]);
+                break;
+        }
+        return params;
+    }
+
+    private String[] setSelectionArgs(int id) {
+        return new String[]{String.valueOf(id)};
     }
 }
