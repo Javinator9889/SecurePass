@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javinator9889.securepass.R;
 import javinator9889.securepass.util.cipher.PasswordCipher;
@@ -28,14 +30,11 @@ import javinator9889.securepass.util.cipher.PasswordSaver;
 
 public class IOManager {
     private Context activityContext;
-    private InputStream sqlScriptInputFile;
     private File filesCache;
 
     private IOManager(@NonNull Context activityContext) {
         this.activityContext = activityContext;
         this.filesCache = activityContext.getCacheDir();
-        int sqlScript = R.raw.database_script;
-        this.sqlScriptInputFile = activityContext.getResources().openRawResource(sqlScript);
     }
 
     @NonNull
@@ -43,14 +42,22 @@ public class IOManager {
         return new IOManager(activityContext);
     }
 
-    public String loadSQLScript() throws IOException {
-        BufferedReader sqlStringsInFile = new BufferedReader(
-                new InputStreamReader(sqlScriptInputFile));
-        StringBuilder completeFileRead = new StringBuilder();
-        String currentLine;
-        while ((currentLine = sqlStringsInFile.readLine()) != null)
-            completeFileRead.append(currentLine).append("\n");
-        return completeFileRead.toString();
+    public List<String> loadSQLScript() throws IOException {
+        List<String> result = new ArrayList<>(5);
+        int[] sqlScripts = new int[]{R.raw.create_category, R.raw.create_entry, R.raw.create_qrcode,
+                R.raw.create_security_code, R.raw.create_field};
+        for (int sqlScript : sqlScripts) {
+            InputStream sqlScriptInputFile = this.activityContext.getResources()
+                    .openRawResource(sqlScript);
+            StringBuilder builder = new StringBuilder();
+            BufferedReader sqlStringsInFile = new BufferedReader(
+                    new InputStreamReader(sqlScriptInputFile));
+            String currentLine;
+            while ((currentLine = sqlStringsInFile.readLine()) != null)
+                builder.append(currentLine).append("\n");
+            result.add(builder.toString());
+        }
+        return result;
     }
 
     public void storePassword(@NonNull String userPassword) {

@@ -8,6 +8,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
@@ -56,13 +57,15 @@ public class DatabaseManager {
                         databaseFile,
                         databasePassword,
                         null);
-                String databaseScript;
+                List<String> databaseScripts;
                 ISharedPreferencesManager preferencesManager = SharedPreferencesManager
                         .newInstance();
                 try {
                     if (!preferencesManager.isDatabaseInitialized()) {
-                        databaseScript = IOManager.newInstance(databaseContext).loadSQLScript();
-                        database.execSQL(databaseScript);
+                        databaseScripts = IOManager.newInstance(databaseContext).loadSQLScript();
+                        for (String script : databaseScripts) {
+                            database.execSQL(script);
+                        }
                         DatabaseManager.this.createDefaultCategory();
                     }
                 } catch (IOException e) {

@@ -74,15 +74,11 @@ public class Constants {
         // UPDATE SQL OPERATIONS
         public static String DB_UPDATE_FOR_DELETED_CATEGORY_WHERE_CLAUSE = "Entry.cidCategory = ?";
         public static String DB_UPDATE_ENTRY_WHERE_CLAUSE = "Entry.idEntry = ?";
-        public static String DB_UPDATE_CATEGORY_WHERE_CLAUSE = "UPDATE Category SET Category.name = ? WHERE" +
-                " Category.idCategory = ?";
-        public static String DB_UPDATE_QR_CODE_WHERE_CLAUSE = "UPDATE QRCode SET QRCode.name = ?," +
-                " QRCode.description = ?, QRCode.data = ?, QRCode.fidEntry = ? " +
-                "WHERE QRCode.idQRCode = ?";
-        public static String DB_UPDATE_SECURITY_CODE_WHERE_CLAUSE = "UPDATE SecurityCodes " +
-                "SET SecurityCodes.accountName = ? WHERE SecurityCodes.idSecurityCodes = ?";
-        public static String DB_UPDATE_FIELD_WHERE_CLAUSE = "UPDATE Fields SET Fields.code = ?, " +
-                "Fields.used = ? WHERE Fields.idField = ?";
+        public static String DB_UPDATE_CATEGORY_WHERE_CLAUSE = "Category.idCategory = ?";
+        public static String DB_UPDATE_QR_CODE_WHERE_CLAUSE = "QRCode.idQRCode = ?";
+        public static String DB_UPDATE_SECURITY_CODE_WHERE_CLAUSE =
+                "SecurityCodes.idSecurityCodes = ?";
+        public static String DB_UPDATE_FIELD_WHERE_CLAUSE = "Fields.idField = ?";
 
         // SELECT SQL OPERATIONS
         public static String DB_SELECT_CATEGORIES = "SELECT * FROM Categories";
