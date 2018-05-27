@@ -8,6 +8,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
@@ -45,31 +46,32 @@ public class DatabaseManager {
             @Override
             public void run() {
                 SQLiteDatabase.loadLibs(databaseContext);
-                File tempDatabaseFile = databaseContext.getDatabasePath(Constants.SQL.DB_FILENAME);
+                databaseFile = databaseContext
+                        .getDatabasePath(Constants.SQL.DB_FILENAME);
                 try {
-                    tempDatabaseFile.createNewFile();
+                    databaseFile.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //tempDatabaseFile.mkdirs();
                 SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(
-                        tempDatabaseFile,
+                        databaseFile,
                         databasePassword,
                         null);
-                String databaseScript;
+                List<String> databaseScripts;
                 ISharedPreferencesManager preferencesManager = SharedPreferencesManager
                         .newInstance();
                 try {
                     if (!preferencesManager.isDatabaseInitialized()) {
-                        databaseScript = IOManager.newInstance(databaseContext).loadSQLScript();
-                        database.execSQL(databaseScript);
-                        database.execSQL(Constants.SQL.DB_DEFAULT_CATEGORY, new Object[]{"Global"});
+                        databaseScripts = IOManager.newInstance(databaseContext).loadSQLScript();
+                        for (String script : databaseScripts) {
+                            database.execSQL(script);
+                        }
+                        DatabaseManager.this.createDefaultCategory();
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e.getCause());
                 } finally {
                     database.close();
-                    DatabaseManager.this.databaseFile = tempDatabaseFile;
                 }
             }
         });
@@ -88,12 +90,18 @@ public class DatabaseManager {
     }
 
     private class ThreadExceptionHandler implements Thread.UncaughtExceptionHandler {
-
         @Override
         public void uncaughtException(Thread t, Throwable e) {
             Log.e(t.getName(), "Exception in thread \"" + t.getName() + "\" with " +
                     "exception thrown -> " + e.getMessage() + "\nFull trace: ");
             e.printStackTrace();
         }
+    }
+
+    private void createDefaultCategory() {
+        DatabaseOperations operations = DatabaseOperations.newInstance(this);
+        long id = operations.registerDefaultCategory();
+        Log.d("DB", "Category ID: " + id);
+        operations.finishConnection();
     }
 }

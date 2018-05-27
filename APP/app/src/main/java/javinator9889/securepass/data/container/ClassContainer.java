@@ -81,17 +81,18 @@ public class ClassContainer implements Serializable {
                     entry.getAccountPassword(),
                     entry.getIcon(),
                     entry.getDescription(),
-                    entry.getCategory());
+                    entry.getCategory().getId());
         for (QRCode qrCode : qrCodes)
             operations.registerQRCode(
-                    qrCode.getEntry(),
+                    qrCode.getEntry().getId(),
                     qrCode.getName(),
                     qrCode.getDescription(),
                     qrCode.getQrData());
         for (SecurityCode code : securityCodes)
-            operations.registerNewSecurityCodeSource(code);
+            operations.registerNewSecurityCodeSource(code.getAccountName());
         for (Field field : fields)
-            operations.registerNewFieldForSecurityCodeSource(field);
+            operations.registerNewFieldForSecurityCodeSource(field.getCode(), field.isCodeUsed(),
+                    field.getSecurityCodeID());
         operations.finishConnection();
     }
 
