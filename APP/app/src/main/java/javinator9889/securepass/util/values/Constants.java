@@ -12,41 +12,73 @@ public class Constants {
     public static final class SQL {
         public static String DB_FILENAME = "SecurePass.db";
         public static String DB_INIT_THREAD_NAME = "DB Initializer";
-        public static String DB_DEFAULT_CATEGORY = "INSERT IF NOT EXISTS INTO Category VALUE ?";
+        public static String DB_DEFAULT_CATEGORY = "INSERT IF NOT EXISTS INTO " +
+                "Category(name) VALUES (?)";
 
         // INSERT SQL OPERATIONS
+        public static final class CATEGORY {
+            public static String NAME = "Category";
+            public static String C_ID = "idCategory";
+            public static String C_NAME = "name";
+        }
+
+        public static final class ENTRY {
+            public static final String NAME = "Entry";
+            public static final String E_ID = "idEntry";
+            public static final String E_ACCOUNT = "account";
+            public static final String E_PASSWORD = "password";
+            public static final String E_ICON = "icon";
+            public static final String E_DESCRIPTION = "description";
+            public static final String E_PARENT_CATEGORY = "cidCategory";
+        }
+
+        public static final class QR_CODE {
+            public static final String NAME = "QRCode";
+            public static final String Q_ID = "idQRCode";
+            public static final String Q_NAME = "name";
+            public static final String Q_DESCRIPTION = "description";
+            public static final String Q_DATA = "data";
+            public static final String Q_PARENT_ENTRY = "fidEntry";
+        }
+
+        public static final class SECURITY_CODE {
+            public static final String NAME = "SecurityCodes";
+            public static final String S_ID = "idSecurityCodes";
+            public static final String S_ACCOUNT_NAME = "accountName";
+        }
+
+        public static final class FIELD {
+            public static final String NAME = "Fields";
+            public static final String F_ID = "idField";
+            public static final String F_CODE = "code";
+            public static final String F_USED = "used";
+            public static final String F_PARENT_SECURITY_CODE = "fidSecurityCodes";
+        }
+
         public static String DB_NEW_ENTRY = "INSERT INTO Entry VALUES(?, ?, ?, ?, ?)";
-        public static String DB_NEW_CATEGORY = "INSERT INTO Category VALUE(?)";
+        public static String DB_NEW_CATEGORY = "INSERT INTO Category VALUES (?)";
         public static String DB_NEW_QR = "INSERT INTO QRCode VALUES (?, ?, ?, ?)";
-        public static String DB_NEW_SECURITY_CODE = "INSERT INTO SecurityCodes VALUE (?)";
+        public static String DB_NEW_SECURITY_CODE = "INSERT INTO SecurityCodes VALUES (?)";
         public static String DB_NEW_FIELD = "INSERT INTO Fields VALUES (?, ?, ?)";
 
         //DELETE SQL OPERATIONS
-        public static String DB_DELETE_ENTRY = "DELETE FROM Entry WHERE Entry.idEntry = ?";
-        public static String DB_DELETE_CATEGORY =
-                "DELETE FROM Category WHERE Category.idCategory = ?";
-        public static String DB_DELETE_QR_CODE = "DELETE FROM QRCode WHERE QRCode.idQRCode = ?";
-        public static String DB_DELETE_FIELD_FROM_SECURITY_CODE = "DELETE FROM Fields WHERE " +
+        public static String DB_DELETE_ENTRY_WHERE_CLAUSE = "Entry.idEntry = ?";
+        public static String DB_DELETE_CATEGORY_WHERE_CLAUSE = "Category.idCategory = ?";
+        public static String DB_DELETE_QR_CODE_WHERE_CLAUSE = "QRCode.idQRCode = ?";
+        public static String DB_DELETE_FIELD_FROM_SECURITY_CODE_WHERE_CLAUSE =
                 "Fields.fidSecurityCodes = ?";
-        public static String DB_DELETE_SECURITY_CODE = "DELETE FROM SecurityCodes " +
-                "WHERE SecurityCodes.idSecurityCodes = ?";
-        public static String DB_DELETE_FIELD = "DELETE FROM Fields WHERE Fields.idField = ?";
+        public static String DB_DELETE_SECURITY_CODE_WHERE_CLAUSE =
+                "SecurityCodes.idSecurityCodes = ?";
+        public static String DB_DELETE_FIELD_WHERE_CLAUSE = "Fields.idField = ?";
 
         // UPDATE SQL OPERATIONS
-        public static String DB_UPDATE_FOR_DELETED_CATEGORY = "UPDATE Entry SET " +
-                "Entry.cidCategory = 0 WHERE Entry.cidCategory = ?";
-        public static String DB_UPDATE_ENTRY = "UPDATE Entry SET Entry.account = ?," +
-                " Entry.password = ?, Entry.icon = ?, Entry.description = ?, " +
-                "Entry.cidCategory = ? WHERE Entry.idEntry = ?";
-        public static String DB_UPDATE_CATEGORY = "UPDATE Category SET Category.name = ? WHERE" +
-                " Category.idCategory = ?";
-        public static String DB_UPDATE_QR_CODE = "UPDATE QRCode SET QRCode.name = ?," +
-                " QRCode.description = ?, QRCode.data = ?, QRCode.fidEntry = ? " +
-                "WHERE QRCode.idQRCode = ?";
-        public static String DB_UPDATE_SECURITY_CODE = "UPDATE SecurityCodes " +
-                "SET SecurityCodes.accountName = ? WHERE SecurityCodes.idSecurityCodes = ?";
-        public static String DB_UPDATE_FIELD = "UPDATE Fields SET Fields.code = ?, " +
-                "Fields.used = ? WHERE Fields.idField = ?";
+        public static String DB_UPDATE_FOR_DELETED_CATEGORY_WHERE_CLAUSE = "Entry.cidCategory = ?";
+        public static String DB_UPDATE_ENTRY_WHERE_CLAUSE = "Entry.idEntry = ?";
+        public static String DB_UPDATE_CATEGORY_WHERE_CLAUSE = "Category.idCategory = ?";
+        public static String DB_UPDATE_QR_CODE_WHERE_CLAUSE = "QRCode.idQRCode = ?";
+        public static String DB_UPDATE_SECURITY_CODE_WHERE_CLAUSE =
+                "SecurityCodes.idSecurityCodes = ?";
+        public static String DB_UPDATE_FIELD_WHERE_CLAUSE = "Fields.idField = ?";
 
         // SELECT SQL OPERATIONS
         public static String DB_SELECT_CATEGORIES = "SELECT * FROM Categories";
@@ -73,7 +105,7 @@ public class Constants {
     public static final class SHARED_PREF {
         public static final String FILENAME = "userPreferences";
         public static final int MODE = Context.MODE_PRIVATE;
-        public static final Object[][] VALUES = new Object[][] {
+        public static final Object[][] VALUES = new Object[][]{
                 {"isApplicationFirstExecuted", false, boolean.class},
                 {"isDatabaseInitialized", false, boolean.class}
         };

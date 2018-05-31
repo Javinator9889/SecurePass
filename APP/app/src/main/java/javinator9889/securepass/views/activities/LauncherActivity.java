@@ -17,6 +17,7 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ISharedPreferencesManager preferencesManager = SharedPreferencesManager.newInstance();
+        preferencesManager.databaseInitialized(false);
         if (!preferencesManager.isApplicationInitialized()) {
             Intent firstSetupLauncher = new Intent(this, FirstSetup.class);
             //Intent firstSetupLauncher = new Intent(this, DriveContent.class);
