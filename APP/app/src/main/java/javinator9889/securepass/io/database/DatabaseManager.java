@@ -46,20 +46,23 @@ public class DatabaseManager {
             @Override
             public void run() {
                 SQLiteDatabase.loadLibs(databaseContext);
+                ISharedPreferencesManager preferencesManager = SharedPreferencesManager
+                        .newInstance();
                 databaseFile = databaseContext
                         .getDatabasePath(Constants.SQL.DB_FILENAME);
-                try {
-                    databaseFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (!preferencesManager.isApplicationInitialized()) {
+                    try {
+                        databaseFile.delete();
+                        databaseFile.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(
                         databaseFile,
                         databasePassword,
                         null);
                 List<String> databaseScripts;
-                ISharedPreferencesManager preferencesManager = SharedPreferencesManager
-                        .newInstance();
                 try {
                     if (!preferencesManager.isDatabaseInitialized()) {
                         databaseScripts = IOManager.newInstance(databaseContext).loadSQLScript();

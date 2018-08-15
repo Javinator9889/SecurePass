@@ -80,9 +80,9 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                     Thread databaseThread = manager.getDatabaseInitializer();
                     try {
                         databaseThread.join();
-                        /*ISharedPreferencesManager preferencesManager = SharedPreferencesManager
+                        ISharedPreferencesManager preferencesManager = SharedPreferencesManager
                                 .newInstance();
-                        preferencesManager.databaseInitialized(true);*/
+                        preferencesManager.databaseInitialized(true);
                         savingPasswordProgress.dismiss();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
