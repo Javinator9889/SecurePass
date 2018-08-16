@@ -80,4 +80,12 @@ public class ObjectContainer<ObjectType> implements GeneralObjectContainer<Objec
     public boolean isAnyObjectStored() {
         return !mObjectsList.isEmpty();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder(mObjectsList.size());
+        for (ObjectType object : mObjectsList)
+            output.append(object.toString());
+        return output.toString();
+    }
 }
