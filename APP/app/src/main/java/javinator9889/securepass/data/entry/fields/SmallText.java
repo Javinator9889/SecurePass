@@ -8,11 +8,11 @@ import java.io.Serializable;
  * Created by Javinator9889 on 16/08/2018.
  */
 public class SmallText implements ISmallText, Serializable {
-    private int id;
+    private long id;
     private String text;
     private String fieldDescription;
 
-    public SmallText(int id, @NonNull String text, @NonNull String fieldDescription) {
+    public SmallText(long id, @NonNull String text, @NonNull String fieldDescription) {
         this.id = id;
         this.text = text;
         this.fieldDescription = fieldDescription;
@@ -29,8 +29,13 @@ public class SmallText implements ISmallText, Serializable {
     }
 
     @Override
-    public int getSmallTextID() {
+    public long getSmallTextID() {
         return id;
+    }
+
+    @Override
+    public void setSmallTextID(long smallTextID) {
+        this.id = smallTextID;
     }
 
     @Override

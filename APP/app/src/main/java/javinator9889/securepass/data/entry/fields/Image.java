@@ -10,10 +10,10 @@ import java.io.Serializable;
  */
 public class Image implements IImage, Serializable {
     private String source;
-    private int id;
+    private long id;
     private String fieldDescription;
 
-    public Image(int id, @NonNull String source, @NonNull String fieldDescription) {
+    public Image(long id, @NonNull String source, @NonNull String fieldDescription) {
         this.id = id;
         this.source = source;
         this.fieldDescription = fieldDescription;
@@ -29,8 +29,13 @@ public class Image implements IImage, Serializable {
     }
 
     @Override
-    public int getImageID() {
+    public long getImageID() {
         return id;
+    }
+
+    @Override
+    public void setImageID(long imageID) {
+        this.id = imageID;
     }
 
     @Override

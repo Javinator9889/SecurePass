@@ -8,5 +8,6 @@ import android.support.annotation.NonNull;
 public interface IPassword extends ICommonMethods {
     void setPassword(@NonNull String password);
     String getPassword();
-    int getPasswordID();
+    long getPasswordID();
+    void setPasswordID(long passwordID);
 }

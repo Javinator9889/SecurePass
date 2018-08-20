@@ -8,11 +8,11 @@ import java.io.Serializable;
  * Created by Javinator9889 on 16/08/2018.
  */
 public class Password implements IPassword, Serializable {
-    private int id;
+    private long id;
     private String password;
     private String fieldDescription;
 
-    public Password(int id, @NonNull String password, @NonNull String fieldDescription) {
+    public Password(long id, @NonNull String password, @NonNull String fieldDescription) {
         this.id = id;
         this.password = password;
         this.fieldDescription = fieldDescription;
@@ -29,8 +29,13 @@ public class Password implements IPassword, Serializable {
     }
 
     @Override
-    public int getPasswordID() {
+    public long getPasswordID() {
         return id;
+    }
+
+    @Override
+    public void setPasswordID(long passwordID) {
+        this.id = passwordID;
     }
 
     @Override

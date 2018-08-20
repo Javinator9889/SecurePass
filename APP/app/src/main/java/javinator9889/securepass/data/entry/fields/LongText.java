@@ -8,11 +8,11 @@ import java.io.Serializable;
  * Created by Javinator9889 on 16/08/2018.
  */
 public class LongText implements ILongText, Serializable {
-    private int id;
+    private long id;
     private String text;
     private String fieldDescription;
 
-    public LongText(int id, @NonNull String text, @NonNull String fieldDescription) {
+    public LongText(long id, @NonNull String text, @NonNull String fieldDescription) {
         this.id = id;
         this.text = text;
         this.fieldDescription = fieldDescription;
@@ -29,8 +29,13 @@ public class LongText implements ILongText, Serializable {
     }
 
     @Override
-    public int getLongTextID() {
+    public long getLongTextID() {
         return id;
+    }
+
+    @Override
+    public void setLongTextID(long longTextID) {
+        this.id = longTextID;
     }
 
     @Override

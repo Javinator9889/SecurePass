@@ -8,5 +8,6 @@ import android.support.annotation.NonNull;
 public interface ISmallText extends ICommonMethods {
     void setText(@NonNull String text);
     String getText();
-    int getSmallTextID();
+    long getSmallTextID();
+    void setSmallTextID(long smallTextID);
 }

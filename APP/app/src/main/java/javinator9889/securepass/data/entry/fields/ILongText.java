@@ -8,5 +8,6 @@ import android.support.annotation.NonNull;
 public interface ILongText extends ICommonMethods {
     void setText(@NonNull String text);
     String getText();
-    int getLongTextID();
+    long getLongTextID();
+    void setLongTextID(long longTextID);
 }

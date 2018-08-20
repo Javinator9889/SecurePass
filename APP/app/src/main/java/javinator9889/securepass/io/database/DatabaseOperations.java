@@ -13,6 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javinator9889.securepass.data.entry.fields.IImage;
+import javinator9889.securepass.data.entry.fields.ILongText;
+import javinator9889.securepass.data.entry.fields.IPassword;
+import javinator9889.securepass.data.entry.fields.ISmallText;
 import javinator9889.securepass.util.values.Constants.SQL;
 import javinator9889.securepass.util.values.DatabaseTables;
 
@@ -46,6 +50,58 @@ public class DatabaseOperations {
                 SQLiteDatabase.CONFLICT_IGNORE);
     }
 
+    public long registerNewEntry(@NonNull String entryName, @NonNull String icon,
+                                 long entryParentCategoryId,
+                                 @Nullable IPassword[] entryPasswords,
+                                 @Nullable ISmallText[] entrySmallTexts,
+                                 @Nullable ILongText[] entryLongTexts,
+                                 @Nullable IImage[] entryImages) {
+        ContentValues params = setParams(DatabaseTables.ENTRY, entryName, icon,
+                entryParentCategoryId);
+        long entryId = database.insert(SQL.ENTRY.NAME, null, params);
+        if (entryPasswords != null) {
+            for (IPassword password : entryPasswords) {
+                ContentValues passwordParams = setParams(DatabaseTables.PASSWORD,
+                        password.getPassword(), password.getFieldDescription(), entryId,
+                        entryParentCategoryId);
+                long passwordId =
+                        database.insert(SQL.PASSWORD.NAME, null, passwordParams);
+                password.setPasswordID(passwordId);
+            }
+        }
+        if (entrySmallTexts != null) {
+            for (ISmallText smallText : entrySmallTexts) {
+                ContentValues smallTextParams = setParams(DatabaseTables.SMALL_TEXT,
+                        smallText.getText(), smallText.getFieldDescription(), entryId,
+                        entryParentCategoryId);
+                long smallTextId =
+                        database.insert(SQL.SMALL_TEXT.NAME, null, smallTextParams);
+                smallText.setSmallTextID(smallTextId);
+            }
+        }
+        if (entryLongTexts != null) {
+            for (ILongText longText : entryLongTexts) {
+                ContentValues longTextParams = setParams(DatabaseTables.LONG_TEXT,
+                        longText.getText(), longText.getFieldDescription(), entryId,
+                        entryParentCategoryId);
+                long longTextId =
+                        database.insert(SQL.LONG_TEXT.NAME, null, longTextParams);
+                longText.setLongTextID(longTextId);
+            }
+        }
+        if (entryImages != null) {
+            for (IImage image : entryImages) {
+                ContentValues imageParams = setParams(DatabaseTables.IMAGE,
+                        image.getImageSource(), image.getFieldDescription(), entryId,
+                        entryParentCategoryId);
+                long imageId =
+                        database.insert(SQL.IMAGE.NAME, null, imageParams);
+                image.setImageID(imageId);
+            }
+        }
+        return entryId;
+    }
+    
     public long registerNewAccount(@NonNull String accountName, @NonNull String accountPassword,
                                    @NonNull String icon, @Nullable String description,
                                    long entryParentCategoryId) {
@@ -365,11 +421,11 @@ public class DatabaseOperations {
                 params.put(SQL.CATEGORY.C_NAME, (String) values[0]);
                 break;
             case ENTRY:
-                params.put(SQL.ENTRY.E_ACCOUNT, (String) values[0]);
-                params.put(SQL.ENTRY.E_PASSWORD, (String) values[1]);
-                params.put(SQL.ENTRY.E_ICON, (String) values[2]);
-                params.put(SQL.ENTRY.E_DESCRIPTION, (String) values[3]);
-                params.put(SQL.ENTRY.E_PARENT_CATEGORY, (long) values[4]);
+                params.put(SQL.ENTRY.E_NAME, (String) values[0]);
+//                params.put(SQL.ENTRY.E_PASSWORD, (String) values[1]);
+                params.put(SQL.ENTRY.E_ICON, (String) values[1]);
+//                params.put(SQL.ENTRY.E_DESCRIPTION, (String) values[3]);
+                params.put(SQL.ENTRY.E_PARENT_CATEGORY, (long) values[2]);
                 break;
             case QR_CODE:
                 params.put(SQL.QR_CODE.Q_NAME, (String) values[0]);
@@ -384,6 +440,30 @@ public class DatabaseOperations {
                 params.put(SQL.FIELD.F_CODE, (String) values[0]);
                 params.put(SQL.FIELD.F_USED, (boolean) values[1]);
                 params.put(SQL.FIELD.F_PARENT_SECURITY_CODE, (long) values[2]);
+                break;
+            case PASSWORD:
+                params.put(SQL.PASSWORD.P_PASSWORD, (String) values[0]);
+                params.put(SQL.PASSWORD.P_DESCRIPTION, (String) values[1]);
+                params.put(SQL.PASSWORD.P_PARENT_ENTRY, (long) values[2]);
+                params.put(SQL.PASSWORD.P_PARENT_CATEGORY, (long) values[3]);
+                break;
+            case IMAGE:
+                params.put(SQL.IMAGE.I_SOURCE, (String) values[0]);
+                params.put(SQL.IMAGE.I_DESCRIPTION, (String) values[1]);
+                params.put(SQL.IMAGE.I_PARENT_ENTRY, (long) values[2]);
+                params.put(SQL.IMAGE.I_PARENT_CATEGORY, (long) values[3]);
+                break;
+            case SMALL_TEXT:
+                params.put(SQL.SMALL_TEXT.S_TEXT, (String) values[0]);
+                params.put(SQL.SMALL_TEXT.S_DESCRIPTION, (String) values[1]);
+                params.put(SQL.SMALL_TEXT.S_PARENT_ENTRY, (long) values[2]);
+                params.put(SQL.SMALL_TEXT.S_PARENT_CATEGORY, (long) values[3]);
+                break;
+            case LONG_TEXT:
+                params.put(SQL.LONG_TEXT.L_TEXT, (String) values[0]);
+                params.put(SQL.LONG_TEXT.L_DESCRIPTION, (String) values[1]);
+                params.put(SQL.LONG_TEXT.L_PARENT_ENTRY, (long) values[2]);
+                params.put(SQL.LONG_TEXT.L_PARENT_CATEGORY, (long) values[3]);
                 break;
         }
         return params;

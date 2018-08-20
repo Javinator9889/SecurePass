@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS `Category` (
 CREATE TABLE IF NOT EXISTS `Entry` (
   `idEntry` INT NOT NULL DEFAULT 0,
   `icon` VARCHAR(180) NULL,
+  `name` VARCHAR(45) NOT NULL,
   `cidCategory` INT NOT NULL,
   PRIMARY KEY (`idEntry`, `cidCategory`),
   INDEX `fk_Entry` (`cidCategory` ASC),

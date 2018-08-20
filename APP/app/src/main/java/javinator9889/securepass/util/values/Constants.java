@@ -25,11 +25,44 @@ public class Constants {
         public static final class ENTRY {
             public static final String NAME = "Entry";
             public static final String E_ID = "idEntry";
-            public static final String E_ACCOUNT = "account";
-            public static final String E_PASSWORD = "password";
+            public static final String E_NAME = "name";
+//            public static final String E_PASSWORD = "password";
             public static final String E_ICON = "icon";
-            public static final String E_DESCRIPTION = "description";
+//            public static final String E_DESCRIPTION = "description";
             public static final String E_PARENT_CATEGORY = "cidCategory";
+        }
+
+        public static final class PASSWORD {
+            public static final String NAME = "Password";
+            public static final String P_ID = "idPassword";
+            public static final String P_PASSWORD = "password";
+            public static final String P_DESCRIPTION = "field_desc";
+            public static final String P_PARENT_ENTRY = "idEntry";
+            public static final String P_PARENT_CATEGORY = "cidCategory";
+        }
+
+        public static final class SMALL_TEXT {
+            public static final String NAME = "SmallText";
+            public static final String S_TEXT = "text";
+            public static final String S_DESCRIPTION = "field_desc";
+            public static final String S_PARENT_ENTRY = "idEntry";
+            public static final String S_PARENT_CATEGORY = "cidCategory";
+        }
+
+        public static final class LONG_TEXT {
+            public static final String NAME = "LongText";
+            public static final String L_TEXT = "text";
+            public static final String L_DESCRIPTION = "field_desc";
+            public static final String L_PARENT_ENTRY = "idEntry";
+            public static final String L_PARENT_CATEGORY = "cidCategory";
+        }
+
+        public static final class IMAGE {
+            public static final String NAME = "Image";
+            public static final String I_SOURCE = "source";
+            public static final String I_DESCRIPTION = "field_desc";
+            public static final String I_PARENT_ENTRY = "idEntry";
+            public static final String I_PARENT_CATEGORY = "cidCategory";
         }
 
         public static final class QR_CODE {
