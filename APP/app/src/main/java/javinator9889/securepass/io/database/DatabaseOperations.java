@@ -292,13 +292,7 @@ public class DatabaseOperations {
                 long entryId = sourceData.getLong(
                         sourceData.getColumnIndexOrThrow(SQL.ENTRY.E_ID));
                 String entryName = sourceData.getString(
-                        sourceData.getColumnIndexOrThrow(SQL.ENTRY.E_ACCOUNT)
-                );
-                String entryPassword = sourceData.getString(
-                        sourceData.getColumnIndexOrThrow(SQL.ENTRY.E_PASSWORD)
-                );
-                String entryDescription = sourceData.getString(
-                        sourceData.getColumnIndexOrThrow(SQL.ENTRY.E_DESCRIPTION)
+                        sourceData.getColumnIndexOrThrow(SQL.ENTRY.E_NAME)
                 );
                 String entryIcon = sourceData.getString(
                         sourceData.getColumnIndexOrThrow(SQL.ENTRY.E_ICON)
@@ -308,9 +302,7 @@ public class DatabaseOperations {
                                 .getColumnIndexOrThrow(SQL.ENTRY.E_PARENT_CATEGORY)
                 );
                 result.put(SQL.ENTRY.E_ID, entryId);
-                result.put(SQL.ENTRY.E_ACCOUNT, entryName);
-                result.put(SQL.ENTRY.E_PASSWORD, entryPassword);
-                result.put(SQL.ENTRY.E_DESCRIPTION, entryDescription);
+                result.put(SQL.ENTRY.E_NAME, entryName);
                 result.put(SQL.ENTRY.E_ICON, entryIcon);
                 result.put(SQL.ENTRY.E_PARENT_CATEGORY, entryParentCategory);
                 return result;

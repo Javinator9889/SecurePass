@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `Password` (
   `idPassword` INT NOT NULL,
   `password` VARCHAR(256) NOT NULL,
   `field_desc` VARCHAR(45) NOT NULL,
+  `sortOrder` INT NOT NULL,
   `idEntry` INT NOT NULL,
   `cidCategory` INT NOT NULL,
   PRIMARY KEY (`idPassword`, `idEntry`, `cidCategory`),
@@ -66,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `SmallText` (
   `idSmallText` INT NOT NULL,
   `text` VARCHAR(180) NOT NULL,
   `field_desc` VARCHAR(45) NOT NULL,
+  `sortOrder` INT NOT NULL,
   `idEntry` INT NOT NULL,
   `cidCategory` INT NOT NULL,
   PRIMARY KEY (`idSmallText`, `idEntry`, `cidCategory`),
@@ -80,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `Image` (
   `idImage` INT NOT NULL,
   `source` LONGBLOB NOT NULL,
   `field_desc` VARCHAR(45) NOT NULL,
+  `sortOrder` INT NOT NULL,
   `idEntry` INT NOT NULL,
   `cidCategory` INT NOT NULL,
   PRIMARY KEY (`idImage`, `idEntry`, `cidCategory`),
@@ -94,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `LongText` (
   `idLongText` INT NOT NULL,
   `text` LONGBLOB NOT NULL,
   `field_desc` VARCHAR(45) NOT NULL,
+  `sortOrder` INT NOT NULL,
   `idEntry` INT NOT NULL,
   `cidCategory` INT NOT NULL,
   PRIMARY KEY (`idLongText`, `idEntry`, `cidCategory`),
@@ -101,5 +105,62 @@ CREATE TABLE IF NOT EXISTS `LongText` (
   CONSTRAINT `fk_LongText_Entry1`
     FOREIGN KEY (`idEntry` , `cidCategory`)
     REFERENCES `Entry` (`idEntry` , `cidCategory`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+CREATE TABLE IF NOT EXISTS `Configuration` (
+  `idConfiguration` INT NOT NULL,
+  `configName` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idConfiguration`));
+
+CREATE TABLE IF NOT EXISTS `PassConfig` (
+  `idConfig` INT NOT NULL,
+  `desc` VARCHAR(45) NOT NULL,
+  `sortOrder` INT NOT NULL,
+  `idConfiguration` INT NOT NULL,
+  PRIMARY KEY (`idConfig`, `idConfiguration`),
+  INDEX `fk_PassConfig_idx` (`idConfiguration` ASC),
+  CONSTRAINT `fk_PassConfig`
+    FOREIGN KEY (`idConfiguration`)
+    REFERENCES `Configuration` (`idConfiguration`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+CREATE TABLE IF NOT EXISTS `SmallTextConfig` (
+  `idConfig` INT NOT NULL,
+  `desc` VARCHAR(45) NOT NULL,
+  `sortOrder` INT NOT NULL,
+  `idConfiguration` INT NOT NULL,
+  PRIMARY KEY (`idConfig`, `idConfiguration`),
+  INDEX `fk_SmallTextConfig_idx` (`idConfiguration` ASC),
+  CONSTRAINT `fk_SmallTextConfig`
+    FOREIGN KEY (`idConfiguration`)
+    REFERENCES `Configuration` (`idConfiguration`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+CREATE TABLE IF NOT EXISTS `LongTextConfig` (
+  `idConfig` INT NOT NULL,
+  `desc` VARCHAR(45) NOT NULL,
+  `sortOrder` INT NOT NULL,
+  `idConfiguration` INT NOT NULL,
+  PRIMARY KEY (`idConfig`, `idConfiguration`),
+  INDEX `fk_LongTextConfig_idx` (`idConfiguration` ASC),
+  CONSTRAINT `fk_LongTextConfig`
+    FOREIGN KEY (`idConfiguration`)
+    REFERENCES `Configuration` (`idConfiguration`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+CREATE TABLE IF NOT EXISTS `ImagesConfig` (
+  `idConfig` INT NOT NULL,
+  `desc` VARCHAR(45) NOT NULL,
+  `sortOrder` INT NOT NULL,
+  `idConfiguration` INT NOT NULL,
+  PRIMARY KEY (`idConfig`, `idConfiguration`),
+  INDEX `fk_ImagesConfig_idx` (`idConfiguration` ASC),
+  CONSTRAINT `fk_ImagesConfig`
+    FOREIGN KEY (`idConfiguration`)
+    REFERENCES `Configuration` (`idConfiguration`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
