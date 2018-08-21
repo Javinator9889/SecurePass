@@ -102,13 +102,13 @@ public class DatabaseOperations {
         return entryId;
     }
     
-    public long registerNewAccount(@NonNull String accountName, @NonNull String accountPassword,
-                                   @NonNull String icon, @Nullable String description,
-                                   long entryParentCategoryId) {
-        ContentValues params = setParams(DatabaseTables.ENTRY, accountName, accountPassword, icon,
-                description, entryParentCategoryId);
-        return database.insert(SQL.ENTRY.NAME, null, params);
-    }
+//    public long registerNewAccount(@NonNull String accountName, @NonNull String accountPassword,
+//                                   @NonNull String icon, @Nullable String description,
+//                                   long entryParentCategoryId) {
+//        ContentValues params = setParams(DatabaseTables.ENTRY, accountName, accountPassword, icon,
+//                description, entryParentCategoryId);
+//        return database.insert(SQL.ENTRY.NAME, null, params);
+//    }
 
     public long registerNewCategory(@NonNull String name) {
         ContentValues params = setParams(DatabaseTables.CATEGORY, name);
@@ -170,21 +170,75 @@ public class DatabaseOperations {
         database.delete(SQL.FIELD.NAME, SQL.DB_DELETE_FIELD_WHERE_CLAUSE, selectionArgs);
     }
 
-    public void updateInformationForEntry(@NonNull String accountName,
-                                          @NonNull String accountPassword,
-                                          @NonNull String icon,
-                                          @Nullable String description,
-                                          long parentEntryCategoryId,
-                                          long entryId) {
-        ContentValues params = setParams(DatabaseTables.ENTRY,
-                accountName,
-                accountPassword,
-                icon,
-                description,
-                parentEntryCategoryId);
+    public void updateInformationForEntry(@NonNull String entryName, @NonNull String icon,
+                                          long entryParentCategoryId,
+                                          long entryId,
+                                          @Nullable IPassword[] entryPasswords,
+                                          @Nullable ISmallText[] entrySmallTexts,
+                                          @Nullable ILongText[] entryLongTexts,
+                                          @Nullable IImage[] entryImages) {
+        ContentValues params = setParams(DatabaseTables.ENTRY, entryName, icon,
+                entryParentCategoryId);
         String[] selectionArgs = setSelectionArgs(entryId);
-        database.update(SQL.ENTRY.NAME, params, SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE, selectionArgs);
+        database.update(SQL.ENTRY.NAME, params, SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE,
+                selectionArgs);
+        if (entryPasswords != null) {
+            for (IPassword password : entryPasswords) {
+                ContentValues passwordParams = setParams(DatabaseTables.PASSWORD,
+                        password.getPassword(), password.getFieldDescription(), entryId,
+                        entryParentCategoryId);
+                String[] passwordSelectionArgs = setSelectionArgs(password.getPasswordID());
+                database.update(SQL.PASSWORD.NAME, passwordParams,
+                        SQL.DB_UPDATE_PASSWORD_WHERE_CLAUSE, passwordSelectionArgs);
+            }
+        }
+        if (entrySmallTexts != null) {
+            for (ISmallText smallText : entrySmallTexts) {
+                ContentValues smallTextParams = setParams(DatabaseTables.SMALL_TEXT,
+                        smallText.getText(), smallText.getFieldDescription(), entryId,
+                        entryParentCategoryId);
+                String[] smallTextSelectionArgs = setSelectionArgs(smallText.getSmallTextID());
+                database.update(SQL.SMALL_TEXT.NAME, smallTextParams,
+                        SQL.DB_UPDATE_SMALL_TEXT_WHERE_CLAUSE, smallTextSelectionArgs);
+            }
+        }
+        if (entryLongTexts != null) {
+            for (ILongText longText : entryLongTexts) {
+                ContentValues longTextParams = setParams(DatabaseTables.LONG_TEXT,
+                        longText.getText(), longText.getFieldDescription(), entryId,
+                        entryParentCategoryId);
+                String[] longTextSelectionArgs = setSelectionArgs(longText.getLongTextID());
+                database.update(SQL.LONG_TEXT.NAME, longTextParams,
+                        SQL.DB_UPDATE_LONG_TEXT_WHERE_CLAUSE, longTextSelectionArgs);
+            }
+        }
+        if (entryImages != null) {
+            for (IImage image : entryImages) {
+                ContentValues imageParams = setParams(DatabaseTables.IMAGE,
+                        image.getImageSource(), image.getFieldDescription(), entryId,
+                        entryParentCategoryId);
+                String[] imageSelectionArgs = setSelectionArgs(image.getImageID());
+                database.update(SQL.IMAGE.NAME, imageParams,
+                        SQL.DB_UPDATE_IMAGE_WHERE_CLAUSE, imageSelectionArgs);
+            }
+        }
     }
+
+//    public void updateInformationForEntry(@NonNull String accountName,
+//                                          @NonNull String accountPassword,
+//                                          @NonNull String icon,
+//                                          @Nullable String description,
+//                                          long parentEntryCategoryId,
+//                                          long entryId) {
+//        ContentValues params = setParams(DatabaseTables.ENTRY,
+//                accountName,
+//                accountPassword,
+//                icon,
+//                description,
+//                parentEntryCategoryId);
+//        String[] selectionArgs = setSelectionArgs(entryId);
+//        database.update(SQL.ENTRY.NAME, params, SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE, selectionArgs);
+//    }
 
     public void updateInformationForCategory(@NonNull String categoryName, long categoryId) {
         ContentValues params = setParams(DatabaseTables.CATEGORY, categoryName);

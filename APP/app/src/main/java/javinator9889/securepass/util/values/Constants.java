@@ -43,6 +43,7 @@ public class Constants {
 
         public static final class SMALL_TEXT {
             public static final String NAME = "SmallText";
+            public static final String S_ID = "idSmallText";
             public static final String S_TEXT = "text";
             public static final String S_DESCRIPTION = "field_desc";
             public static final String S_PARENT_ENTRY = "idEntry";
@@ -51,6 +52,7 @@ public class Constants {
 
         public static final class LONG_TEXT {
             public static final String NAME = "LongText";
+            public static final String L_ID = "idLongText";
             public static final String L_TEXT = "text";
             public static final String L_DESCRIPTION = "field_desc";
             public static final String L_PARENT_ENTRY = "idEntry";
@@ -59,6 +61,7 @@ public class Constants {
 
         public static final class IMAGE {
             public static final String NAME = "Image";
+            public static final String I_ID = "idImage";
             public static final String I_SOURCE = "source";
             public static final String I_DESCRIPTION = "field_desc";
             public static final String I_PARENT_ENTRY = "idEntry";
@@ -112,6 +115,13 @@ public class Constants {
         public static String DB_UPDATE_SECURITY_CODE_WHERE_CLAUSE =
                 "SecurityCodes.idSecurityCodes = ?";
         public static String DB_UPDATE_FIELD_WHERE_CLAUSE = "Fields.idField = ?";
+        public static String DB_UPDATE_PASSWORD_WHERE_CLAUSE  = PASSWORD.NAME + "." + PASSWORD.P_ID
+                + " = ?";
+        public static String DB_UPDATE_SMALL_TEXT_WHERE_CLAUSE = SMALL_TEXT.NAME + "." +
+                SMALL_TEXT.S_ID + " = ?";
+        public static String DB_UPDATE_LONG_TEXT_WHERE_CLAUSE = LONG_TEXT.NAME + "." +
+                LONG_TEXT.L_ID + " = ?";
+        public static String DB_UPDATE_IMAGE_WHERE_CLAUSE = IMAGE.NAME + "." + IMAGE.I_ID + " = ?";
 
         // SELECT SQL OPERATIONS
         public static String DB_SELECT_CATEGORIES = "SELECT * FROM Categories";
