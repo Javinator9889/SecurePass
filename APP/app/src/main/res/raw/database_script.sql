@@ -3,17 +3,29 @@ CREATE TABLE IF NOT EXISTS `Category` (
   `name` VARCHAR(45) NULL,
   PRIMARY KEY (`idCategory`));
 
+CREATE TABLE IF NOT EXISTS `Configuration` (
+  `idConfiguration` INT NOT NULL,
+  `configName` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idConfiguration`));
+
 CREATE TABLE IF NOT EXISTS `Entry` (
   `idEntry` INT NOT NULL DEFAULT 0,
   `icon` VARCHAR(180) NULL,
   `name` VARCHAR(45) NOT NULL,
   `cidCategory` INT NOT NULL,
-  PRIMARY KEY (`idEntry`, `cidCategory`),
+  `idConfiguration` INT NOT NULL
+  PRIMARY KEY (`idEntry`, `cidCategory`, `idConfiguration`),
   INDEX `fk_Entry` (`cidCategory` ASC),
+  INDEX `fk_Entry_Config` (`idConfiguration` ASC)
   CONSTRAINT `fk_Entry_Category1`
     FOREIGN KEY (`cidCategory`)
     REFERENCES `Category` (`idCategory`)
     ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Entry_Config1`
+    FOREIGN KEY (`idConfiguration`)
+    REFERENCES `Configuration` (`idConfiguration`)
+    ON DELETE CASCADE,
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `QRCode` (
@@ -107,11 +119,6 @@ CREATE TABLE IF NOT EXISTS `LongText` (
     REFERENCES `Entry` (`idEntry` , `cidCategory`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
-
-CREATE TABLE IF NOT EXISTS `Configuration` (
-  `idConfiguration` INT NOT NULL,
-  `configName` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idConfiguration`));
 
 CREATE TABLE IF NOT EXISTS `PassConfig` (
   `idConfig` INT NOT NULL,
