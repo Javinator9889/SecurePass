@@ -11,6 +11,7 @@ public interface GeneralObjectContainer<ObjectType> {
     ObjectType getStoredObjectAtIndex(int index);
     ObjectType getLatestStoredObject();
     void storeObject(@NonNull ObjectType newObject);
+    void storeObject(@NonNull ObjectType newObject, int index);
     boolean isObjectStored(@NonNull ObjectType objectToSearch);
     void removeObjectAtIndex(int index);
     void removeObjectStored(@NonNull ObjectType objectToRemove);

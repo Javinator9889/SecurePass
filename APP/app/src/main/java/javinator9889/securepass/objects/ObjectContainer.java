@@ -37,6 +37,11 @@ public class ObjectContainer<ObjectType> implements GeneralObjectContainer<Objec
     }
 
     @Override
+    public void storeObject(@NonNull ObjectType newObject, int index) {
+        mObjectsList.add(index, newObject);
+    }
+
+    @Override
     public boolean isObjectStored(@NonNull ObjectType objectToSearch) {
         return mObjectsList.contains(objectToSearch);
     }
