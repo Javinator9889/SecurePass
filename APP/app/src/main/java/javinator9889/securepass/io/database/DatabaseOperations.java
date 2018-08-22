@@ -10,13 +10,16 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javinator9889.securepass.data.configuration.IConfigFields;
 import javinator9889.securepass.data.entry.fields.IImage;
 import javinator9889.securepass.data.entry.fields.ILongText;
 import javinator9889.securepass.data.entry.fields.IPassword;
 import javinator9889.securepass.data.entry.fields.ISmallText;
+import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.util.values.Constants.SQL;
 import javinator9889.securepass.util.values.DatabaseTables;
 
@@ -41,6 +44,10 @@ public class DatabaseOperations {
         return new DatabaseOperations(databaseManagerInstance);
     }
 
+    public void changeDatabasePassword(@NonNull String newDatabasePassword) {
+        this.database.changePassword(newDatabasePassword);
+    }
+
     public long registerDefaultCategory() {
 //        ContentValues params = setParams(DatabaseTables.CATEGORY, "Global");
         ContentValues params = new ContentValues();
@@ -52,12 +59,13 @@ public class DatabaseOperations {
 
     public long registerNewEntry(@NonNull String entryName, @NonNull String icon,
                                  long entryParentCategoryId,
+                                 long configurationId,
                                  @Nullable IPassword[] entryPasswords,
                                  @Nullable ISmallText[] entrySmallTexts,
                                  @Nullable ILongText[] entryLongTexts,
                                  @Nullable IImage[] entryImages) {
         ContentValues params = setParams(DatabaseTables.ENTRY, entryName, icon,
-                entryParentCategoryId);
+                entryParentCategoryId, configurationId);
         long entryId = database.insert(SQL.ENTRY.NAME, null, params);
         if (entryPasswords != null) {
             for (IPassword password : entryPasswords) {
@@ -136,6 +144,26 @@ public class DatabaseOperations {
         return database.insert(SQL.FIELD.NAME, null, params);
     }
 
+    public long registerNewConfiguration(@NonNull String configurationName,
+                                         @NonNull GeneralObjectContainer<IConfigFields>
+                                                 configurations) {
+        ContentValues params = setParams(DatabaseTables.CONFIGURATION, configurationName);
+        long configId = database.insert(SQL.CONFIGURATION.NAME, null, params);
+        Iterator<IConfigFields> storedObjects = configurations.getStoredObjectIterator();
+        while (storedObjects.hasNext()) {
+            IConfigFields configurationField = storedObjects.next();
+            configurationField.setConfigId(configId);
+            ContentValues configurationFieldParams = setParams(configurationField.getTableType(),
+                    configurationField.getDescription(),
+                    configurationField.getSortOrder(),
+                    configId);
+            long configFieldId = database.insert(configurationField.getTableName(), null,
+                    configurationFieldParams);
+            configurationField.setFieldId(configFieldId);
+        }
+        return configId;
+    }
+
     public void deleteAccount(long accountID) {
         String[] selectionArgs = setSelectionArgs(accountID);
         database.delete(SQL.ENTRY.NAME, SQL.DB_DELETE_ENTRY_WHERE_CLAUSE, selectionArgs);
@@ -173,12 +201,13 @@ public class DatabaseOperations {
     public void updateInformationForEntry(@NonNull String entryName, @NonNull String icon,
                                           long entryParentCategoryId,
                                           long entryId,
+                                          long configurationId,
                                           @Nullable IPassword[] entryPasswords,
                                           @Nullable ISmallText[] entrySmallTexts,
                                           @Nullable ILongText[] entryLongTexts,
                                           @Nullable IImage[] entryImages) {
         ContentValues params = setParams(DatabaseTables.ENTRY, entryName, icon,
-                entryParentCategoryId);
+                entryParentCategoryId, configurationId);
         String[] selectionArgs = setSelectionArgs(entryId);
         database.update(SQL.ENTRY.NAME, params, SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE,
                 selectionArgs);
@@ -468,10 +497,9 @@ public class DatabaseOperations {
                 break;
             case ENTRY:
                 params.put(SQL.ENTRY.E_NAME, (String) values[0]);
-//                params.put(SQL.ENTRY.E_PASSWORD, (String) values[1]);
                 params.put(SQL.ENTRY.E_ICON, (String) values[1]);
-//                params.put(SQL.ENTRY.E_DESCRIPTION, (String) values[3]);
                 params.put(SQL.ENTRY.E_PARENT_CATEGORY, (long) values[2]);
+                params.put(SQL.ENTRY.E_PARENT_CONFIGURATION, (long) values[3]);
                 break;
             case QR_CODE:
                 params.put(SQL.QR_CODE.Q_NAME, (String) values[0]);
@@ -510,6 +538,29 @@ public class DatabaseOperations {
                 params.put(SQL.LONG_TEXT.L_DESCRIPTION, (String) values[1]);
                 params.put(SQL.LONG_TEXT.L_PARENT_ENTRY, (long) values[2]);
                 params.put(SQL.LONG_TEXT.L_PARENT_CATEGORY, (long) values[3]);
+                break;
+            case CONFIGURATION:
+                params.put(SQL.CONFIGURATION.C_NAME, (String) values[0]);
+                break;
+            case PASS_CONFIG:
+                params.put(SQL.PASS_CONFIG.F_DESCRIPTION, (String) values[0]);
+                params.put(SQL.PASS_CONFIG.F_SORT_ORDER, (int) values[1]);
+                params.put(SQL.PASS_CONFIG.F_PARENT_CONFIG_ID, (long) values[2]);
+                break;
+            case SMALL_TEXT_CONFIG:
+                params.put(SQL.SMALL_TEXT_CONFIG.F_DESCRIPTION, (String) values[0]);
+                params.put(SQL.SMALL_TEXT_CONFIG.F_SORT_ORDER, (int) values[1]);
+                params.put(SQL.SMALL_TEXT_CONFIG.F_PARENT_CONFIG_ID, (long) values[2]);
+                break;
+            case LONG_TEXT_CONFIG:
+                params.put(SQL.LONG_TEXT_CONFIG.F_DESCRIPTION, (String) values[0]);
+                params.put(SQL.LONG_TEXT_CONFIG.F_SORT_ORDER, (int) values[1]);
+                params.put(SQL.LONG_TEXT_CONFIG.F_PARENT_CONFIG_ID, (long) values[2]);
+                break;
+            case IMAGES_CONFIG:
+                params.put(SQL.IMAGES_CONFIG.F_DESCRIPTION, (String) values[0]);
+                params.put(SQL.IMAGES_CONFIG.F_SORT_ORDER, (int) values[1]);
+                params.put(SQL.IMAGES_CONFIG.F_PARENT_CONFIG_ID, (long) values[2]);
                 break;
         }
         return params;

@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `Entry` (
   CONSTRAINT `fk_Entry_Config1`
     FOREIGN KEY (`idConfiguration`)
     REFERENCES `Configuration` (`idConfiguration`)
-    ON DELETE CASCADE,
+    ON DELETE NO ACTION,
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `QRCode` (

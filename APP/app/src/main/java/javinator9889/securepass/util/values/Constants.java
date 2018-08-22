@@ -30,6 +30,7 @@ public class Constants {
             public static final String E_ICON = "icon";
 //            public static final String E_DESCRIPTION = "description";
             public static final String E_PARENT_CATEGORY = "cidCategory";
+            public static final String E_PARENT_CONFIGURATION = "idConfiguration";
         }
 
         public static final class PASSWORD {
@@ -66,6 +67,35 @@ public class Constants {
             public static final String I_DESCRIPTION = "field_desc";
             public static final String I_PARENT_ENTRY = "idEntry";
             public static final String I_PARENT_CATEGORY = "cidCategory";
+        }
+
+        public static final class CONFIGURATION {
+            public static final String NAME = "Configuration";
+            public static final String C_ID = "idConfiguration";
+            public static final String C_NAME = "configName";
+        }
+
+        private static class COMMON_CONFIG {
+            public static final String F_ID = "idConfig";
+            public static final String F_DESCRIPTION = "desc";
+            public static final String F_SORT_ORDER = "sortOrder";
+            public static final String F_PARENT_CONFIG_ID = "idConfiguration";
+        }
+
+        public static final class PASS_CONFIG extends COMMON_CONFIG {
+            public static final String NAME = "PassConfig";
+        }
+
+        public static final class SMALL_TEXT_CONFIG extends COMMON_CONFIG {
+            public static final String NAME = "SmallTextConfig";
+        }
+
+        public static final class LONG_TEXT_CONFIG extends COMMON_CONFIG {
+            public static final String NAME = "LongTextConfig";
+        }
+
+        public static final class IMAGES_CONFIG extends COMMON_CONFIG {
+            public static final String NAME = "ImagesConfig";
         }
 
         public static final class QR_CODE {
