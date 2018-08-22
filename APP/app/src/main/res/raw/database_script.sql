@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `Entry` (
   CONSTRAINT `fk_Entry_Category1`
     FOREIGN KEY (`cidCategory`)
     REFERENCES `Category` (`idCategory`)
-    ON DELETE CASCADE
+    ON DELETE SET DEFAULT,
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Entry_Config1`
     FOREIGN KEY (`idConfiguration`)
