@@ -194,6 +194,7 @@ public class GoogleDriveBase implements IDriveBase {
         this.mDriveResourceClient = mDriveResourceClient;
     }
 
+    @Override
     public void setLoggedIn(boolean isLoggedIn) {
         mSignInClient.setSignedIn(isLoggedIn);
     }

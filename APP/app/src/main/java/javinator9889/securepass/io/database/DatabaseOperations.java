@@ -49,7 +49,6 @@ public class DatabaseOperations {
     }
 
     public long registerDefaultCategory() {
-//        ContentValues params = setParams(DatabaseTables.CATEGORY, "Global");
         ContentValues params = new ContentValues();
         params.put(SQL.CATEGORY.C_ID, 1);
         params.put(SQL.CATEGORY.C_NAME, "Global");
@@ -109,14 +108,6 @@ public class DatabaseOperations {
         }
         return entryId;
     }
-    
-//    public long registerNewAccount(@NonNull String accountName, @NonNull String accountPassword,
-//                                   @NonNull String icon, @Nullable String description,
-//                                   long entryParentCategoryId) {
-//        ContentValues params = setParams(DatabaseTables.ENTRY, accountName, accountPassword, icon,
-//                description, entryParentCategoryId);
-//        return database.insert(SQL.ENTRY.NAME, null, params);
-//    }
 
     public long registerNewCategory(@NonNull String name) {
         ContentValues params = setParams(DatabaseTables.CATEGORY, name);
@@ -252,22 +243,6 @@ public class DatabaseOperations {
             }
         }
     }
-
-//    public void updateInformationForEntry(@NonNull String accountName,
-//                                          @NonNull String accountPassword,
-//                                          @NonNull String icon,
-//                                          @Nullable String description,
-//                                          long parentEntryCategoryId,
-//                                          long entryId) {
-//        ContentValues params = setParams(DatabaseTables.ENTRY,
-//                accountName,
-//                accountPassword,
-//                icon,
-//                description,
-//                parentEntryCategoryId);
-//        String[] selectionArgs = setSelectionArgs(entryId);
-//        database.update(SQL.ENTRY.NAME, params, SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE, selectionArgs);
-//    }
 
     public void updateInformationForCategory(@NonNull String categoryName, long categoryId) {
         ContentValues params = setParams(DatabaseTables.CATEGORY, categoryName);
@@ -406,14 +381,6 @@ public class DatabaseOperations {
         }
         categoriesCursor.close();
         return itemsObtained;
-//        List<String[]> categoriesList = new ArrayList<>();
-//        if (categoriesCursor.moveToFirst()) {
-//            do {
-//                categoriesList.add(loadDataIntoArray(categoriesCursor));
-//            } while (categoriesCursor.moveToNext());
-//        }
-//        categoriesCursor.close();
-//        return categoriesList;
     }
 
     public List<Map<String, Object>> getAllEntries() {

@@ -30,7 +30,7 @@ public class Constants {
             public static final String E_ICON = "icon";
 //            public static final String E_DESCRIPTION = "description";
             public static final String E_PARENT_CATEGORY = "cidCategory";
-            public static final String E_PARENT_CONFIGURATION = "idConfiguration";
+            public static final String E_PARENT_CONFIGURATION = "idConfiguration";F
         }
 
         public static final class PASSWORD {

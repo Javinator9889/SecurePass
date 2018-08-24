@@ -22,6 +22,7 @@ import java.util.List;
 import javinator9889.securepass.R;
 import javinator9889.securepass.util.cipher.PasswordCipher;
 import javinator9889.securepass.util.cipher.PasswordSaver;
+import javinator9889.securepass.util.values.Constants;
 
 /**
  * Created by Javinator9889 on 26/03/2018.
@@ -31,10 +32,12 @@ import javinator9889.securepass.util.cipher.PasswordSaver;
 public class IOManager {
     private Context activityContext;
     private File filesCache;
+    private File databasePath;
 
     private IOManager(@NonNull Context activityContext) {
         this.activityContext = activityContext;
         this.filesCache = activityContext.getCacheDir();
+        this.databasePath = activityContext.getDatabasePath(Constants.SQL.DB_FILENAME);
     }
 
     @NonNull
@@ -98,5 +101,9 @@ public class IOManager {
         File fileToDelete = new File(filename);
         if (!fileToDelete.delete())
             Log.e("Delete IO", "There was an error while trying to delete class.bck");
+    }
+
+    public File getDatabasePath() {
+        return databasePath;
     }
 }

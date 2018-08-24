@@ -45,27 +45,6 @@ public class CreateFileInAppFolder implements IDriveUploadOperations {
         this.resourceClient = resourceClient;
     }
 
-    /*@Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Intent args = getIntent();
-        Bundle obtainedArgs = args.getExtras();
-        if (obtainedArgs != null) {
-            Serializable classContainer = obtainedArgs.getSerializable("data");
-            ClassContainer dataToBackup;
-            if (classContainer != null)
-                dataToBackup = (ClassContainer) classContainer;
-            else
-                throw new NoBackupSpecifiedException("Class " + this.getClass().getSimpleName() +
-                        " must specify a " + ClassContainer.class.getName() + " class as \"data\"" +
-                        " parameter");
-            createFileInAppFolder(dataToBackup);
-        } else
-            throw new NoArgsSpecifiedException("Class " + this.getClass().getSimpleName() +
-                    " must specify arguments: \"data\" (Serializable)");
-
-    }*/
-
     @Override
     public void createFileInAppFolder(@NonNull final ClassContainer dataToBackup) {
         final Task<DriveFolder> appFolderTask = resourceClient.getAppFolder();
