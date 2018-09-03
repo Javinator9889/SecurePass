@@ -68,33 +68,33 @@ public class ClassContainer implements Serializable {
         this.userSharedPreferences = userSharedPreferences;
     }
 
-    public void storeDataInDB() {
-        Context appContext = SecurePass.getApplicationInstance().getApplicationContext();
-        String password = IOManager.newInstance(appContext).readPassword();
-        DatabaseManager manager = DatabaseManager.newInstance(appContext, password);
-        DatabaseOperations operations = DatabaseOperations.newInstance(manager);
-        for (Category actualCategory : categories)
-            operations.registerNewCategory(actualCategory.getName());
-        for (Entry entry : entries)
-            operations.registerNewAccount(
-                    entry.getAccountName(),
-                    entry.getAccountPassword(),
-                    entry.getIcon(),
-                    entry.getDescription(),
-                    entry.getCategory().getId());
-        for (QRCode qrCode : qrCodes)
-            operations.registerQRCode(
-                    qrCode.getEntry().getId(),
-                    qrCode.getName(),
-                    qrCode.getDescription(),
-                    qrCode.getQrData());
-        for (SecurityCode code : securityCodes)
-            operations.registerNewSecurityCodeSource(code.getAccountName());
-        for (Field field : fields)
-            operations.registerNewFieldForSecurityCodeSource(field.getCode(), field.isCodeUsed(),
-                    field.getSecurityCodeID());
-        operations.finishConnection();
-    }
+//    public void storeDataInDB() {
+//        Context appContext = SecurePass.getApplicationInstance().getApplicationContext();
+//        String password = IOManager.newInstance(appContext).readPassword();
+//        DatabaseManager manager = DatabaseManager.newInstance(appContext, password);
+//        DatabaseOperations operations = DatabaseOperations.newInstance(manager);
+//        for (Category actualCategory : categories)
+//            operations.registerNewCategory(actualCategory.getName());
+//        for (Entry entry : entries)
+//            operations.registerNewAccount(
+//                    entry.getAccountName(),
+//                    entry.getAccountPassword(),
+//                    entry.getIcon(),
+//                    entry.getDescription(),
+//                    entry.getCategory().getId());
+//        for (QRCode qrCode : qrCodes)
+//            operations.registerQRCode(
+//                    qrCode.getEntry().getId(),
+//                    qrCode.getName(),
+//                    qrCode.getDescription(),
+//                    qrCode.getQrData());
+//        for (SecurityCode code : securityCodes)
+//            operations.registerNewSecurityCodeSource(code.getAccountName());
+//        for (Field field : fields)
+//            operations.registerNewFieldForSecurityCodeSource(field.getCode(), field.isCodeUsed(),
+//                    field.getSecurityCodeID());
+//        operations.finishConnection();
+//    }
 
     public List<Category> getCategories() {
         return categories;

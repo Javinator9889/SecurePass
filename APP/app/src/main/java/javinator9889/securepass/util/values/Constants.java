@@ -30,7 +30,7 @@ public class Constants {
             public static final String E_ICON = "icon";
 //            public static final String E_DESCRIPTION = "description";
             public static final String E_PARENT_CATEGORY = "cidCategory";
-            public static final String E_PARENT_CONFIGURATION = "idConfiguration";F
+            public static final String E_PARENT_CONFIGURATION = "idConfiguration";
         }
 
         public static final class PASSWORD {
@@ -188,7 +188,7 @@ public class Constants {
         //public static final int REQUEST_CODE_SIGN_IN = 0;
         //public static final int REQUEST_CODE_OPEN_ITEM = 1;
         public static final int HASHSET_INITIAL_CAPACITY = 2;
-        public static final String MIME_TYPE = "text/plain";
+        public static final String MIME_TYPE = "application/x-sqlite3";
         public static final Intent FILL_IN_INTENT = null;
         public static final int FLAGS_MASK = 0;
         public static final int FLAGS_VALUES = 0;

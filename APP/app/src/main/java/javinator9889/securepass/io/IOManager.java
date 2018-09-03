@@ -74,8 +74,8 @@ public class IOManager {
         return passwordReader.getPassword();
     }
 
-    public void writeDownloadedClass(@NonNull InputStream from) {
-        String filename = filesCache.getAbsolutePath() + "/class.bck";
+    public void writeDownloadedDatabaseBackup(@NonNull InputStream from) {
+        String filename = filesCache.getAbsolutePath() + "/SecurePass.db";
         try {
             OutputStream to = new FileOutputStream(filename);
             IOUtils.copyStream(from, to);
@@ -85,8 +85,8 @@ public class IOManager {
         }
     }
 
-    public InputStream readDownloadedClass() {
-        String filename = filesCache.getAbsolutePath() + "/class.bck";
+    public InputStream readDownloadedDatabaseBackup() {
+        String filename = filesCache.getAbsolutePath() + "/SecurePass.db";
         try {
             return new FileInputStream(filename);
         } catch (FileNotFoundException e) {
@@ -95,7 +95,11 @@ public class IOManager {
         }
     }
 
-    public void deleteDownloadedClass() {
+    public String downloadedDatabaseBackupPath() {
+        return filesCache.getAbsolutePath() + "/SecurePass.db";
+    }
+
+    public void deleteDownloadedDatabaseBackup() {
         String filename = filesCache.getAbsolutePath() + "/class.bck";
 
         File fileToDelete = new File(filename);

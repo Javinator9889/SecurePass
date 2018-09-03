@@ -52,23 +52,18 @@ public class DriveUploader implements IDriveUploader {
                     }
                     MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
                             .setTitle(Constants.SQL.DB_FILENAME)
-                            .setMimeType("application/x-sqlite3")
+                            .setMimeType(Constants.DRIVE.MIME_TYPE)
                             .setPinned(true)
                             .build();
                     return mResourceClient.createFile(appFolder, changeSet, folderContents);
                 })
-                .addOnSuccessListener(mDriveActivity, driveFileTask -> {
-                    Toast.makeText(mDriveContext, "DB file uploaded", Toast.LENGTH_LONG).show();
-                })
+                .addOnSuccessListener(mDriveActivity, driveFileTask ->
+                        Toast.makeText(mDriveContext, "DB file uploaded", Toast.LENGTH_LONG)
+                                .show())
                 .addOnFailureListener(mDriveActivity, e -> {
                     Log.e(TAG, Constants.DRIVE.GOOGLE_DRIVE_FILE_NOT_CREATED, e);
                     Toast.makeText(mDriveContext, "Error while uploading", Toast.LENGTH_LONG)
                             .show();
                 });
     }
-
-//    @Override
-//    public void createIvSaveFile() {
-//
-//    }
 }

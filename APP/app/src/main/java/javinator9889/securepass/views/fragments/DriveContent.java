@@ -66,11 +66,11 @@ public class DriveContent extends FragmentActivity implements Button.OnClickList
                 googleDrive.signIn();
                 break;
             case R.id.upload:
-                ClassContainer container = DataClassForTests.CONTAINER_TEST_CLASS();
+//                ClassContainer container = DataClassForTests.CONTAINER_TEST_CLASS();
                 /*Intent appFolder = new Intent(this, CreateFileInAppFolder.class);
                 appFolder.putExtra("data", container);
                 startActivity(appFolder);*/
-                googleDrive.uploadFile(container);
+//                googleDrive.uploadFile(container);
                 break;
             case R.id.download:
                 /*Intent download = new Intent(this,

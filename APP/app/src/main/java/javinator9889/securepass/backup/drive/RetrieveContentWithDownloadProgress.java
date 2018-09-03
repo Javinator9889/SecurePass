@@ -94,7 +94,7 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
                 try {
                     try (InputStream obtainedFile = driveContents.getInputStream()) {
                         IOManager io = IOManager.newInstance(driveContext);
-                        io.writeDownloadedClass(obtainedFile);
+                        io.writeDownloadedDatabaseBackup(obtainedFile);
                         completeDownload();
                     }
                 } catch (IOException e) {
@@ -112,7 +112,7 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
 
     private void completeDownload() {
         IOManager io = IOManager.newInstance(driveContext);
-        InputStream obtainedStream = io.readDownloadedClass();
+        InputStream obtainedStream = io.readDownloadedDatabaseBackup();
         final StringBuilder passwordBuilder = new StringBuilder();
         new MaterialDialog.Builder(driveContext)
                 .title(R.string.put_pass)
@@ -129,9 +129,9 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
                                 iv);
                         ClassContainer restoredData =
                                 (ClassContainer) fileDecrypt.decrypt(obtainedStream);
-                        restoredData.storeDataInDB(); // must implement
+//                        restoredData.storeDataInDB(); // must implement
                         obtainedStream.close();
-                        io.deleteDownloadedClass();
+                        io.deleteDownloadedDatabaseBackup();
                     } catch (StreamCorruptedException e) {
                         Log.e(TAG, "Password not correct captured");
                         Toast.makeText(driveContext, "Password is not correct",

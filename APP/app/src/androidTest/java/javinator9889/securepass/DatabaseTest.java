@@ -30,43 +30,43 @@ public class DatabaseTest {
         this.op = DatabaseOperations.newInstance(manager);
     }
 
-    @Test
-    public void insertIntoDB() {
-        long defaultCategoryId = op.registerDefaultCategory();
-        long newAccountId = op.registerNewAccount("cuenta", "password",
-                "icono", "descripción", defaultCategoryId);
-        long newCategoryId = op.registerNewCategory("cat2");
-        long newQRCodeId = op.registerQRCode(newAccountId, "qr1", "desc",
-                "1234");
-        long newSecurityCodeId = op.registerNewSecurityCodeSource("sec1");
-        long newFieldForSecCodeId = op.registerNewFieldForSecurityCodeSource("12345",
-                false,
-                newSecurityCodeId);
-        op.updateInformationForCategory("cat3", newCategoryId);
-        op.updateInformationForEntry("cuent", "pass", "icon",
-                "desc", newCategoryId, newAccountId);
-        op.updateInformationForQRCode(newAccountId, "qr1,2", "descq", "data",
-                newQRCodeId);
-        op.updateInformationForSecurityCode("secCode", newSecurityCodeId);
-        op.updateInformationForField("12321", true, newFieldForSecCodeId,
-                newSecurityCodeId);
-        printer();
-        op.registerNewAccount("cuenta", "password", "icono",
-                "descripción", defaultCategoryId);
-        op.registerNewCategory("cat2");
-        op.registerQRCode(newAccountId, "qr1", "desc",
-                "1234");
-        op.registerNewSecurityCodeSource("sec1");
-        op.registerNewFieldForSecurityCodeSource("12345",false,
-                newSecurityCodeId);
-        printer();
-        op.deleteCategory(newCategoryId);
-        op.deleteAccount(newAccountId);
-        op.deleteQRCode(newQRCodeId);
-        op.deleteSecurityCode(newSecurityCodeId);
-        op.deleteField(newFieldForSecCodeId);
-        printer();
-    }
+//    @Test
+//    public void insertIntoDB() {
+//        long defaultCategoryId = op.registerDefaultCategory();
+//        long newAccountId = op.registerNewAccount("cuenta", "password",
+//                "icono", "descripción", defaultCategoryId);
+//        long newCategoryId = op.registerNewCategory("cat2");
+//        long newQRCodeId = op.registerQRCode(newAccountId, "qr1", "desc",
+//                "1234");
+//        long newSecurityCodeId = op.registerNewSecurityCodeSource("sec1");
+//        long newFieldForSecCodeId = op.registerNewFieldForSecurityCodeSource("12345",
+//                false,
+//                newSecurityCodeId);
+//        op.updateInformationForCategory("cat3", newCategoryId);
+//        op.updateInformationForEntry("cuent", "pass", "icon",
+//                "desc", newCategoryId, newAccountId);
+//        op.updateInformationForQRCode(newAccountId, "qr1,2", "descq", "data",
+//                newQRCodeId);
+//        op.updateInformationForSecurityCode("secCode", newSecurityCodeId);
+//        op.updateInformationForField("12321", true, newFieldForSecCodeId,
+//                newSecurityCodeId);
+//        printer();
+//        op.registerNewAccount("cuenta", "password", "icono",
+//                "descripción", defaultCategoryId);
+//        op.registerNewCategory("cat2");
+//        op.registerQRCode(newAccountId, "qr1", "desc",
+//                "1234");
+//        op.registerNewSecurityCodeSource("sec1");
+//        op.registerNewFieldForSecurityCodeSource("12345",false,
+//                newSecurityCodeId);
+//        printer();
+//        op.deleteCategory(newCategoryId);
+//        op.deleteAccount(newAccountId);
+//        op.deleteQRCode(newQRCodeId);
+//        op.deleteSecurityCode(newSecurityCodeId);
+//        op.deleteField(newFieldForSecCodeId);
+//        printer();
+//    }
 
     private void printer() {
         for (Map<String, Object> objectMap : op.getAllCategories())
