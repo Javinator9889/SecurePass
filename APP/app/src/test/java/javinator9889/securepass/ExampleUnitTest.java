@@ -8,9 +8,7 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +21,7 @@ import javinator9889.securepass.data.entry.Entry;
 import javinator9889.securepass.data.entry.QRCode;
 import javinator9889.securepass.data.secret.Field;
 import javinator9889.securepass.data.secret.SecurityCode;
-import javinator9889.securepass.util.cipher.FileCipher;
+import javinator9889.securepass.util.cipher.FileCipherOld;
 
 import static org.junit.Assert.*;
 
@@ -42,7 +40,7 @@ public class ExampleUnitTest {
 
     @Test
     public void storeAClassInFile() throws Exception {
-        FileCipher cipher = FileCipher.newInstance(password, null);
+        FileCipherOld cipher = FileCipherOld.newInstance(password, null);
         ClassContainer container = new ClassContainer();
         List<Category> categories = new ArrayList<>();
         List<Entry> entries = new ArrayList<>();
@@ -94,7 +92,7 @@ public class ExampleUnitTest {
 
     @Test
     public void readContentsFromFile() throws Exception {
-        FileCipher cipher = FileCipher.newInstance(password, null);
+        FileCipherOld cipher = FileCipherOld.newInstance(password, null);
         InputStream stream = new FileInputStream(filename);
         ClassContainer restoredBackup = (ClassContainer) cipher.decrypt(stream);
         for (Category category : restoredBackup.getCategories())

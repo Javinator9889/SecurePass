@@ -6,15 +6,18 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.common.util.IOUtils;
+import com.google.common.io.Files;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +36,38 @@ public class IOManager {
     private Context activityContext;
     private File filesCache;
     private File databasePath;
+    private File dataDir;
 
     private IOManager(@NonNull Context activityContext) {
         this.activityContext = activityContext;
         this.filesCache = activityContext.getCacheDir();
         this.databasePath = activityContext.getDatabasePath(Constants.SQL.DB_FILENAME);
+        this.dataDir = activityContext.getFilesDir();
     }
 
     @NonNull
     public static IOManager newInstance(Context activityContext) {
         return new IOManager(activityContext);
+    }
+
+    public boolean isAnyIVVectorStored() {
+        File cacheFile = new File(filesCache.getAbsolutePath() + "/iv_vector.dat");
+        File dataFile = new File(dataDir.getAbsolutePath() + "/iv_vector.dat");
+        return cacheFile.exists() || dataFile.exists();
+    }
+
+    public File getIVVector() {
+        File cacheFile = new File(filesCache.getAbsolutePath() + "/iv_vector.dat");
+        File dataFile = new File(dataDir.getAbsolutePath() + "/iv_vector.dat");
+        return dataFile.exists() ?
+                dataDir.listFiles((dir, name) -> name.toLowerCase().equals("iv_vector.dat"))[0] :
+                cacheFile.listFiles(((dir, name) -> name.toLowerCase().equals("iv_vector.dat")))[0];
+    }
+
+    public void saveIVVector(byte[] ivVector) throws IOException {
+        String filename = dataDir.getAbsolutePath() + "/iv_vector.dat";
+        File outputFile = new File(filename);
+        Files.write(ivVector, outputFile);
     }
 
     public List<String> loadSQLScript() throws IOException {

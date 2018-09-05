@@ -12,16 +12,8 @@ import org.junit.runner.RunWith;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.crypto.CipherOutputStream;
-import javax.crypto.SealedObject;
 
 import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.data.entry.Category;
@@ -29,7 +21,7 @@ import javinator9889.securepass.data.entry.Entry;
 import javinator9889.securepass.data.entry.QRCode;
 import javinator9889.securepass.data.secret.Field;
 import javinator9889.securepass.data.secret.SecurityCode;
-import javinator9889.securepass.util.cipher.FileCipher;
+import javinator9889.securepass.util.cipher.FileCipherOld;
 
 /**
  * Created by Javinator9889 on 20/04/2018.
@@ -44,7 +36,7 @@ public class CipherTest {
 
 //    @Test
 //    public void storeAClassInFile() throws Exception {
-//        FileCipher cipher = FileCipher.newInstance(password, null);
+//        FileCipherOld cipher = FileCipherOld.newInstance(password, null);
 //        iv = cipher.getIv();
 //        System.out.println(Arrays.toString(iv));
 //        storeIv();
@@ -64,7 +56,7 @@ public class CipherTest {
     @Test
     public void readContentsFromFile() throws Exception {
         readIv();
-        FileCipher cipher = FileCipher.newInstance(password, iv);
+        FileCipherOld cipher = FileCipherOld.newInstance(password, iv);
         System.out.println(Arrays.toString(iv));
         InputStream stream = new FileInputStream(filename);
         ClassContainer restoredBackup = (ClassContainer) cipher.decrypt(stream);

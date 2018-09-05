@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 import javinator9889.securepass.R;
 import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.io.IOManager;
-import javinator9889.securepass.util.cipher.FileCipher;
+import javinator9889.securepass.util.cipher.FileCipherOld;
 import javinator9889.securepass.util.values.Constants.DRIVE;
 
 /**
@@ -125,7 +125,7 @@ public class RetrieveContentWithDownloadProgress implements IDriveDownloadOperat
                             .hashString(passwordBuilder.toString(), StandardCharsets.UTF_8)
                             .toString();
                     try {
-                        FileCipher fileDecrypt = FileCipher.newInstance(password,
+                        FileCipherOld fileDecrypt = FileCipherOld.newInstance(password,
                                 iv);
                         ClassContainer restoredData =
                                 (ClassContainer) fileDecrypt.decrypt(obtainedStream);

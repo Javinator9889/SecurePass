@@ -13,17 +13,12 @@ import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
-import java.util.Map;
-
-import javax.crypto.CipherOutputStream;
-import javax.crypto.SealedObject;
 
 import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.io.IOManager;
-import javinator9889.securepass.util.cipher.FileCipher;
+import javinator9889.securepass.util.cipher.FileCipherOld;
 import javinator9889.securepass.util.values.Constants.DRIVE;
 
 /**
@@ -59,7 +54,7 @@ public class CreateFileInAppFolder implements IDriveUploadOperations {
                     Log.d(TAG, "Password: " + password);
                     try (OutputStream outputStream = contents.getOutputStream()) {
                         if (password != null) {
-                            FileCipher cipher = FileCipher.newInstance(password, null);
+                            FileCipherOld cipher = FileCipherOld.newInstance(password, null);
                             generatedIv = cipher.getIv();
                             Log.d(TAG, Arrays.toString(generatedIv));
                             /*encryptedBackup = cipher.encrypt(dataToBackup, outputStream);
