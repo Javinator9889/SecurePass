@@ -3,6 +3,7 @@ package javinator9889.securepass.backup.drive.base;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,9 +27,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javinator9889.securepass.R;
 import javinator9889.securepass.data.container.ClassContainer;
-import javinator9889.securepass.backup.drive.CreateFileInAppFolder;
+//import javinator9889.securepass.backup.drive.CreateFileInAppFolder;
 import javinator9889.securepass.backup.drive.ResultsAdapter;
-import javinator9889.securepass.backup.drive.RetrieveContentWithDownloadProgress;
+//import javinator9889.securepass.backup.drive.RetrieveContentWithDownloadProgress;
 import javinator9889.securepass.util.values.Constants.DRIVE;
 
 /**
@@ -36,7 +37,6 @@ import javinator9889.securepass.util.values.Constants.DRIVE;
  */
 public class GoogleDriveBase implements IDriveBase {
     private static final String TAG = "drive-quickstart";
-
     private Context driveContext;
     private Activity mainActivity;
     private DriveResourceClient mDriveResourceClient;
@@ -50,12 +50,32 @@ public class GoogleDriveBase implements IDriveBase {
         resultsAdapter = new ResultsAdapter(driveContext);
     }
 
+    public Context getDriveContext() {
+        return driveContext;
+    }
+
+    public Activity getMainActivity() {
+        return mainActivity;
+    }
+
+    public DataBufferAdapter<Metadata> getResultsAdapter() {
+        return resultsAdapter;
+    }
+
+    public DriveResourceClient getDriveResourceClient() {
+        return mDriveResourceClient;
+    }
+
+    public SignIn getSignInClient() {
+        return mSignInClient;
+    }
+
     @Override
     public void signIn() {
         mSignInClient.signIn();
     }
 
-    private boolean isAbleToSignIn() {
+    protected boolean isAbleToSignIn() {
         if (!mSignInClient.isSignedIn()) {
             GoogleSignInAccount latestSignedInAccount = GoogleSignIn
                     .getLastSignedInAccount(driveContext);
@@ -65,15 +85,14 @@ public class GoogleDriveBase implements IDriveBase {
                 return true;
             }
             else {
-                Toast.makeText(driveContext, driveContext.getString(R.string.sign_in_first),
-                        Toast.LENGTH_LONG).show();
+                showMessage(R.string.sign_in_first);
                 return false;
             }
         } else
             return true;
     }
 
-    @Override
+    /*@Override
     public void uploadFile(@NonNull ClassContainer dataToBackup) {
         if (isAbleToSignIn()) {
             CreateFileInAppFolder createFileTask = new CreateFileInAppFolder(
@@ -187,7 +206,7 @@ public class GoogleDriveBase implements IDriveBase {
                                         continueWithDownload();
                                     });
                 });
-    }
+    }*/
 
     @Override
     public void setDriveResourceClient(DriveResourceClient mDriveResourceClient) {
@@ -197,5 +216,15 @@ public class GoogleDriveBase implements IDriveBase {
     @Override
     public void setLoggedIn(boolean isLoggedIn) {
         mSignInClient.setSignedIn(isLoggedIn);
+    }
+
+    @Override
+    public void showMessage(@NonNull String message) {
+        Toast.makeText(driveContext, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showMessage(@StringRes int message) {
+        Toast.makeText(driveContext, message, Toast.LENGTH_LONG).show();
     }
 }

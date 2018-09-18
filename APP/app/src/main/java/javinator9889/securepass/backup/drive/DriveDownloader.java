@@ -24,23 +24,25 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import javinator9889.securepass.R;
+import javinator9889.securepass.backup.drive.base.GoogleDriveBase;
 import javinator9889.securepass.io.IOManager;
 
 /**
  * Created by Javinator9889 on 03/09/2018.
  */
-public class DriveDownloader implements IDriveDownloader {
+public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader {
     private static final String TAG = "DriveDownloader";
-    private Context mDriveContext;
-    private Activity mMainActivity;
-    private DriveResourceClient mResourceClient;
+//    private Context mDriveContext;
+//    private DriveResourceClient mResourceClient;
     private MaterialDialog mProgressBar;
 
     public DriveDownloader(@NonNull Context driveContext, @NonNull Activity mainActivity,
                            @NonNull DriveResourceClient resourceClient) {
-        this.mDriveContext = driveContext;
-        this.mMainActivity = mainActivity;
-        this.mResourceClient = resourceClient;
+        super(driveContext, mainActivity);
+//        this.mDriveContext = driveContext;
+//        this.mMainActivity = mainActivity;
+        super.setDriveResourceClient(resourceClient);
+//        this.mResourceClient = resourceClient;
         mProgressBar = new MaterialDialog.Builder(driveContext)
                 .title(R.string.retrieving_data)
                 .content(R.string.wait)
@@ -49,10 +51,14 @@ public class DriveDownloader implements IDriveDownloader {
                 .build();
     }
 
+
+
     @Override
     public void retrieveContents(@NonNull DriveFile contents) {
         mProgressBar.show();
-        mResourceClient.openFile(contents, DriveFile.MODE_READ_ONLY,
+        final DriveResourceClient resourceClient = super.getDriveResourceClient();
+        final Context driveContext = super.getDriveContext();
+        resourceClient.openFile(contents, DriveFile.MODE_READ_ONLY,
                 new OpenFileCallback() {
                     @Override
                     public void onProgress(long bytesDownloaded, long bytesExpected) {
@@ -66,7 +72,7 @@ public class DriveDownloader implements IDriveDownloader {
                         mProgressBar.setProgress(100);
                         try {
                             try (InputStream obtainedFile = driveContents.getInputStream()) {
-                                IOManager io = IOManager.newInstance(mDriveContext);
+                                IOManager io = IOManager.newInstance(driveContext);
                                 io.writeDownloadedDatabaseBackup(obtainedFile);
                                 mProgressBar.dismiss();
                                 completeDownload();
@@ -84,11 +90,12 @@ public class DriveDownloader implements IDriveDownloader {
     }
 
     private void completeDownload() {
-        SQLiteDatabase.loadLibs(mDriveContext);
-        IOManager io = IOManager.newInstance(mDriveContext);
+        final Context driveContext = super.getDriveContext();
+        SQLiteDatabase.loadLibs(driveContext);
+        IOManager io = IOManager.newInstance(driveContext);
         String databaseDownloadedBackupPath = io.downloadedDatabaseBackupPath();
         final StringBuilder passwordBuilder = new StringBuilder();
-        MaterialDialog passwordInputDialog = new MaterialDialog.Builder(mDriveContext)
+        MaterialDialog passwordInputDialog = new MaterialDialog.Builder(driveContext)
                 .title(R.string.put_pass)
                 .content(R.string.pass_need)
                 .inputType(InputType.TYPE_TEXT_VARIATION_PASSWORD)
@@ -107,15 +114,12 @@ public class DriveDownloader implements IDriveDownloader {
                         File databasePath = io.getDatabasePath();
                         try {
                             Files.move(databaseBackup, databasePath);
-                            Toast.makeText(mDriveContext, "Backup restore completed",
-                                    Toast.LENGTH_LONG).show();
+                            showMessage("Backup restore completed");
                         } catch (IOException e) {
-                            Toast.makeText(mDriveContext, "Error while recovering your backup",
-                                    Toast.LENGTH_LONG).show();
+                            showMessage("Error while recovering your backup");
                         }
                     } catch (SQLiteException e) {
-                        Toast.makeText(mDriveContext, "Password not correct", Toast.LENGTH_LONG)
-                                .show();
+                        showMessage("Password not correct");
                         completeDownload();
                     }
                 }))

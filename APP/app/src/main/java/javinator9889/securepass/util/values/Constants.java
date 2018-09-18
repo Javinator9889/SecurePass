@@ -189,6 +189,7 @@ public class Constants {
         //public static final int REQUEST_CODE_OPEN_ITEM = 1;
         public static final int HASHSET_INITIAL_CAPACITY = 2;
         public static final String MIME_TYPE = "application/x-sqlite3";
+        public static final String IV_MIME_TYPE = "application/octet-stream";
         public static final Intent FILL_IN_INTENT = null;
         public static final int FLAGS_MASK = 0;
         public static final int FLAGS_VALUES = 0;

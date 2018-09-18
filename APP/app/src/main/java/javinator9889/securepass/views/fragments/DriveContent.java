@@ -76,7 +76,7 @@ public class DriveContent extends FragmentActivity implements Button.OnClickList
                 /*Intent download = new Intent(this,
                         RetrieveContentWithDownloadProgress.class);
                 startActivity(download);*/
-                googleDrive.restoreData();
+//                googleDrive.restoreData();
                 break;
         }
     }

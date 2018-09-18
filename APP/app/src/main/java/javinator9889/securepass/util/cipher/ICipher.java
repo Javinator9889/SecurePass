@@ -22,5 +22,7 @@ public interface ICipher {
     void encryptFile(@NonNull File source, @NonNull File destination) throws NoSuchPaddingException,
             NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             IOException, BadPaddingException, IllegalBlockSizeException;
-    void decryptFile(@NonNull File source, @NonNull File destination) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IOException;
+    void decryptFile(@NonNull File source, @NonNull File destination) throws NoSuchPaddingException,
+            NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
+            IOException;
 }

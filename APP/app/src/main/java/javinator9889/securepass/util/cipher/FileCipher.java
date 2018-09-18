@@ -10,22 +10,17 @@ import com.google.common.io.Files;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.Provider;
 import java.security.SecureRandom;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -45,7 +40,7 @@ public class FileCipher implements ICipher {
         this.password = Hashing.sha256()
                 .hashString(BuildConfig.APPLICATION_ID, StandardCharsets.UTF_8)
                 .toString()
-                .substring(0, 16)
+                .substring(32, 48)
                 .getBytes();
         IOManager io = IOManager.newInstance(activityContext);
         if (io.isAnyIVVectorStored()) {
@@ -59,6 +54,11 @@ public class FileCipher implements ICipher {
         } else {
             SecureRandom randomGenerator = new SecureRandom();
             randomGenerator.nextBytes(ivVector);
+            try {
+                io.saveIVVector(ivVector);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         ivSpec = new IvParameterSpec(ivVector);
     }

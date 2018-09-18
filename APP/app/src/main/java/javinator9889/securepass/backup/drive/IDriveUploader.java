@@ -5,4 +5,5 @@ package javinator9889.securepass.backup.drive;
  */
 public interface IDriveUploader {
     void createFileInAppFolder();
+    void uploadDatabase();
 }

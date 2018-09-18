@@ -2,6 +2,8 @@ package javinator9889.securepass.objects;
 
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.drive.MetadataBuffer;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -12,6 +14,10 @@ import java.util.List;
  */
 public class ObjectContainer<ObjectType> implements GeneralObjectContainer<ObjectType> {
     private List<ObjectType> mObjectsList;
+
+    public ObjectContainer(int initialCapacity) {
+        mObjectsList = new ArrayList<>(initialCapacity);
+    }
 
     @SafeVarargs
     public ObjectContainer(@NonNull ObjectType... objects) {
