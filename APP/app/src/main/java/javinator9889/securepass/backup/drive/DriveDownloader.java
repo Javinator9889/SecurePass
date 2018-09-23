@@ -5,14 +5,17 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveResourceClient;
+import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.events.OpenFileCallback;
+import com.google.android.gms.drive.widget.DataBufferAdapter;
+import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
+import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -26,6 +29,9 @@ import java.nio.charset.StandardCharsets;
 import javinator9889.securepass.R;
 import javinator9889.securepass.backup.drive.base.GoogleDriveBase;
 import javinator9889.securepass.io.IOManager;
+import javinator9889.securepass.objects.ByteArrayKeeper;
+import javinator9889.securepass.util.cipher.FileCipher;
+import javinator9889.securepass.util.cipher.ICipher;
 
 /**
  * Created by Javinator9889 on 03/09/2018.
@@ -36,12 +42,12 @@ public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader
 //    private DriveResourceClient mResourceClient;
     private MaterialDialog mProgressBar;
 
-    public DriveDownloader(@NonNull Context driveContext, @NonNull Activity mainActivity,
-                           @NonNull DriveResourceClient resourceClient) {
+    public DriveDownloader(@NonNull Context driveContext, @NonNull Activity mainActivity) {
         super(driveContext, mainActivity);
+        super.signIn();
 //        this.mDriveContext = driveContext;
 //        this.mMainActivity = mainActivity;
-        super.setDriveResourceClient(resourceClient);
+//        super.setDriveResourceClient(resourceClient);
 //        this.mResourceClient = resourceClient;
         mProgressBar = new MaterialDialog.Builder(driveContext)
                 .title(R.string.retrieving_data)
@@ -51,10 +57,49 @@ public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader
                 .build();
     }
 
-
-
     @Override
-    public void retrieveContents(@NonNull DriveFile contents) {
+    public void restoreData() {
+        IOManager ioManager = IOManager.newInstance(getDriveContext());
+        final ByteArrayKeeper ivVector = new ByteArrayKeeper();
+//        final AtomicReferenceArray<Byte> ivVector;
+        if (!ioManager.isAnyIVVectorStored()) {
+            DataBufferAdapter<Metadata> vectorData = new ResultsAdapter(getDriveContext());
+            getIVVector(vectorData);
+            DriveFile vectorFile = null;
+            for (int i = 0; i < vectorData.getCount(); ++i)
+                vectorFile = vectorData.getItem(i).getDriveId().asDriveFile();
+            Task<DriveContents> ivFileTask = getDriveResourceClient()
+                    .openFile(vectorFile, DriveFile.MODE_READ_ONLY);
+            ivFileTask.continueWith(task -> {
+                DriveContents contents = task.getResult();
+                try (InputStream stream = contents.getInputStream()) {
+//                    ivVector = new AtomicReferenceArray<>(ByteStreams.toByteArray(stream));
+                    ivVector.storeArray(ByteStreams.toByteArray(stream));
+                    return getDriveResourceClient().discardContents(contents);
+                }
+            });
+            try {
+                ioManager.saveIVVector(ivVector.getArray());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }/* else {
+            try {
+                ivVector = new AtomicReferenceArray<>(Files.toByteArray(ioManager.getIVVector()));
+            } catch (IOException e) {
+                Log.e(TAG, "No IV vector available");
+            }
+        }*/
+        DataBufferAdapter<Metadata> databaseBackup = new ResultsAdapter(getDriveContext());
+        super.queryFiles(databaseBackup);
+        DriveFile databaseFile = null;
+        for (int i = 0; i < databaseBackup.getCount(); ++i)
+            databaseFile = databaseBackup.getItem(i).getDriveId().asDriveFile();
+        retrieveContents(databaseFile);
+    }
+
+//    @Override
+    private void retrieveContents(@NonNull DriveFile contents) {
         mProgressBar.show();
         final DriveResourceClient resourceClient = super.getDriveResourceClient();
         final Context driveContext = super.getDriveContext();
@@ -72,12 +117,15 @@ public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader
                         mProgressBar.setProgress(100);
                         try {
                             try (InputStream obtainedFile = driveContents.getInputStream()) {
+                                ICipher cipher = new FileCipher(driveContext);
                                 IOManager io = IOManager.newInstance(driveContext);
-                                io.writeDownloadedDatabaseBackup(obtainedFile);
+                                File destination = new File(io.downloadedDatabaseBackupPath());
+                                cipher.decryptFile(obtainedFile, destination);
+//                                io.writeDownloadedDatabaseBackup(obtainedFile);
                                 mProgressBar.dismiss();
                                 completeDownload();
                             }
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             Log.e(TAG, "Exception while copying/retrieving database", e);
                         }
                     }

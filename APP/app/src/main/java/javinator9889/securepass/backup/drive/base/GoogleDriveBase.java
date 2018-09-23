@@ -30,6 +30,7 @@ import javinator9889.securepass.data.container.ClassContainer;
 //import javinator9889.securepass.backup.drive.CreateFileInAppFolder;
 import javinator9889.securepass.backup.drive.ResultsAdapter;
 //import javinator9889.securepass.backup.drive.RetrieveContentWithDownloadProgress;
+import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.Constants.DRIVE;
 
 /**
@@ -226,5 +227,48 @@ public class GoogleDriveBase implements IDriveBase {
     @Override
     public void showMessage(@StringRes int message) {
         Toast.makeText(driveContext, message, Toast.LENGTH_LONG).show();
+    }
+
+    protected void queryFiles(DataBufferAdapter<Metadata> resultsAdapter) {
+        SortOrder sortOrder = new SortOrder.Builder().addSortAscending(SortableField.CREATED_DATE)
+                .build();
+        Query query = new Query.Builder()
+                .addFilter(Filters.and(Filters.eq(SearchableField.TITLE, Constants.SQL.DB_FILENAME),
+                        Filters.eq(SearchableField.MIME_TYPE, Constants.DRIVE.MIME_TYPE)))
+                .setSortOrder(sortOrder)
+                .build();
+        retrieveContents(query, resultsAdapter);
+//        Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
+//        appFolderTask.addOnSuccessListener(getMainActivity(), driveFolder -> {
+//            Task<MetadataBuffer> queryTask = getDriveResourceClient()
+//                    .queryChildren(driveFolder, query);
+//            queryTask.addOnSuccessListener(getMainActivity(), resultsAdapter::append);
+//        });
+    }
+
+    protected void getIVVector(DataBufferAdapter<Metadata> resultsAdapter) {
+        SortOrder sortOrder = new SortOrder.Builder().addSortAscending(SortableField.CREATED_DATE)
+                .build();
+        Query query = new Query.Builder()
+                .addFilter(Filters.and(Filters.eq(SearchableField.TITLE, DRIVE.IV_FILE),
+                        Filters.eq(SearchableField.MIME_TYPE, DRIVE.IV_MIME_TYPE)))
+                .setSortOrder(sortOrder)
+                .build();
+        retrieveContents(query, resultsAdapter);
+//        Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
+//        appFolderTask.addOnSuccessListener(getMainActivity(), driveFolder -> {
+//            Task<MetadataBuffer> queryTask = getDriveResourceClient()
+//                    .queryChildren(driveFolder, query);
+//            queryTask.addOnSuccessListener(getMainActivity(), resultsAdapter::append);
+//        });
+    }
+
+    private void retrieveContents(@NonNull Query query, DataBufferAdapter<Metadata> resultsAdapter){
+        Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
+        appFolderTask.addOnSuccessListener(getMainActivity(), driveFolder -> {
+            Task<MetadataBuffer> queryTask = getDriveResourceClient()
+                    .queryChildren(driveFolder, query);
+            queryTask.addOnSuccessListener(getMainActivity(), resultsAdapter::append);
+        });
     }
 }

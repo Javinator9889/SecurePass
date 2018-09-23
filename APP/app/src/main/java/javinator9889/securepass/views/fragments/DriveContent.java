@@ -21,6 +21,10 @@ import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.OpenFileActivityOptions;
 
 import javinator9889.securepass.R;
+import javinator9889.securepass.backup.drive.DriveDownloader;
+import javinator9889.securepass.backup.drive.DriveUploader;
+import javinator9889.securepass.backup.drive.IDriveDownloader;
+import javinator9889.securepass.backup.drive.IDriveUploader;
 import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.errors.GoogleDriveUnableToOpenFileException;
 import javinator9889.securepass.DataClassForTests;
@@ -36,25 +40,31 @@ import static javinator9889.securepass.backup.drive.base.IDriveBase.REQUEST_CODE
 public class DriveContent extends FragmentActivity implements Button.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "drive-quickstart";
-
     private IDriveBase googleDrive;
+//    private IDriveUploader uploader;
+//    private IDriveDownloader downloader;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drive);
+        System.out.println("Created");
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        System.out.println("On post-create");
         super.onPostCreate(savedInstanceState);
-        this.googleDrive = new GoogleDriveBase(this, this);
+//        this.googleDrive = new GoogleDriveBase(this, this);
+//        uploader = new DriveUploader(this, this);
+//        downloader = new DriveDownloader(this, this);
         Button signin = findViewById(R.id.signin);
         Button upload = findViewById(R.id.upload);
         Button download = findViewById(R.id.download);
         signin.setOnClickListener(this);
         upload.setOnClickListener(this);
         download.setOnClickListener(this);
+        System.out.println("Finished");
     }
 
     @Override
@@ -63,6 +73,9 @@ public class DriveContent extends FragmentActivity implements Button.OnClickList
             case R.id.signin:
                 /*Intent signIn = new Intent(this, GoogleDriveBase.class);
                 startActivity(signIn);*/
+//                googleDrive.signIn();
+                System.out.println("Sign-in");
+                googleDrive = new GoogleDriveBase(this, this);
                 googleDrive.signIn();
                 break;
             case R.id.upload:
@@ -71,12 +84,18 @@ public class DriveContent extends FragmentActivity implements Button.OnClickList
                 appFolder.putExtra("data", container);
                 startActivity(appFolder);*/
 //                googleDrive.uploadFile(container);
+                System.out.println("Upload");
+                IDriveUploader uploader = new DriveUploader(this, this);
+                uploader.uploadDatabase();
                 break;
             case R.id.download:
                 /*Intent download = new Intent(this,
                         RetrieveContentWithDownloadProgress.class);
                 startActivity(download);*/
 //                googleDrive.restoreData();
+                System.out.println("Download");
+                IDriveDownloader downloader = new DriveDownloader(this, this);
+                downloader.restoreData();
                 break;
         }
     }
@@ -84,6 +103,7 @@ public class DriveContent extends FragmentActivity implements Button.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("Activity result");
         switch (requestCode) {
             case REQUEST_CODE_SIGN_IN:
                 if (resultCode == RESULT_OK) {
@@ -117,7 +137,7 @@ public class DriveContent extends FragmentActivity implements Button.OnClickList
             default:
                 Log.e(TAG, "Result for activity no contemplated. RequestCode: " + requestCode +
                         " | ResultCode: " + resultCode + " | Intent data: " + data.toString());
-                finish();
+//                finish();
         }
     }
 

@@ -28,6 +28,9 @@
         <activity android:name=".views.fragments.DriveContent" />
         <activity android:name=".backup.GoogleDriveActivity" />
         <activity android:name=".backup.drive.base.GoogleDriveBase" />
+        <activity android:name=".views.fragments.LicenseFragment" />
+        <activity android:name=".views.fragments.PrivacyFragment" />
+        <activity android:name=".views.fragments.TermsFragment" />
 
         <meta-data
             android:name="preloaded_fonts"

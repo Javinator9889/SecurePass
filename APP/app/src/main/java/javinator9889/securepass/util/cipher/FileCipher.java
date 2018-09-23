@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -43,9 +44,9 @@ public class FileCipher implements ICipher {
                 .substring(32, 48)
                 .getBytes();
         IOManager io = IOManager.newInstance(activityContext);
+        ivVector = new byte[IV_SIZE];
         if (io.isAnyIVVectorStored()) {
             File ivFile = io.getIVVector();
-            ivVector = new byte[IV_SIZE];
             try {
                 ivVector = Files.toByteArray(ivFile);
             } catch (IOException e) {
@@ -77,7 +78,7 @@ public class FileCipher implements ICipher {
     }
 
     @Override
-    public void decryptFile(@NonNull File source, @NonNull File destination)
+    public void decryptFile(@NonNull InputStream source, @NonNull File destination)
             throws NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidAlgorithmParameterException, InvalidKeyException, IOException
     {
@@ -86,7 +87,7 @@ public class FileCipher implements ICipher {
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
         byte[] decryptedData = new byte[0];
         try (CipherInputStream inputStream =
-                     new CipherInputStream(new FileInputStream(source), cipher)) {
+                     new CipherInputStream(source, cipher)) {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             byte[] data = new byte[2048];
             while (inputStream.read(data) != -1)

@@ -35,10 +35,7 @@ public class SignIn {
 
     public static SignIn getInstance(@NonNull Activity mainActivity,
                                      @NonNull Context driveContext) {
-        if (INSTANCE != null)
-            return INSTANCE;
-        else
-            return new SignIn(mainActivity, driveContext);
+        return INSTANCE != null ? INSTANCE : new SignIn(mainActivity, driveContext);
     }
 
     public void signIn() {

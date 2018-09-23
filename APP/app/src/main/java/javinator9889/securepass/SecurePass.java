@@ -30,4 +30,8 @@ public class SecurePass extends Application {
         sharedPreferencesInstantiation.initSharedPreferences();
         SharedChamber.initChamber(this);
     }
+
+    public static int getNumberOfProcessors() {
+        return Runtime.getRuntime().availableProcessors();
+    }
 }

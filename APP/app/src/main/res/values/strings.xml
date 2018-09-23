@@ -661,6 +661,9 @@ copy of the Program in return for a fee.\n\n
     <string name="eula_accept">By clicking here, you confirm that you accept all terms mentioned above</string>
     <string name="no_checkbox_clicked">You must accept the terms of service in order to use this application</string>
     <string name="goto_eula">Click to see EULA terms</string>
+    <string name="eula_name">GNU GPLv3</string>
+    <string name="privacy_name">Privacy</string>
+    <string name="tos_name">Terms and Conditions</string>
 
     <!-- Drive strings -->
     <string name="data_backed_up">Data successfully backed-up</string>

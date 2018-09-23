@@ -8,5 +8,6 @@ import com.google.android.gms.drive.DriveFile;
  * Created by Javinator9889 on 03/09/2018.
  */
 public interface IDriveDownloader {
-    void retrieveContents(@NonNull DriveFile contents);
+//    void retrieveContents(@NonNull DriveFile contents);
+    void restoreData();
 }

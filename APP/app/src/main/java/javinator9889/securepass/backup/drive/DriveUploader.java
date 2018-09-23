@@ -50,16 +50,16 @@ public class DriveUploader extends GoogleDriveBase implements IDriveUploader {
     private ICipher mFileCipher;
     private IOManager ioManager;
 
-    public DriveUploader(@NonNull Context driveContext, @NonNull Activity mainActivity,
-                         @NonNull DriveResourceClient resourceClient) {
+    public DriveUploader(@NonNull Context driveContext, @NonNull Activity mainActivity) {
         super(driveContext, mainActivity);
-        super.setDriveResourceClient(resourceClient);
+//        super.setDriveResourceClient(resourceClient);
+        super.signIn();
         this.mFileCipher = new FileCipher(driveContext);
         this.ioManager = IOManager.newInstance(driveContext);
     }
 
-    @Override
-    public void createFileInAppFolder() {
+//    @Override
+    private void createFileInAppFolder() {
         final DriveResourceClient resourceClient = super.getDriveResourceClient();
         final Context driveContext = super.getDriveContext();
         final Activity driveActivity = super.getMainActivity();
@@ -138,22 +138,6 @@ public class DriveUploader extends GoogleDriveBase implements IDriveUploader {
                     status.storeObject(-1);
                 });
         return status.getLatestStoredObject();
-    }
-
-    private void queryFiles(DataBufferAdapter<Metadata> resultsAdapter) {
-        SortOrder sortOrder = new SortOrder.Builder().addSortAscending(SortableField.CREATED_DATE)
-                .build();
-        Query query = new Query.Builder()
-                .addFilter(Filters.and(Filters.eq(SearchableField.TITLE, Constants.SQL.DB_FILENAME),
-                        Filters.eq(SearchableField.MIME_TYPE, Constants.DRIVE.MIME_TYPE)))
-                .setSortOrder(sortOrder)
-                .build();
-        Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
-        appFolderTask.addOnSuccessListener(getMainActivity(), driveFolder -> {
-            Task<MetadataBuffer> queryTask = getDriveResourceClient()
-                    .queryChildren(driveFolder, query);
-            queryTask.addOnSuccessListener(getMainActivity(), resultsAdapter::append);
-        });
     }
 
     private void deleteOldFiles(DataBufferAdapter<Metadata> resultsAdapter) {

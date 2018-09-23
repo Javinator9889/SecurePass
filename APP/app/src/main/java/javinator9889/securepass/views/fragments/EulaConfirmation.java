@@ -22,9 +22,16 @@ import com.github.paolorotolo.appintro.AppIntroBaseFragment;
 import com.github.paolorotolo.appintro.ISlideBackgroundColorHolder;
 import com.github.paolorotolo.appintro.model.SliderPage;
 
+import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javinator9889.securepass.R;
+import javinator9889.securepass.SecurePass;
+import javinator9889.securepass.io.IOManager;
+import javinator9889.securepass.objects.ParcelableShared;
 import javinator9889.securepass.views.activities.ShowEulaActivity;
 import ru.noties.markwon.Markwon;
 
@@ -36,6 +43,7 @@ public class EulaConfirmation extends AppIntroBaseFragment implements Button.OnC
     private Context packageContext;
     private CheckBox eulaAcceptCheckBox;
     private Button gotoEulaButton;
+    private Bundle mExtra;
 
     /*public static EulaConfirmation newInstance(@LayoutRes int layoutResId) {
         EulaConfirmation eulaConfirmation = new EulaConfirmation();
@@ -132,6 +140,36 @@ public class EulaConfirmation extends AppIntroBaseFragment implements Button.OnC
         eulaAcceptCheckBox = view.findViewById(R.id.eula_accept);
         gotoEulaButton = view.findViewById(R.id.goto_full_eula_button);
         gotoEulaButton.setOnClickListener(this);
+        ExecutorService service = Executors.newFixedThreadPool(SecurePass.getNumberOfProcessors());
+        Future<CharSequence> gnuMarkdownText = service.submit(() -> {
+            String gnuLicenseText = getString(R.string.eula_terms);
+            return Markwon.markdown(getContext(), gnuLicenseText);
+        });
+        Future<CharSequence> privacyHTMLText = service.submit(() -> {
+            try {
+                String sourceText = IOManager.newInstance(getContext()).loadPrivacyHTML();
+                return Markwon.markdown(getContext(), sourceText);
+            } catch (IOException e) {
+                return "Unavailable";
+            }
+        });
+        Future<CharSequence> termsConditionsHTMLText = service.submit(() -> {
+            try {
+                String sourceText = IOManager.newInstance(getContext())
+                        .loadTermsAndConditionsHTML();
+                return Markwon.markdown(getContext(), sourceText);
+            } catch (IOException e) {
+                return "Unavailable";
+            }
+        });
+        ParcelableShared<CharSequence> parcelableShared = new ParcelableShared<>(gnuMarkdownText);
+        ParcelableShared<CharSequence> privacyShared = new ParcelableShared<>(privacyHTMLText);
+        ParcelableShared<CharSequence> termsShared =
+                new ParcelableShared<>(termsConditionsHTMLText);
+        this.mExtra = new Bundle();
+        this.mExtra.putParcelable("markdown", parcelableShared);
+        this.mExtra.putParcelable("privacy", privacyShared);
+        this.mExtra.putParcelable("terms", termsShared);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -148,6 +186,7 @@ public class EulaConfirmation extends AppIntroBaseFragment implements Button.OnC
         switch (v.getId()) {
             case R.id.goto_full_eula_button:
                 Intent startEulaActivity = new Intent(packageContext, ShowEulaActivity.class);
+                startEulaActivity.putExtra("bundle", mExtra);
                 startActivity(startEulaActivity);
                 break;
             default:

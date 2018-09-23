@@ -88,6 +88,28 @@ public class IOManager {
         return result;
     }
 
+    public String loadPrivacyHTML() throws IOException {
+        InputStream privacyPolicyInputStream = this.activityContext.getResources()
+                .openRawResource(R.raw.privacy_policy);
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(privacyPolicyInputStream));
+        String currentLine;
+        while ((currentLine = reader.readLine()) != null)
+            builder.append(currentLine).append("\n");
+        return builder.toString();
+    }
+
+    public String loadTermsAndConditionsHTML() throws IOException {
+        InputStream termsConditionsStream = this.activityContext.getResources()
+                .openRawResource(R.raw.terms_and_conditions);
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(termsConditionsStream));
+        String currentLine;
+        while ((currentLine = reader.readLine()) != null)
+            builder.append(currentLine).append("\n");
+        return builder.toString();
+    }
+
     public void storePassword(@NonNull String userPassword) {
         PasswordCipher passwordSaver = PasswordSaver.instantiate(activityContext);
         passwordSaver.putPassword(userPassword);

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -22,7 +23,7 @@ public interface ICipher {
     void encryptFile(@NonNull File source, @NonNull File destination) throws NoSuchPaddingException,
             NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             IOException, BadPaddingException, IllegalBlockSizeException;
-    void decryptFile(@NonNull File source, @NonNull File destination) throws NoSuchPaddingException,
-            NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
-            IOException;
+    void decryptFile(@NonNull InputStream source, @NonNull File destination) throws
+            NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
+            InvalidKeyException, IOException;
 }
