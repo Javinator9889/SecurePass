@@ -1,40 +1,31 @@
 package javinator9889.securepass.views.fragments;
 
 import android.os.Bundle;
-import android.widget.TextView;
-
-import java.util.concurrent.ExecutionException;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import javinator9889.securepass.R;
-import javinator9889.securepass.objects.ParcelableShared;
+import javinator9889.securepass.objects.StringContainer;
 
 /**
  * Created by Javinator9889 on 23/09/2018.
  */
 public class TermsFragment extends ToSBaseFragment {
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        getActivity().setContentView(R.layout.terms_conditions);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        setLayoutId(R.id.terms_conditions_text);
+        isHTML(true);
+        return inflater.inflate(R.layout.terms_conditions, container, false);
     }
 
     @Override
     protected void setText() {
-        CharSequence text = null;
-        try {
-            text = super.getFutureText().get();
-        } catch (InterruptedException | ExecutionException e) {
-            text = "Unavailable";
-        } finally {
-            TextView gnuTextView = getActivity().findViewById(R.id.terms_conditions);
-            gnuTextView.setText(text);
-        }
-    }
-
-    @Override
-    protected void setParcelable() {
-        ParcelableShared<CharSequence> markdownTextContainer = getExtras()
-                .getParcelable("terms");
-        setFutureText(markdownTextContainer.getData());
+        StringContainer container = super.getContainer();
+        super.setSourceText(container.termsText());
     }
 }

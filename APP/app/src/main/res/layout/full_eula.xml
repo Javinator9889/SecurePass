@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,7 +10,7 @@
         android:id="@+id/viewpagertab"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:stl_indicatorAlwaysInCenter="false"
+        app:stl_indicatorAlwaysInCenter="true"
         app:stl_indicatorWithoutPadding="false"
         app:stl_indicatorInFront="false"
         app:stl_indicatorInterpolation="smart"
@@ -21,11 +22,11 @@
         app:stl_overlineColor="#4D000000"
         app:stl_overlineThickness="0dp"
         app:stl_underlineColor="#4D000000"
-        app:stl_underlineThickness="1dp"
+        app:stl_underlineThickness="0dp"
         app:stl_dividerColor="#4D000000"
-        app:stl_dividerThickness="1dp"
+        app:stl_dividerThickness="0dp"
         app:stl_defaultTabBackground="?attr/selectableItemBackground"
-        app:stl_defaultTabTextAllCaps="true"
+        app:stl_defaultTabTextAllCaps="false"
         app:stl_defaultTabTextColor="#FC000000"
         app:stl_defaultTabTextSize="12sp"
         app:stl_defaultTabTextHorizontalPadding="16dp"
@@ -39,7 +40,13 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_below="@id/viewpagertab"
-        />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewpagertab"
+        app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>

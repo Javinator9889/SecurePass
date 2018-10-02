@@ -26,10 +26,7 @@ public class ShowEulaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        setContentView(R.layout.full_eula);
         Bundle args = getIntent().getBundleExtra("bundle");
         FragmentPagerAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(),
@@ -42,12 +39,30 @@ public class ShowEulaActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         SmartTabLayout tabLayout = findViewById(R.id.viewpagertab);
         tabLayout.setViewPager(viewPager);
-        setContentView(R.layout.full_eula);
         supportActionBar = getSupportActionBar();
         if (supportActionBar != null)
             supportActionBar.setDisplayHomeAsUpEnabled(true);
-        super.onPostCreate(savedInstanceState);
     }
+
+//    @Override
+//    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+//        Bundle args = getIntent().getBundleExtra("bundle");
+//        FragmentPagerAdapter adapter = new FragmentPagerItemAdapter(
+//                getSupportFragmentManager(),
+//                FragmentPagerItems.with(this)
+//                        .add(R.string.eula_name, LicenseFragment.class, args)
+//                        .add(R.string.privacy_name, PrivacyFragment.class, args)
+//                        .add(R.string.tos_name, TermsFragment.class, args)
+//                        .create());
+//        ViewPager viewPager = findViewById(R.id.viewpager);
+//        viewPager.setAdapter(adapter);
+//        SmartTabLayout tabLayout = findViewById(R.id.viewpagertab);
+//        tabLayout.setViewPager(viewPager);
+//        supportActionBar = getSupportActionBar();
+//        if (supportActionBar != null)
+//            supportActionBar.setDisplayHomeAsUpEnabled(true);
+//        super.onPostCreate(savedInstanceState);
+//    }
 
     @Override
     protected void onStart() {
