@@ -2,10 +2,12 @@ package javinator9889.securepass.views.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -21,8 +23,10 @@ import ru.noties.markwon.Markwon;
 /**
  * Created by Javinator9889 on 17/04/2018.
  */
-public class ShowEulaActivity extends AppCompatActivity {
-    ActionBar supportActionBar;
+public class ShowEulaActivity extends AppCompatActivity implements SmartTabLayout.OnTabClickListener, ViewPager.OnPageChangeListener {
+    private int currentPosition = 0;
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,18 +39,43 @@ public class ShowEulaActivity extends AppCompatActivity {
                         .add(R.string.tos_name, TermsFragment.class)
                         .add(R.string.eula_name, LicenseFragment.class)
                         .create());
-        ViewPager viewPager = findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
         SmartTabLayout tabLayout = findViewById(R.id.viewpagertab);
         tabLayout.setViewPager(viewPager);
-        supportActionBar = getSupportActionBar();
+        tabLayout.setOnTabClickListener(this);
+        tabLayout.setOnPageChangeListener(this);
+        ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null)
             supportActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
-        finish();
-        return true;
+    public void onBackPressed() {
+        if (currentPosition > 0) {
+            --currentPosition;
+            viewPager.setCurrentItem(currentPosition, true);
+        } else
+            super.onBackPressed();
+    }
+
+    @Override
+    public void onTabClicked(int position) {
+        this.currentPosition = position;
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+        return;
+    }
+
+    @Override
+    public void onPageSelected(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+        return;
     }
 }
