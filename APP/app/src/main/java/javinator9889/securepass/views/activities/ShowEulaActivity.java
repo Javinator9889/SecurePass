@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -57,6 +58,15 @@ public class ShowEulaActivity extends AppCompatActivity implements SmartTabLayou
             viewPager.setCurrentItem(currentPosition, true);
         } else
             super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            currentPosition = 0;
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

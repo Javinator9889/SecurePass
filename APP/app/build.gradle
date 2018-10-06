@@ -6,8 +6,8 @@ android {
         applicationId "javinator9889.securepass"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 128
-        versionName "d0.47"
+        versionCode 129
+        versionName "d0.47.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     /*flavorDimensions "versions"
