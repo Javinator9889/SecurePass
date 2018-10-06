@@ -48,28 +48,73 @@ public class SharedPreferencesManager implements ISharedPreferencesManager {
         }
     }
 
+    private String getKey(int position) {
+        return String.valueOf(sharedPreferencesKeys.keySet().toArray()[position]);
+    }
+
     @Override
     public boolean isApplicationInitialized() {
-        String key = String.valueOf(sharedPreferencesKeys.keySet().toArray()[0]);
+        String key = getKey(0);
         return preferencesInstance.getBoolean(key, (boolean) sharedPreferencesKeys.get(key));
     }
 
     @Override
     public void applicationInitialized(boolean isInitialized) {
-        String key = String.valueOf(sharedPreferencesKeys.keySet().toArray()[0]);
+        String key = getKey(0);
         preferencesInstance.edit().putBoolean(key, isInitialized).apply();
     }
 
     @Override
     public boolean isDatabaseInitialized() {
-        String key = String.valueOf(sharedPreferencesKeys.keySet().toArray()[1]);
+        String key = getKey(1);
         return preferencesInstance.getBoolean(key, (boolean) sharedPreferencesKeys.get(key));
     }
 
     @Override
     public void databaseInitialized(boolean isInitialized) {
-        String key = String.valueOf(sharedPreferencesKeys.keySet().toArray()[1]);
+        String key = getKey(1);
         preferencesInstance.edit().putBoolean(key, isInitialized).apply();
+    }
+
+    @Override
+    public boolean isPrivacyAccepted() {
+        String key = getKey(2);
+        return preferencesInstance.getBoolean(key, (boolean) sharedPreferencesKeys.get(key));
+    }
+
+    @Override
+    public void setPrivacyAccepted(boolean isAccepted) {
+        String key = getKey(2);
+        preferencesInstance.edit().putBoolean(key, isAccepted).apply();
+    }
+
+    @Override
+    public boolean areTermsOfServiceAccepted() {
+        String key = getKey(3);
+        return preferencesInstance.getBoolean(key, (boolean) sharedPreferencesKeys.get(key));
+    }
+
+    @Override
+    public void setTermsOfServiceAccepted(boolean isAccepted) {
+        String key = getKey(3);
+        preferencesInstance.edit().putBoolean(key, isAccepted).apply();
+    }
+
+    @Override
+    public boolean isSoftwareLicenseAccepted() {
+        String key = getKey(4);
+        return preferencesInstance.getBoolean(key, (boolean) sharedPreferencesKeys.get(key));
+    }
+
+    @Override
+    public void setSoftwareLicenseAccepted(boolean isAccepted) {
+        String key = getKey(4);
+        preferencesInstance.edit().putBoolean(key, isAccepted).apply();
+    }
+
+    @Override
+    public boolean isApplicationLicenseAccepted() {
+        return isSoftwareLicenseAccepted() && isPrivacyAccepted() && areTermsOfServiceAccepted();
     }
 
     private void loadSharedPreferencesKeys() {

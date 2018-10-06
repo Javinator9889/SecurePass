@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import javinator9889.securepass.R;
-import javinator9889.securepass.objects.StringContainer;
+import javinator9889.securepass.objects.SingletonFutureContainer;
+import javinator9889.securepass.util.resources.ISharedPreferencesManager;
+import javinator9889.securepass.util.resources.SharedPreferencesManager;
 
 /**
  * Created by Javinator9889 on 23/09/2018.
@@ -18,14 +21,26 @@ public class TermsFragment extends ToSBaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        setLayoutId(R.id.terms_conditions_text);
-        isHTML(true);
+        setTextId(R.id.terms_conditions_text);
+        setCheckboxId(R.id.checkBoxToS);
         return inflater.inflate(R.layout.terms_conditions, container, false);
     }
 
     @Override
     protected void setText() {
-        StringContainer container = super.getContainer();
-        super.setSourceText(container.termsText());
+        SingletonFutureContainer futureContainer = SingletonFutureContainer.getInstance();
+        super.setSourceText(futureContainer.getToSText());
+    }
+
+    @Override
+    protected void setCheckbox() {
+        ISharedPreferencesManager sharedPreferences = getSharedPreferences();
+        super.setCheckboxStatus(sharedPreferences.areTermsOfServiceAccepted());
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        super.setCheckboxStatus(isChecked);
+        getSharedPreferences().setTermsOfServiceAccepted(isChecked);
     }
 }

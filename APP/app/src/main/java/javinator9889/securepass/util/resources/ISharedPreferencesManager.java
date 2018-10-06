@@ -8,4 +8,11 @@ public interface ISharedPreferencesManager {
     void applicationInitialized(boolean isInitialized);
     boolean isDatabaseInitialized();
     void databaseInitialized(boolean isInitialized);
+    boolean isPrivacyAccepted();
+    void setPrivacyAccepted(boolean isAccepted);
+    boolean areTermsOfServiceAccepted();
+    void setTermsOfServiceAccepted(boolean isAccepted);
+    boolean isSoftwareLicenseAccepted();
+    void setSoftwareLicenseAccepted(boolean isAccepted);
+    boolean isApplicationLicenseAccepted();
 }

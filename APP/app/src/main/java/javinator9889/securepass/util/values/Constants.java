@@ -180,7 +180,10 @@ public class Constants {
         public static final int MODE = Context.MODE_PRIVATE;
         public static final Object[][] VALUES = new Object[][]{
                 {"isApplicationFirstExecuted", false, boolean.class},
-                {"isDatabaseInitialized", false, boolean.class}
+                {"isDatabaseInitialized", false, boolean.class},
+                {"isPrivacyAccepted", false, boolean.class},
+                {"areTermsOfServiceAccepted", false, boolean.class},
+                {"isSoftwareLicenseAccepted", false, boolean.class}
         };
     }
 

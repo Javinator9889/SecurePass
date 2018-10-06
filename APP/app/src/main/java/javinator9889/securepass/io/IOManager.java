@@ -13,11 +13,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,9 +86,9 @@ public class IOManager {
         return result;
     }
 
-    public String loadPrivacyHTML() throws IOException {
+    public String loadPrivacyTextMD() throws IOException {
         InputStream privacyPolicyInputStream = this.activityContext.getResources()
-                .openRawResource(R.raw.privacy_policy);
+                .openRawResource(R.raw.privacy);
         StringBuilder builder = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(privacyPolicyInputStream));
         String currentLine;
@@ -99,9 +97,9 @@ public class IOManager {
         return builder.toString();
     }
 
-    public String loadTermsAndConditionsHTML() throws IOException {
+    public String loadTermsConditionsTextMD() throws IOException {
         InputStream termsConditionsStream = this.activityContext.getResources()
-                .openRawResource(R.raw.terms_and_conditions);
+                .openRawResource(R.raw.terms_conditions);
         StringBuilder builder = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(termsConditionsStream));
         String currentLine;

@@ -658,9 +658,15 @@ copy of the Program in return for a fee.\n\n
 
                      # END OF TERMS AND CONDITIONS
     </string>
-    <string name="eula_accept">By clicking here, you confirm that you accept all terms mentioned above</string>
-    <string name="no_checkbox_clicked">You must accept the terms of service in order to use this application</string>
-    <string name="goto_eula">Click to see EULA terms</string>
+    <string name="privacy_accept">By clicking here, you confirm that you read and understood the
+        Privacy Policy Terms mentioned above</string>
+    <string name="tos_accept">By clicking here, you confirm that you read and understood the Terms
+        of Service and Usage mentioned above</string>
+    <string name="eula_accept">By clicking here, you confirm that you understood the Software
+        License</string>
+    <string name="no_checkbox_clicked">You must accept the terms of service displayed by clicking
+        the button below in order to use this application</string>
+    <string name="goto_eula">Click to read and accept all Terms of Service</string>
     <string name="eula_name">GNU GPLv3</string>
     <string name="privacy_name">Privacy</string>
     <string name="tos_name">Terms and Conditions</string>

@@ -27,6 +27,19 @@
                 android:textColor="@color/darkGray"
                 android:textSize="14sp"
                 android:typeface="normal" />
+
+            <CheckBox
+                android:id="@+id/checkBoxLicense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin"
+                android:fontFamily="@font/roboto_light"
+                android:text="@string/eula_accept"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:typeface="sans" />
         </LinearLayout>
     </ScrollView>
 

@@ -24,6 +24,7 @@ import java.util.concurrent.Future;
 import javinator9889.securepass.R;
 import javinator9889.securepass.SecurePass;
 import javinator9889.securepass.io.IOManager;
+import javinator9889.securepass.objects.SingletonFutureContainer;
 import javinator9889.securepass.objects.StringContainer;
 import javinator9889.securepass.views.activities.ShowEulaActivity;
 import ru.noties.markwon.Markwon;
@@ -132,61 +133,9 @@ public class EulaConfirmation extends AppIntroBaseFragment implements Button.OnC
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        eulaAcceptCheckBox = view.findViewById(R.id.eula_accept);
+//        eulaAcceptCheckBox = view.findViewById(R.id.eula_accept);
         gotoEulaButton = view.findViewById(R.id.goto_full_eula_button);
         gotoEulaButton.setOnClickListener(this);
-        Context fragmentContext = view.getContext();
-        IOManager ioManager = IOManager.newInstance(fragmentContext);
-        final SpannableConfiguration neutralConfig = SpannableConfiguration.builder(fragmentContext)
-                .build();
-        final SpannableConfiguration htmlConfig = SpannableConfiguration.builder(fragmentContext)
-                .htmlParser(SpannableHtmlParser.builder().build())
-                .build();
-        ExecutorService service = Executors.newFixedThreadPool(SecurePass.getNumberOfProcessors());
-        String gnuLicenseText = getString(R.string.eula_terms);
-//        Future<CharSequence> gnuMarkdownText = service.submit(() -> {
-//            String gnuLicenseText = getString(R.string.eula_terms);
-//            return Markwon.markdown(neutralConfig, gnuLicenseText);
-//        });
-        String privacyText;
-        String termsText;
-        try {
-            privacyText = ioManager.loadPrivacyHTML();
-            termsText = ioManager.loadTermsAndConditionsHTML();
-        } catch (IOException e) {
-            privacyText = "unavailable";
-            termsText = "unavailable";
-        }
-//        Future<CharSequence> privacyHTMLText = service.submit(() -> {
-//            try {
-//                String sourceText = ioManager.loadPrivacyHTML();
-//                return Markwon.markdown(htmlConfig, sourceText);
-//            } catch (IOException e) {
-//                return "Unavailable";
-//            }
-//        });
-//        Future<CharSequence> termsConditionsHTMLText = service.submit(() -> {
-//            try {
-//                String sourceText = ioManager.loadTermsAndConditionsHTML();
-//                return Markwon.markdown(htmlConfig, sourceText);
-//            } catch (IOException e) {
-//                return "Unavailable";
-//            }
-//        });
-//        ParcelableShared<CharSequence> parcelableShared = new ParcelableShared<>(gnuMarkdownText);
-//        ParcelableShared<CharSequence> privacyShared = new ParcelableShared<>(privacyHTMLText);
-//        ParcelableShared<CharSequence> termsShared =
-//                new ParcelableShared<>(termsConditionsHTMLText);
-        StringContainer futures = StringContainer.builder()
-                .setLicenseText(gnuLicenseText)
-                .setPrivacyText(privacyText)
-                .setTermsText(termsText)
-                .build();
-        this.mExtra = new Bundle();
-        this.mExtra.putParcelable("markwon", futures);
-//        this.mExtra.putParcelable("markdown", parcelableShared);
-//        this.mExtra.putParcelable("privacy", privacyShared);
-//        this.mExtra.putParcelable("terms", termsShared);
         super.onViewCreated(view, savedInstanceState);
     }
 

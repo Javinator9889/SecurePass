@@ -16,6 +16,8 @@ import java.util.Objects;
 
 import javinator9889.securepass.R;
 import javinator9889.securepass.SecurePass;
+import javinator9889.securepass.util.resources.ISharedPreferencesManager;
+import javinator9889.securepass.util.resources.SharedPreferencesManager;
 import javinator9889.securepass.views.fragments.DriveContent;
 import javinator9889.securepass.views.fragments.EulaConfirmation;
 import javinator9889.securepass.views.fragments.PasswordRegistration;
@@ -129,8 +131,9 @@ public class FirstSetup extends AppIntro {
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
-        boolean isCheckBoxChecked = eulaConfirmation.getCheckBox().isChecked();
-        if (isCheckBoxChecked) {
+//        boolean isCheckBoxChecked = eulaConfirmation.getCheckBox().isChecked();
+        ISharedPreferencesManager sharedPreferences = SharedPreferencesManager.newInstance();
+        if (sharedPreferences.isApplicationLicenseAccepted()) {
             //Toast.makeText(this, "Correctly received", Toast.LENGTH_LONG).show();
             /*Intent startPasswordRegistration = new Intent(this,
                     PasswordRegistration.class);*/

@@ -1,6 +1,5 @@
 package javinator9889.securepass.views.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -10,24 +9,27 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import javinator9889.securepass.objects.StringContainer;
+import javinator9889.securepass.util.resources.ISharedPreferencesManager;
+import javinator9889.securepass.util.resources.SharedPreferencesManager;
 import ru.noties.markwon.Markwon;
-import ru.noties.markwon.SpannableConfiguration;
-import ru.noties.markwon.renderer.html.SpannableHtmlParser;
 
 /**
  * Created by Javinator9889 on 23/09/2018.
  */
-public abstract class ToSBaseFragment extends Fragment {
-    private String mText;
-    private StringContainer mContainer;
-    private boolean mIsHTML;
-    private int mResourceId;
+public abstract class ToSBaseFragment extends Fragment
+        implements CompoundButton.OnCheckedChangeListener {
+    private Future<CharSequence> mText;
+    private @IdRes int mTextId;
+    private @IdRes int mCheckboxId;
+    private boolean mCheckboxStatus;
+    private ISharedPreferencesManager mSharedPreferences;
 
     @Nullable
     @Override
@@ -38,71 +40,59 @@ public abstract class ToSBaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContainer = getActivity().getIntent()
-                .getBundleExtra("bundle")
-                .getParcelable("markwon");
+        mSharedPreferences = SharedPreferencesManager.newInstance();
         setText();
+        setCheckbox();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        String text = null;
-//        try {
-//            text = mFutureText.get().toString();
-//        } catch (InterruptedException | ExecutionException e) {
-//            text = "Unavailable";
-//        } finally {
-        Context fragmentContext = view.getContext();
-        TextView textToChange = view.findViewById(mResourceId);
-        SpannableConfiguration config;
-        if (mIsHTML) {
-            config = SpannableConfiguration.builder(fragmentContext)
-                    .htmlParser(SpannableHtmlParser.builder().build())
-                    .build();
-        } else {
-            config = SpannableConfiguration.builder(fragmentContext)
-                    .build();
+        TextView textToChange = view.findViewById(mTextId);
+        CheckBox checkBox = view.findViewById(mCheckboxId);
+        try {
+            Markwon.setText(textToChange, mText.get());
+        } catch (InterruptedException | ExecutionException e) {
+            textToChange.setText("Error | " + e.getMessage());
+        } finally {
+            checkBox.setChecked(mCheckboxStatus);
+            checkBox.setOnCheckedChangeListener(this);
         }
-        Markwon.setMarkdown(textToChange, config, mText);
-//        Markwon.setMarkdown(textToChange, text);
-//            textToChange.setText(text);
-        }
-
-//    protected Future<CharSequence> getFutureText() {
-//        return mFutureText;
-//    }
-//
-//    protected void setFutureText(Future<CharSequence> text) {
-//        this.mFutureText = text;
-//    }
-
-    protected void setSourceText(String text) {
-        mText = text;
     }
 
-    protected void isHTML(boolean isHTML) {
-        this.mIsHTML = isHTML;
+    protected void setSourceText(Future<CharSequence> futureText) {
+        mText = futureText;
     }
 
-    protected StringContainer getContainer() {
-        return mContainer;
+    protected void setTextId(@IdRes int resourceId) {
+        this.mTextId = resourceId;
     }
 
-    protected void setLayoutId(@IdRes int resourceId) {
-        this.mResourceId = resourceId;
+    protected void setCheckboxId(@IdRes int resourceId) {
+        this.mCheckboxId = resourceId;
     }
 
-    @LayoutRes
-    protected int getResourceId() {
-        return mResourceId;
+    protected void setCheckboxStatus(boolean status) {
+        this.mCheckboxStatus = status;
     }
 
-//    @Override
-//    public void onStart() {
-//        setText();
-//        super.onStart();
-//    }
+    @IdRes
+    protected int getCheckboxId() {
+        return mCheckboxId;
+    }
+
+    @IdRes
+    protected int getTextId() {
+        return mTextId;
+    }
+
+    protected ISharedPreferencesManager getSharedPreferences() {
+        return mSharedPreferences;
+    }
 
     protected abstract void setText();
+
+    protected abstract void setCheckbox();
+
+    public abstract void onCheckedChanged(CompoundButton buttonView, boolean isChecked);
 }
