@@ -23,6 +23,7 @@ public class TermsFragment extends ToSBaseFragment {
                              @Nullable Bundle savedInstanceState) {
         setTextId(R.id.terms_conditions_text);
         setCheckboxId(R.id.checkBoxToS);
+        setScrollViewId(R.id.tos_scroll);
         return inflater.inflate(R.layout.terms_conditions, container, false);
     }
 

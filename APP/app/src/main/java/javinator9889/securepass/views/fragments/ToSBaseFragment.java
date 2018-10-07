@@ -9,9 +9,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
+import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -28,6 +32,7 @@ public abstract class ToSBaseFragment extends Fragment
     private Future<CharSequence> mText;
     private @IdRes int mTextId;
     private @IdRes int mCheckboxId;
+    private @IdRes int mScrollView;
     private boolean mCheckboxStatus;
     private ISharedPreferencesManager mSharedPreferences;
 
@@ -49,14 +54,23 @@ public abstract class ToSBaseFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TextView textToChange = view.findViewById(mTextId);
-        CheckBox checkBox = view.findViewById(mCheckboxId);
+        final CheckBox checkBox = view.findViewById(mCheckboxId);
+        final ScrollView scrollView = view.findViewById(mScrollView);
         try {
             Markwon.setText(textToChange, mText.get());
         } catch (InterruptedException | ExecutionException e) {
-            textToChange.setText("Error | " + e.getMessage());
+            textToChange.setText(String.format("Error | %s", e.getMessage()));
         } finally {
+            checkBox.setEnabled(mCheckboxStatus);
             checkBox.setChecked(mCheckboxStatus);
             checkBox.setOnCheckedChangeListener(this);
+            scrollView.getViewTreeObserver()
+                    .addOnScrollChangedListener(() -> {
+                        int totalLength = scrollView.getHeight() + scrollView.getScrollY();
+                        if (scrollView.getChildAt(0).getBottom() == totalLength)
+                            if (!checkBox.isEnabled())
+                                checkBox.setEnabled(true);
+                    });
         }
     }
 
@@ -70,6 +84,10 @@ public abstract class ToSBaseFragment extends Fragment
 
     protected void setCheckboxId(@IdRes int resourceId) {
         this.mCheckboxId = resourceId;
+    }
+
+    protected void setScrollViewId(@IdRes int resourceId) {
+        this.mScrollView = resourceId;
     }
 
     protected void setCheckboxStatus(boolean status) {

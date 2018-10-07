@@ -3,6 +3,8 @@ package javinator9889.securepass.util.values;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.HashMap;
+
 /**
  * Created by Javinator9889 on 26/03/2018.
  * Constants of the application that will be used in hole program
@@ -178,6 +180,21 @@ public class Constants {
     public static final class SHARED_PREF {
         public static final String FILENAME = "userPreferences";
         public static final int MODE = Context.MODE_PRIVATE;
+        public static final String APP_FIRST_EXECUTED = "AFE";
+        public static final String DATABASE_INIT = "DBI";
+        public static final String PRIVACY_ACCEPT = "PRA";
+        public static final String TERMS_OF_SERVICE_ACCEPT = "TSA";
+        public static final String SOFTWARE_LICENSE_ACCEPT = "SLA";
+//        public HashMap<String, String> KEYS = new HashMap<>(5);
+        public static HashMap<String, String> KEYS() {
+            HashMap<String, String> keys = new HashMap<>(5);
+            keys.put(APP_FIRST_EXECUTED, "isApplicationFirstExecuted");
+            keys.put(DATABASE_INIT, "isDatabaseInitialized");
+            keys.put(PRIVACY_ACCEPT, "isPrivacyAccepted");
+            keys.put(TERMS_OF_SERVICE_ACCEPT, "areTermsOfServiceAccepted");
+            keys.put(SOFTWARE_LICENSE_ACCEPT, "isSoftwareLicenseAccepted");
+            return keys;
+        }
         public static final Object[][] VALUES = new Object[][]{
                 {"isApplicationFirstExecuted", false, boolean.class},
                 {"isDatabaseInitialized", false, boolean.class},

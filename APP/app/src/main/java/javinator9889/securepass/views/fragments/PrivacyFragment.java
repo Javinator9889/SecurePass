@@ -22,6 +22,7 @@ public class PrivacyFragment extends ToSBaseFragment {
                              @Nullable Bundle savedInstanceState) {
         setTextId(R.id.privacy_policy);
         setCheckboxId(R.id.checkBoxPrivacy);
+        setScrollViewId(R.id.privacy_scroll);
         return inflater.inflate(R.layout.privacy, container, false);
     }
 

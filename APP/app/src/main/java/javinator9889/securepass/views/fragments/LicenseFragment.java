@@ -22,6 +22,7 @@ public class LicenseFragment extends ToSBaseFragment {
                              @Nullable Bundle savedInstanceState) {
         setTextId(R.id.license_text);
         setCheckboxId(R.id.checkBoxLicense);
+        setScrollViewId(R.id.license_scroll);
         return inflater.inflate(R.layout.license, container, false);
     }
 
