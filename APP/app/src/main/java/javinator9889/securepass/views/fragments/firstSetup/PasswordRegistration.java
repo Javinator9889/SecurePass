@@ -1,4 +1,4 @@
-package javinator9889.securepass.views.fragments;
+package javinator9889.securepass.views.fragments.firstSetup;
 
 import android.content.Intent;
 import android.graphics.Color;

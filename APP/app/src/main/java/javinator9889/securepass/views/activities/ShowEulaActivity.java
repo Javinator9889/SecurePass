@@ -2,24 +2,20 @@ package javinator9889.securepass.views.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import javinator9889.securepass.R;
-import javinator9889.securepass.views.fragments.LicenseFragment;
-import javinator9889.securepass.views.fragments.PrivacyFragment;
-import javinator9889.securepass.views.fragments.TermsFragment;
-import ru.noties.markwon.Markwon;
+import javinator9889.securepass.views.fragments.termsOfService.LicenseFragment;
+import javinator9889.securepass.views.fragments.termsOfService.PrivacyFragment;
+import javinator9889.securepass.views.fragments.termsOfService.TermsFragment;
 
 /**
  * Created by Javinator9889 on 17/04/2018.

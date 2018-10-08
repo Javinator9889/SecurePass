@@ -1,4 +1,4 @@
-package javinator9889.securepass.views.fragments;
+package javinator9889.securepass.views.fragments.termsOfService.base;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;

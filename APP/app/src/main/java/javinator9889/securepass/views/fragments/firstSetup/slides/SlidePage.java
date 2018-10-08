@@ -1,4 +1,4 @@
-package javinator9889.securepass.views.fragments;
+package javinator9889.securepass.views.fragments.firstSetup.slides;
 
 import android.os.Bundle;
 import android.support.annotation.ColorInt;

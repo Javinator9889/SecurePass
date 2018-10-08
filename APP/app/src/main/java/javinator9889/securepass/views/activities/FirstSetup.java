@@ -15,37 +15,33 @@ import java.util.List;
 import java.util.Objects;
 
 import javinator9889.securepass.R;
-import javinator9889.securepass.SecurePass;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.SharedPreferencesManager;
-import javinator9889.securepass.views.fragments.DriveContent;
-import javinator9889.securepass.views.fragments.EulaConfirmation;
-import javinator9889.securepass.views.fragments.PasswordRegistration;
-import javinator9889.securepass.views.fragments.SlidePage;
+import javinator9889.securepass.views.fragments.firstSetup.PasswordRegistration;
+import javinator9889.securepass.views.fragments.firstSetup.slides.EulaConfirmation;
+import javinator9889.securepass.views.fragments.firstSetup.slides.SlidePage;
 
 /**
  * Created by Javinator9889 on 29/03/2018.
  */
 public class FirstSetup extends AppIntro {
-    //private static final String TAG = "FirstSetup";
-    private SecurePass applicationInstance;
-    private EulaConfirmation eulaConfirmation;
-    private List<AppIntroBaseFragment> fragmentList;
-    private String[] titles;
-    private String[] descriptions;
-    private int[] drawables;
-    private int[] backgroundColors;
-    private int[] fontColors;
-    private int elementsCount = 0;
+//    private Context mApplicationContext;
+    private List<AppIntroBaseFragment> mFragmentList;
+    private String[] mTitles;
+    private String[] mDescriptions;
+    private int[] mDrawables;
+    private int[] mBackgroundColors;
+    private int[] mFontColors;
+    private int mElementsCount = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
-        this.applicationInstance = SecurePass.getApplicationInstance();
+//        this.mApplicationContext = SecurePass.getApplicationInstance().getApplicationContext();
         initParams();
         createFragmentList();
-        for (AppIntroBaseFragment baseFragment : fragmentList) addSlide(baseFragment);
+        for (AppIntroBaseFragment baseFragment : mFragmentList) addSlide(baseFragment);
         /*PasswordRegistration registrationFragment = PasswordRegistration
                 .newInstance(R.layout.request_intro);*/
         //eulaConfirmation = EulaConfirmation.newInstance(R.layout.eula_intro);
@@ -61,20 +57,20 @@ public class FirstSetup extends AppIntro {
         initDrawables();
         initBackgroundColors();
         initFontColors();
-        elementsCount = titles.length - 1;
+        mElementsCount = mTitles.length - 1;
     }
 
     private void initTitles() {
-        this.titles = this.applicationInstance.getResources().getStringArray(R.array.titles);
+        this.mTitles = getResources().getStringArray(R.array.titles);
     }
 
     private void initDescriptions() {
-        this.descriptions = this.applicationInstance.getResources()
+        this.mDescriptions = getResources()
                 .getStringArray(R.array.descriptions);
     }
 
     private void initDrawables() {
-        this.drawables = new int[]{
+        this.mDrawables = new int[]{
                 R.drawable.speed,
                 R.drawable.secure_image,
                 R.drawable.data_security,
@@ -84,7 +80,7 @@ public class FirstSetup extends AppIntro {
     }
 
     private void initBackgroundColors() {
-        this.backgroundColors = new int[]{
+        this.mBackgroundColors = new int[]{
                 Color.BLUE,
                 Color.GRAY,
                 Color.GREEN,
@@ -94,7 +90,7 @@ public class FirstSetup extends AppIntro {
     }
 
     private void initFontColors() {
-        this.fontColors = new int[] {
+        this.mFontColors = new int[] {
                 Color.WHITE,
                 Color.WHITE,
                 Color.WHITE,
@@ -104,39 +100,35 @@ public class FirstSetup extends AppIntro {
     }
 
     private void createFragmentList() {
-        this.fragmentList = new ArrayList<>();
-        for (int i = 0; i < elementsCount; ++i) {
+        this.mFragmentList = new ArrayList<>();
+        for (int i = 0; i < mElementsCount; ++i) {
             SlidePage currentSlideFragmentToBeAdded = SlidePage.newInstance(
-                    titles[i],
-                    descriptions[i],
-                    drawables[i],
-                    backgroundColors[i],
-                    fontColors[i],
-                    fontColors[i]
+                    mTitles[i],
+                    mDescriptions[i],
+                    mDrawables[i],
+                    mBackgroundColors[i],
+                    mFontColors[i],
+                    mFontColors[i]
             );
-            fragmentList.add(currentSlideFragmentToBeAdded);
+            mFragmentList.add(currentSlideFragmentToBeAdded);
         }
-        int elementToAdd = titles.length - 1;
-        eulaConfirmation = EulaConfirmation.newInstance(
-                titles[elementToAdd],
-                descriptions[elementToAdd],
-                drawables[elementToAdd],
-                backgroundColors[elementToAdd],
-                fontColors[elementToAdd],
-                fontColors[elementToAdd]);
+        int elementToAdd = mTitles.length - 1;
+        EulaConfirmation eulaConfirmation = EulaConfirmation.newInstance(
+                mTitles[elementToAdd],
+                mDescriptions[elementToAdd],
+                mDrawables[elementToAdd],
+                mBackgroundColors[elementToAdd],
+                mFontColors[elementToAdd],
+                mFontColors[elementToAdd]);
         eulaConfirmation.addPackageContext(this);
-        fragmentList.add(eulaConfirmation);
+        mFragmentList.add(eulaConfirmation);
     }
 
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
-//        boolean isCheckBoxChecked = eulaConfirmation.getCheckBox().isChecked();
         ISharedPreferencesManager sharedPreferences = SharedPreferencesManager.newInstance();
         if (sharedPreferences.isApplicationLicenseAccepted()) {
-            //Toast.makeText(this, "Correctly received", Toast.LENGTH_LONG).show();
-            /*Intent startPasswordRegistration = new Intent(this,
-                    PasswordRegistration.class);*/
             Intent startPasswordRegistration = new Intent(
                     this,
                     PasswordRegistration.class);

@@ -1,4 +1,4 @@
-package javinator9889.securepass.views.fragments;
+package javinator9889.securepass.views.fragments.firstSetup.slides;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,20 +16,8 @@ import com.github.paolorotolo.appintro.AppIntroBaseFragment;
 import com.github.paolorotolo.appintro.ISlideBackgroundColorHolder;
 import com.github.paolorotolo.appintro.model.SliderPage;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 import javinator9889.securepass.R;
-import javinator9889.securepass.SecurePass;
-import javinator9889.securepass.io.IOManager;
-import javinator9889.securepass.objects.SingletonFutureContainer;
-import javinator9889.securepass.objects.StringContainer;
 import javinator9889.securepass.views.activities.ShowEulaActivity;
-import ru.noties.markwon.Markwon;
-import ru.noties.markwon.SpannableConfiguration;
-import ru.noties.markwon.renderer.html.SpannableHtmlParser;
 
 /**
  * Created by Javinator9889 on 13/04/2018.
