@@ -69,7 +69,7 @@
             android:layout_margin="@dimen/default_margin"
             android:layout_weight="1"
             android:background="@drawable/rounded_button"
-            android:fontFamily="@font/roboto"
+            android:fontFamily="@font/raleway_semibold"
             android:text="@string/goto_eula"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
