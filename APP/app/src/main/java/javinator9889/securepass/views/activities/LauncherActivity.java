@@ -16,6 +16,7 @@ import javinator9889.securepass.SecurePass;
 import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.objects.SingletonFutureContainer;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
+import javinator9889.securepass.util.resources.PreferencesManager;
 import javinator9889.securepass.util.resources.SharedPreferencesManager;
 import javinator9889.securepass.views.fragments.DriveContent;
 import ru.noties.markwon.Markwon;
@@ -27,7 +28,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ISharedPreferencesManager preferencesManager = SharedPreferencesManager.newInstance();
+        ISharedPreferencesManager preferencesManager = PreferencesManager.getInstance();
         preferencesManager.databaseInitialized(false);
         if (!preferencesManager.isApplicationInitialized()) {
             prepareFutures();

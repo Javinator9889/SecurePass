@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
+import javinator9889.securepass.util.resources.PreferencesManager;
 import javinator9889.securepass.util.resources.SharedPreferencesManager;
 import ru.noties.markwon.Markwon;
 
@@ -45,7 +46,7 @@ public abstract class ToSBaseFragment extends Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSharedPreferences = SharedPreferencesManager.newInstance();
+        mSharedPreferences = PreferencesManager.getInstance();
         setText();
         setCheckbox();
     }

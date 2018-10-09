@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import javinator9889.securepass.R;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
+import javinator9889.securepass.util.resources.PreferencesManager;
 import javinator9889.securepass.util.resources.SharedPreferencesManager;
 import javinator9889.securepass.views.fragments.firstSetup.PasswordRegistration;
 import javinator9889.securepass.views.fragments.firstSetup.slides.EulaConfirmation;
@@ -127,7 +128,7 @@ public class FirstSetup extends AppIntro {
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
-        ISharedPreferencesManager sharedPreferences = SharedPreferencesManager.newInstance();
+        ISharedPreferencesManager sharedPreferences = PreferencesManager.getInstance();
         if (sharedPreferences.isApplicationLicenseAccepted()) {
             Intent startPasswordRegistration = new Intent(
                     this,

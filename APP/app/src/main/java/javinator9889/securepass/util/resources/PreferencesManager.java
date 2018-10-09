@@ -12,7 +12,7 @@ import static javinator9889.securepass.util.values.Constants.SHARED_PREF.*;
 /**
  * Created by Javinator9889 on 06/10/2018.
  */
-public final class PreferencesManager implements ISharedPreferencesManager {
+public class PreferencesManager implements ISharedPreferencesManager {
     private Map<String, String> mKeys;
     private volatile SharedPreferences mSharedPreferences;
     private static PreferencesManager INSTANCE;

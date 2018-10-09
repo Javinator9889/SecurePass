@@ -12,6 +12,7 @@ import java.util.List;
 
 import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
+import javinator9889.securepass.util.resources.PreferencesManager;
 import javinator9889.securepass.util.resources.SharedPreferencesManager;
 import javinator9889.securepass.util.values.Constants;
 
@@ -46,8 +47,7 @@ public class DatabaseManager {
             @Override
             public void run() {
                 SQLiteDatabase.loadLibs(databaseContext);
-                ISharedPreferencesManager preferencesManager = SharedPreferencesManager
-                        .newInstance();
+                ISharedPreferencesManager preferencesManager = PreferencesManager.getInstance();
                 databaseFile = databaseContext
                         .getDatabasePath(Constants.SQL.DB_FILENAME);
                 if (!preferencesManager.isApplicationInitialized()) {

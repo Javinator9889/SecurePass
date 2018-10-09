@@ -21,6 +21,7 @@ import javinator9889.securepass.R;
 import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
+import javinator9889.securepass.util.resources.PreferencesManager;
 import javinator9889.securepass.util.resources.SharedPreferencesManager;
 
 /**
@@ -80,8 +81,8 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                     Thread databaseThread = manager.getDatabaseInitializer();
                     try {
                         databaseThread.join();
-                        ISharedPreferencesManager preferencesManager = SharedPreferencesManager
-                                .newInstance();
+                        ISharedPreferencesManager preferencesManager = PreferencesManager
+                                .getInstance();
                         preferencesManager.databaseInitialized(true);
                         savingPasswordProgress.dismiss();
                     } catch (InterruptedException e) {
