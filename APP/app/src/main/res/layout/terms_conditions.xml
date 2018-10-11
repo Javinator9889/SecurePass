@@ -36,11 +36,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/default_margin"
-                    android:fontFamily="sans-serif-condensed"
+                    android:fontFamily="@font/raleway"
                     android:textAlignment="center"
                     android:textColor="@color/darkGray"
                     android:textSize="14sp"
-                    android:typeface="normal" />
+                    android:typeface="sans" />
 
             </LinearLayout>
         </ScrollView>
@@ -67,7 +67,7 @@
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
-            android:fontFamily="@font/roboto_light"
+            android:fontFamily="@font/raleway"
             android:text="@string/tos_accept"
             android:textAlignment="viewStart"
             android:textAllCaps="false"

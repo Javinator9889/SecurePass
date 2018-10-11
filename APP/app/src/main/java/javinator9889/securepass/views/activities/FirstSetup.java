@@ -17,10 +17,9 @@ import java.util.Objects;
 import javinator9889.securepass.R;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.PreferencesManager;
-import javinator9889.securepass.util.resources.SharedPreferencesManager;
-import javinator9889.securepass.views.fragments.firstSetup.PasswordRegistration;
-import javinator9889.securepass.views.fragments.firstSetup.slides.EulaConfirmation;
-import javinator9889.securepass.views.fragments.firstSetup.slides.SlidePage;
+import javinator9889.securepass.views.fragments.firstsetup.PasswordRegistration;
+import javinator9889.securepass.views.fragments.firstsetup.slides.EulaConfirmation;
+import javinator9889.securepass.views.fragments.firstsetup.slides.SlidePage;
 
 /**
  * Created by Javinator9889 on 29/03/2018.

@@ -13,9 +13,9 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import javinator9889.securepass.R;
-import javinator9889.securepass.views.fragments.termsOfService.LicenseFragment;
-import javinator9889.securepass.views.fragments.termsOfService.PrivacyFragment;
-import javinator9889.securepass.views.fragments.termsOfService.TermsFragment;
+import javinator9889.securepass.views.fragments.termsofservice.LicenseFragment;
+import javinator9889.securepass.views.fragments.termsofservice.PrivacyFragment;
+import javinator9889.securepass.views.fragments.termsofservice.TermsFragment;
 
 /**
  * Created by Javinator9889 on 17/04/2018.

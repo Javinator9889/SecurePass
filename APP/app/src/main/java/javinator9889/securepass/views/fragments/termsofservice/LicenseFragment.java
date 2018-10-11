@@ -1,4 +1,4 @@
-package javinator9889.securepass.views.fragments.termsOfService;
+package javinator9889.securepass.views.fragments.termsofservice;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +11,7 @@ import android.widget.CompoundButton;
 import javinator9889.securepass.R;
 import javinator9889.securepass.objects.SingletonFutureContainer;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
-import javinator9889.securepass.views.fragments.termsOfService.base.ToSBaseFragment;
+import javinator9889.securepass.views.fragments.termsofservice.base.ToSBaseFragment;
 
 /**
  * Created by Javinator9889 on 23/09/2018.

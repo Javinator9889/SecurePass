@@ -1,28 +1,23 @@
-package javinator9889.securepass.views.fragments.termsOfService.base;
+package javinator9889.securepass.views.fragments.termsofservice.base;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnScrollChangedListener;
-import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.PreferencesManager;
-import javinator9889.securepass.util.resources.SharedPreferencesManager;
 import ru.noties.markwon.Markwon;
 
 /**

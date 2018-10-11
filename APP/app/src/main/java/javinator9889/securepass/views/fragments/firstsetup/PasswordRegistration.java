@@ -1,4 +1,4 @@
-package javinator9889.securepass.views.fragments.firstSetup;
+package javinator9889.securepass.views.fragments.firstsetup;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,7 +22,7 @@ import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.PreferencesManager;
-import javinator9889.securepass.util.resources.SharedPreferencesManager;
+import javinator9889.securepass.views.activities.MainActivity;
 
 /**
  * Created by Javinator9889 on 08/04/2018.
@@ -85,6 +85,8 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                                 .getInstance();
                         preferencesManager.databaseInitialized(true);
                         savingPasswordProgress.dismiss();
+                        Intent launcher = new Intent(this, MainActivity.class);
+                        this.startActivity(launcher);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

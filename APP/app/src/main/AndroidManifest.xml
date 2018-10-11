@@ -24,13 +24,14 @@
         <activity android:name=".backup.drive.CreateFileInAppFolder" />
         <activity android:name=".backup.drive.RetrieveContentWithDownloadProgress" />
         <activity android:name=".views.activities.ShowEulaActivity" />
-        <activity android:name=".views.fragments.firstSetup.PasswordRegistration" />
+        <activity android:name=".views.fragments.firstsetup.PasswordRegistration" />
         <activity android:name=".views.fragments.DriveContent" />
         <activity android:name=".backup.GoogleDriveActivity" />
         <activity android:name=".backup.drive.base.GoogleDriveBase" />
-        <activity android:name=".views.fragments.termsOfService.LicenseFragment" />
-        <activity android:name=".views.fragments.termsOfService.PrivacyFragment" />
-        <activity android:name=".views.fragments.termsOfService.TermsFragment" />
+        <activity android:name=".views.fragments.termsofservice.LicenseFragment" />
+        <activity android:name=".views.fragments.termsofservice.PrivacyFragment" />
+        <activity android:name=".views.fragments.termsofservice.TermsFragment" />
+        <activity android:name=".views.activities.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
