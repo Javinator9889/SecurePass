@@ -1,7 +1,7 @@
 package javinator9889.securepass.util.resources;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Map;
 

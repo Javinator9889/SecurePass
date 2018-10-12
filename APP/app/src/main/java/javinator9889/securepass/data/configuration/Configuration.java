@@ -1,6 +1,6 @@
 package javinator9889.securepass.data.configuration;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
 package javinator9889.securepass;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.chamber.java.library.SharedChamber;
 

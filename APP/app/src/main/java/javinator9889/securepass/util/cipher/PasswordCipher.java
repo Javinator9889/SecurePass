@@ -1,6 +1,6 @@
 package javinator9889.securepass.util.cipher;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Javinator9889 on 18/04/2018.

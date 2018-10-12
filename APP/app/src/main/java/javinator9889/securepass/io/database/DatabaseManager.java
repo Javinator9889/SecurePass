@@ -1,7 +1,7 @@
 package javinator9889.securepass.io.database;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import net.sqlcipher.database.SQLiteDatabase;

@@ -1,7 +1,7 @@
 package javinator9889.securepass.data.container;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.List;

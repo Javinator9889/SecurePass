@@ -2,18 +2,12 @@ package javinator9889.securepass.backup;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveResourceClient;
-
+import androidx.annotation.NonNull;
 import javinator9889.securepass.backup.drive.DriveDownloader;
 import javinator9889.securepass.backup.drive.DriveUploader;
 import javinator9889.securepass.backup.drive.IDriveDownloader;
 import javinator9889.securepass.backup.drive.IDriveUploader;
-import javinator9889.securepass.backup.drive.base.GoogleDriveBase;
-import javinator9889.securepass.backup.drive.base.IDriveBase;
 
 /**
  * Created by Javinator9889 on 06/04/2018.

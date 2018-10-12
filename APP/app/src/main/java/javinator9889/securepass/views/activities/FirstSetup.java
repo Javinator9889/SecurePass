@@ -2,19 +2,24 @@ package javinator9889.securepass.views.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.github.paolorotolo.appintro.AppIntro;
+import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroBaseFragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
 import javinator9889.securepass.R;
+import javinator9889.securepass.objects.SlidesTypefacesContainer;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.PreferencesManager;
 import javinator9889.securepass.views.fragments.firstsetup.PasswordRegistration;
@@ -24,8 +29,7 @@ import javinator9889.securepass.views.fragments.firstsetup.slides.SlidePage;
 /**
  * Created by Javinator9889 on 29/03/2018.
  */
-public class FirstSetup extends AppIntro {
-//    private Context mApplicationContext;
+public class FirstSetup extends AppIntro2 {
     private List<AppIntroBaseFragment> mFragmentList;
     private String[] mTitles;
     private String[] mDescriptions;
@@ -33,20 +37,20 @@ public class FirstSetup extends AppIntro {
     private int[] mBackgroundColors;
     private int[] mFontColors;
     private int mElementsCount = 0;
+    private @Nullable String mTitleFont;
+    private @Nullable String mDescFont;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
-//        this.mApplicationContext = SecurePass.getApplicationInstance().getApplicationContext();
         initParams();
         createFragmentList();
+        mTitleFont = "fonts/raleway_semibold.ttf";
+        mDescFont = "fonts/raleway.ttf";
+//        Typeface titleFont = ResourcesCompat.getFont(this, R.font.raleway_semibold);
+//        Typeface descFont = ResourcesCompat.getFont(this, R.font.raleway);
         for (AppIntroBaseFragment baseFragment : mFragmentList) addSlide(baseFragment);
-        /*PasswordRegistration registrationFragment = PasswordRegistration
-                .newInstance(R.layout.request_intro);*/
-        //eulaConfirmation = EulaConfirmation.newInstance(R.layout.eula_intro);
-        //addSlide(registrationFragment);
-        //addSlide(eulaConfirmation);
         showSkipButton(false);
         setFadeAnimation();
     }
@@ -101,6 +105,8 @@ public class FirstSetup extends AppIntro {
 
     private void createFragmentList() {
         this.mFragmentList = new ArrayList<>();
+        SlidesTypefacesContainer container = new SlidesTypefacesContainer(R.font.raleway_semibold,
+                R.font.raleway);
         for (int i = 0; i < mElementsCount; ++i) {
             SlidePage currentSlideFragmentToBeAdded = SlidePage.newInstance(
                     mTitles[i],
@@ -108,7 +114,8 @@ public class FirstSetup extends AppIntro {
                     mDrawables[i],
                     mBackgroundColors[i],
                     mFontColors[i],
-                    mFontColors[i]
+                    mFontColors[i],
+                    container
             );
             mFragmentList.add(currentSlideFragmentToBeAdded);
         }
@@ -119,7 +126,8 @@ public class FirstSetup extends AppIntro {
                 mDrawables[elementToAdd],
                 mBackgroundColors[elementToAdd],
                 mFontColors[elementToAdd],
-                mFontColors[elementToAdd]);
+                mFontColors[elementToAdd],
+                container);
         eulaConfirmation.addPackageContext(this);
         mFragmentList.add(eulaConfirmation);
     }

@@ -1,6 +1,6 @@
 package javinator9889.securepass.data.entry;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 

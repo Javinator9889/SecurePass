@@ -2,9 +2,9 @@ package javinator9889.securepass.views.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,9 +25,6 @@ import javinator9889.securepass.backup.drive.DriveDownloader;
 import javinator9889.securepass.backup.drive.DriveUploader;
 import javinator9889.securepass.backup.drive.IDriveDownloader;
 import javinator9889.securepass.backup.drive.IDriveUploader;
-import javinator9889.securepass.data.container.ClassContainer;
-import javinator9889.securepass.errors.GoogleDriveUnableToOpenFileException;
-import javinator9889.securepass.DataClassForTests;
 import javinator9889.securepass.backup.drive.base.GoogleDriveBase;
 import javinator9889.securepass.backup.drive.base.IDriveBase;
 

@@ -2,8 +2,7 @@ package javinator9889.securepass.backup.drive.base;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import androidx.annotation.StringRes;
 import javinator9889.securepass.R;
 import javinator9889.securepass.data.container.ClassContainer;
 //import javinator9889.securepass.backup.drive.CreateFileInAppFolder;

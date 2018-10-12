@@ -1,11 +1,11 @@
 package javinator9889.securepass.views.activities;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -20,7 +20,8 @@ import javinator9889.securepass.views.fragments.termsofservice.TermsFragment;
 /**
  * Created by Javinator9889 on 17/04/2018.
  */
-public class ShowEulaActivity extends AppCompatActivity implements SmartTabLayout.OnTabClickListener, ViewPager.OnPageChangeListener {
+public class ShowEulaActivity extends AppCompatActivity
+        implements SmartTabLayout.OnTabClickListener, ViewPager.OnPageChangeListener {
     private int currentPosition = 0;
     private ViewPager viewPager;
 

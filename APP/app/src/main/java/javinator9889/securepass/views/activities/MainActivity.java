@@ -1,13 +1,11 @@
 package javinator9889.securepass.views.activities;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.LayoutInflaterCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 
-import com.mikepenz.iconics.context.IconicsLayoutInflater2;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.LayoutInflaterCompat;
 import javinator9889.securepass.R;
 
 /**
@@ -16,8 +14,6 @@ import javinator9889.securepass.R;
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        LayoutInflaterCompat.setFactory2(getLayoutInflater(),
-                new IconicsLayoutInflater2(getDelegate()));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_view);
     }

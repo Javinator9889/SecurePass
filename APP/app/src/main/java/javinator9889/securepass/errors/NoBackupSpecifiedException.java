@@ -1,6 +1,6 @@
 package javinator9889.securepass.errors;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Javinator9889 on 24/04/2018.
