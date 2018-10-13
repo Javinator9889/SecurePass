@@ -90,6 +90,8 @@ public abstract class ToSBaseFragment extends Fragment
         this.mCheckboxStatus = status;
     }
 
+    protected Future<CharSequence> getText() {return mText;}
+
     @IdRes
     protected int getCheckboxId() {
         return mCheckboxId;

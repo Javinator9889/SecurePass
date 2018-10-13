@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -7,6 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!--<item name="android:fontFamily">@font/raleway_semibold</item>-->
+    </style>
+    <style name="TabsTextView">
+        <item name="android:typeface" android:state_selected="true">@font/raleway_semibold</item>
     </style>
 
 </resources>
