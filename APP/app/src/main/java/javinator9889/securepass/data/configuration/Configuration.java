@@ -11,45 +11,49 @@ import javinator9889.securepass.objects.ObjectContainer;
  * Created by Javinator9889 on 21/08/2018.
  */
 public class Configuration implements IConfiguration, Serializable {
-    private long id;
-    private String configurationName;
-    private GeneralObjectContainer<IConfigFields> container;
+    private long mId;
+    private String mConfigurationName;
+    private GeneralObjectContainer<IConfigFields> mContainer;
 
-    public Configuration(long id, @Nullable String configurationName,
-                         @Nullable GeneralObjectContainer<IConfigFields> container) {
-        this.id = id;
-        this.configurationName = configurationName;
-        this.container = (container == null) ? new ObjectContainer<>() : container;
+    public Configuration(long id,
+                         @Nullable String configurationName,
+                         @Nullable GeneralObjectContainer<IConfigFields>
+                                 container) {
+        this.mId = id;
+        this.mConfigurationName = configurationName;
+        this.mContainer = (container == null) ?
+                new ObjectContainer<>() :
+                container;
     }
 
     @Override
     public long getConfigurationId() {
-        return id;
+        return mId;
     }
 
     @Override
     public String getConfigurationName() {
-        return configurationName;
+        return mConfigurationName;
     }
 
     @Override
     public GeneralObjectContainer<IConfigFields> getConfigFields() {
-        return container;
+        return mContainer;
     }
 
     @Override
     public void setConfigurationId(long id) {
-        this.id = id;
+        this.mId = id;
     }
 
     @Override
     public void setConfigurationName(String name) {
-        this.configurationName = name;
+        this.mConfigurationName = name;
     }
 
     @Override
     public void addConfigurationField(IConfigFields field) {
         int position = field.getSortOrder();
-        container.storeObject(field, position);
+        mContainer.storeObject(field, position);
     }
 }
