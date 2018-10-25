@@ -1,30 +1,28 @@
 package javinator9889.securepass.backup.drive;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.widget.DataBufferAdapter;
 
+import androidx.annotation.NonNull;
+
 /**
+ * Store and save recovered documents from Google Drive
+ *
+ * @see DataBufferAdapter
+ * @see Metadata
  * Created by Javinator9889 on 07/04/2018.
  */
 public class ResultsAdapter extends DataBufferAdapter<Metadata> {
+    /**
+     * Required public constructor that invokes
+     * {@link DataBufferAdapter#DataBufferAdapter(Context, int) super method} super ones with a
+     * {@link android.R.layout#simple_list_item_1 simple list item} by default
+     *
+     * @param context <code>Context</code> when instantiating this class
+     */
     public ResultsAdapter(@NonNull Context context) {
         super(context, android.R.layout.simple_list_item_1);
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = View.inflate(getContext(), android.R.layout.simple_list_item_1, null);
-        }
-        Metadata metadata = getItem(position);
-        TextView titleTextView = convertView.findViewById(android.R.id.text1);
-        titleTextView.setText(metadata.getTitle());
-        return convertView;
     }
 }
