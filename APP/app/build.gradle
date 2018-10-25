@@ -43,6 +43,7 @@ android {
 //            }
 //        }
 //    }
+    // Android X configuration for more interoperability
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->

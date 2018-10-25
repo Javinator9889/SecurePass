@@ -2,15 +2,12 @@ package javinator9889.securepass.backup.drive.base;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.NonNull;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataBuffer;
@@ -22,70 +19,118 @@ import com.google.android.gms.drive.query.SortableField;
 import com.google.android.gms.drive.widget.DataBufferAdapter;
 import com.google.android.gms.tasks.Task;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.security.Key;
+import java.security.spec.AlgorithmParameterSpec;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import javinator9889.securepass.R;
-import javinator9889.securepass.data.container.ClassContainer;
-//import javinator9889.securepass.backup.drive.CreateFileInAppFolder;
 import javinator9889.securepass.backup.drive.ResultsAdapter;
-//import javinator9889.securepass.backup.drive.RetrieveContentWithDownloadProgress;
 import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.Constants.DRIVE;
 
 /**
  * Created by Javinator9889 on 24/04/2018.
+ * Base class for managing Google Drive connections
  */
 public class GoogleDriveBase implements IDriveBase {
-    private static final String TAG = "drive-quickstart";
-    private Context driveContext;
-    private Activity mainActivity;
+    private static final String TAG = "drive-base";
+    private Context mDriveContext;
+    private Activity mMainActivity;
     private DriveResourceClient mDriveResourceClient;
-    private DataBufferAdapter<Metadata> resultsAdapter;
+    private DataBufferAdapter<Metadata> mResultsAdapter;
     private SignIn mSignInClient;
 
+    /**
+     * Public constructor for base class
+     *
+     * @param driveContext <code>Context</code> when initializing this class
+     * @param mainActivity <code>Activity</code> when initializing this class
+     * @see Context
+     * @see Activity
+     */
     public GoogleDriveBase(@NonNull Context driveContext, @NonNull Activity mainActivity) {
-        this.driveContext = driveContext;
-        this.mainActivity = mainActivity;
+        this.mDriveContext = driveContext;
+        this.mMainActivity = mainActivity;
         mSignInClient = SignIn.getInstance(mainActivity, driveContext);
-        resultsAdapter = new ResultsAdapter(driveContext);
+        mResultsAdapter = new ResultsAdapter(driveContext);
     }
 
+    /**
+     * Obtains <code>Context</code>
+     *
+     * @return <code>Context</code> object
+     * @see Context
+     */
     public Context getDriveContext() {
-        return driveContext;
+        return mDriveContext;
     }
 
+    /**
+     * Obtains <code>Activity</code>
+     *
+     * @return <code>Activity</code> object
+     * @see Activity
+     */
     public Activity getMainActivity() {
-        return mainActivity;
+        return mMainActivity;
     }
 
+    /**
+     * Obtains the <code>ResultsAdapter</code>
+     *
+     * @return <code>DataBufferAdapter of Metadata</code> object
+     * @see DataBufferAdapter
+     * @see Metadata
+     */
     public DataBufferAdapter<Metadata> getResultsAdapter() {
-        return resultsAdapter;
+        return mResultsAdapter;
     }
 
+    /**
+     * Obtains the DriveResourceClient
+     *
+     * @return <code>DriveResourceClient</code> object
+     * @see DriveResourceClient
+     */
     public DriveResourceClient getDriveResourceClient() {
         return mDriveResourceClient;
     }
 
+    /**
+     * Obtains the SignInClient
+     *
+     * @return <code>SignIn</code> object
+     * @see SignIn
+     */
     public SignIn getSignInClient() {
         return mSignInClient;
     }
 
+    /**
+     * Signs-in into Google Drive by using the SignIn class
+     *
+     * @see SignIn
+     */
     @Override
     public void signIn() {
         mSignInClient.signIn();
     }
 
+    /**
+     * Determines whether is able to sign-in
+     *
+     * @return <code>boolean</code>: 'true' if is user is signed-in, else 'false'
+     */
     protected boolean isAbleToSignIn() {
         if (!mSignInClient.isSignedIn()) {
             GoogleSignInAccount latestSignedInAccount = GoogleSignIn
-                    .getLastSignedInAccount(driveContext);
+                    .getLastSignedInAccount(mDriveContext);
             if (latestSignedInAccount != null) {
                 mDriveResourceClient = Drive
-                        .getDriveResourceClient(driveContext, latestSignedInAccount);
+                        .getDriveResourceClient(mDriveContext, latestSignedInAccount);
                 return true;
-            }
-            else {
+            } else {
                 showMessage(R.string.sign_in_first);
                 return false;
             }
@@ -93,142 +138,62 @@ public class GoogleDriveBase implements IDriveBase {
             return true;
     }
 
-    /*@Override
-    public void uploadFile(@NonNull ClassContainer dataToBackup) {
-        if (isAbleToSignIn()) {
-            CreateFileInAppFolder createFileTask = new CreateFileInAppFolder(
-                    driveContext,
-                    mainActivity,
-                    mDriveResourceClient);
-            queryFilesAndDelete(createFileTask, dataToBackup);
-        }
-    }
-
-    @Override
-    public void restoreData() {
-        if (isAbleToSignIn()) {
-            queryFiles();
-        }
-    }
-
-    private void deleteFiles(@NonNull CreateFileInAppFolder createFileTask,
-                             @NonNull ClassContainer dataToBackup) {
-        int filesFound = resultsAdapter.getCount();
-        DriveId actualElement;
-        AtomicInteger filesDeleted = new AtomicInteger();
-        for (int i = 0; i < filesFound; ++i) {
-            Metadata actualValue = resultsAdapter.getItem(i);
-            actualElement = actualValue.getDriveId();
-            mDriveResourceClient.delete(actualElement.asDriveFile())
-                    .addOnCompleteListener(mainActivity,
-                            task -> {
-                                filesDeleted.addAndGet(1);
-                                if (filesDeleted.get() == filesFound)
-                                    createFileTask.createFileInAppFolder(dataToBackup);
-                            });
-        }
-        if (filesFound == 0)
-            createFileTask.createFileInAppFolder(dataToBackup);
-    }
-
-    private void continueWithDownload() {
-        RetrieveContentWithDownloadProgress retrieveContentClass =
-                new RetrieveContentWithDownloadProgress(
-                        driveContext,
-                        mainActivity,
-                        mDriveResourceClient);
-        int filesFound = resultsAdapter.getCount();
-        Log.d(TAG, "Files found: " + filesFound);
-        DriveId ivId = null;
-        DriveId classId = null;
-        for (int i = 0; i < filesFound; ++i) {
-            Metadata actualValue = resultsAdapter.getItem(i);
-            Log.d(TAG, actualValue.getTitle());
-            Log.d(TAG, actualValue.getCreatedDate().toString());
-            switch (actualValue.getTitle()) {
-                case DRIVE.FILE_TITLE:
-                    classId = actualValue.getDriveId();
-                    break;
-                case DRIVE.IV_FILE:
-                    ivId = actualValue.getDriveId();
-                    break;
-                default:
-                    classId = null;
-                    ivId = null;
-                    break;
-            }
-        }
-        try {
-            retrieveContentClass.retrieveIvVector(ivId.asDriveFile());
-            retrieveContentClass.retrieveContents(classId.asDriveFile());
-            retrieveContentClass.finish();
-        } catch (NullPointerException e) {
-            Log.e(TAG, DRIVE.GOOGLE_FILE_NO_SELECTED, e);
-        }
-    }
-
-    private void queryFilesAndDelete(@NonNull CreateFileInAppFolder createFileTask,
-                                     @NonNull ClassContainer dataToBackup) {
-        Query query = new Query.Builder()
-                .addFilter(Filters.eq(SearchableField.MIME_TYPE, DRIVE.MIME_TYPE))
-                .build();
-        Task<DriveFolder> appFolderTask = mDriveResourceClient.getAppFolder();
-        appFolderTask.addOnSuccessListener(mainActivity,
-                driveFolder -> {
-                    Task<MetadataBuffer> queryTask = mDriveResourceClient
-                            .queryChildren(driveFolder, query);
-                    queryTask
-                            .addOnSuccessListener(mainActivity,
-                                    metadata -> {
-                                        resultsAdapter.append(metadata);
-                                        deleteFiles(createFileTask, dataToBackup);
-                                    })
-                            .addOnFailureListener(mainActivity,
-                                    e -> deleteFiles(createFileTask, dataToBackup));
-                });
-    }
-
-    private void queryFiles() {
-        SortOrder sortOrder = new SortOrder.Builder().addSortAscending(SortableField.CREATED_DATE)
-                .build();
-        Query query = new Query.Builder()
-                .addFilter(Filters.eq(SearchableField.MIME_TYPE, DRIVE.MIME_TYPE))
-                .setSortOrder(sortOrder)
-                .build();
-        Task<DriveFolder> appFolderTask = mDriveResourceClient.getAppFolder();
-        appFolderTask.addOnSuccessListener(mainActivity,
-                driveFolder -> {
-                    Task<MetadataBuffer> queryTask = mDriveResourceClient
-                            .queryChildren(driveFolder, query);
-                    queryTask
-                            .addOnSuccessListener(mainActivity,
-                                    metadata -> {
-                                        resultsAdapter.append(metadata);
-                                        continueWithDownload();
-                                    });
-                });
-    }*/
-
+    /**
+     * Sets the <code>DriveResourceClient</code> for classes that inherit from this
+     *
+     * @param mDriveResourceClient <code>DriveResourceClient</code> when the user has signed-in
+     * @see DriveResourceClient
+     */
     @Override
     public void setDriveResourceClient(DriveResourceClient mDriveResourceClient) {
         this.mDriveResourceClient = mDriveResourceClient;
     }
 
+    /**
+     * Sets whether the user is or not logged in
+     *
+     * @param isLoggedIn <code>boolean</code>, 'true' if signed-in, else 'false'
+     */
     @Override
     public void setLoggedIn(boolean isLoggedIn) {
         mSignInClient.setSignedIn(isLoggedIn);
     }
 
+    /**
+     * Method for not repeating code when showing a Toast
+     *
+     * @param message <code>String</code> which contains the message to be shown
+     * @see #showMessage(int)
+     * @deprecated use {@link #showMessage(int)} instead
+     */
     @Override
+    @Deprecated
     public void showMessage(@NonNull String message) {
-        Toast.makeText(driveContext, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(mDriveContext, message, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Method for not repeating code when showing a Toast
+     *
+     * @param message <code>@StringRes int</code> which contains the resource id (R.string
+     *                .string_name)
+     * @see StringRes
+     * @see R.string
+     */
     @Override
     public void showMessage(@StringRes int message) {
-        Toast.makeText(driveContext, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(mDriveContext, message, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Query the files that applies to some filters, saving them to a DataBufferAdapter object
+     *
+     * @param resultsAdapter <code>DataBufferAdapter of Metadata</code> which will store the results
+     * @see Constants.DRIVE
+     * @see Constants.SQL
+     * @see DataBufferAdapter
+     * @see Metadata
+     */
     protected void queryFiles(DataBufferAdapter<Metadata> resultsAdapter) {
         SortOrder sortOrder = new SortOrder.Builder().addSortAscending(SortableField.CREATED_DATE)
                 .build();
@@ -238,14 +203,18 @@ public class GoogleDriveBase implements IDriveBase {
                 .setSortOrder(sortOrder)
                 .build();
         retrieveContents(query, resultsAdapter);
-//        Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
-//        appFolderTask.addOnSuccessListener(getMainActivity(), driveFolder -> {
-//            Task<MetadataBuffer> queryTask = getDriveResourceClient()
-//                    .queryChildren(driveFolder, query);
-//            queryTask.addOnSuccessListener(getMainActivity(), resultsAdapter::append);
-//        });
     }
 
+    /**
+     * Query only the files that are an IV Vector (for encryption), saving them to a
+     * DataBufferAdapter object
+     *
+     * @param resultsAdapter <code>DataBufferAdapter of Metadata</code> which will store the results
+     * @see Constants.SQL
+     * @see Constants.DRIVE
+     * @see javax.crypto.Cipher#init(int, Key, AlgorithmParameterSpec)
+     * @see java.security.SecureRandom#nextBytes(byte[])
+     */
     protected void getIVVector(DataBufferAdapter<Metadata> resultsAdapter) {
         SortOrder sortOrder = new SortOrder.Builder().addSortAscending(SortableField.CREATED_DATE)
                 .build();
@@ -255,15 +224,18 @@ public class GoogleDriveBase implements IDriveBase {
                 .setSortOrder(sortOrder)
                 .build();
         retrieveContents(query, resultsAdapter);
-//        Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
-//        appFolderTask.addOnSuccessListener(getMainActivity(), driveFolder -> {
-//            Task<MetadataBuffer> queryTask = getDriveResourceClient()
-//                    .queryChildren(driveFolder, query);
-//            queryTask.addOnSuccessListener(getMainActivity(), resultsAdapter::append);
-//        });
     }
 
-    private void retrieveContents(@NonNull Query query, DataBufferAdapter<Metadata> resultsAdapter){
+    /**
+     * By providing a query, retrieve the correspondent Google Drive files into an adapter
+     *
+     * @param query          determines which files will be downloaded
+     * @param resultsAdapter stores files inside a <code>BufferAdapter</code>
+     * @see Query
+     * @see DataBufferAdapter
+     * @see Metadata
+     */
+    private void retrieveContents(@NonNull Query query, DataBufferAdapter<Metadata> resultsAdapter) {
         Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
         appFolderTask.addOnSuccessListener(getMainActivity(), driveFolder -> {
             Task<MetadataBuffer> queryTask = getDriveResourceClient()

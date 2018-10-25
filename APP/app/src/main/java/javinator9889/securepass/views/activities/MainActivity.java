@@ -3,6 +3,7 @@ package javinator9889.securepass.views.activities;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
@@ -37,12 +38,14 @@ public class MainActivity extends TabLayoutAdapter implements View.OnClickListen
     @Override
     protected FragmentPagerItems getItems() {
         // Stress test
-        int amount = new Random().nextInt(1000000);
+//        int amount = new Random().nextInt(10000);
+        int amount = 100;
         FragmentPagerItems items = new FragmentPagerItems(this);
         items.add(FragmentPagerItem.of("Title test", EntriesDisplayer.class));
         items.add(FragmentPagerItem.of("Another tab", EntriesDisplayer.class));
         for (int i = 0; i < amount; ++i)
             items.add(FragmentPagerItem.of("Tab #" + i, EntriesDisplayer.class));
+        Toast.makeText(this, "Generated: " + amount + " tabs", Toast.LENGTH_LONG).show();
         return items;
     }
 
