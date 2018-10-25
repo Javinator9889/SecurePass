@@ -87,6 +87,7 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                         savingPasswordProgress.dismiss();
                         Intent launcher = new Intent(this, MainActivity.class);
                         this.startActivity(launcher);
+                        this.finish();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
