@@ -10,22 +10,45 @@ import javinator9889.securepass.backup.drive.IDriveDownloader;
 import javinator9889.securepass.backup.drive.IDriveUploader;
 
 /**
+ * Class for managing backups
  * Created by Javinator9889 on 06/04/2018.
  */
-public class BackupManager implements IBackup{
-    private IDriveUploader uploader;
-    private IDriveDownloader downloader;
+public class BackupManager implements IBackup {
+    private IDriveUploader mUploader;
+    private IDriveDownloader mDownloader;
 
+    /**
+     * Public constructor for managing backups
+     *
+     * @param backupContext  <code>Context</code> when instantiating this class
+     * @param sourceActivity <code>Activity</code> when instantiating this class
+     * @see Activity
+     * @see Context
+     * @see DriveUploader
+     * @see DriveDownloader
+     */
     public BackupManager(@NonNull Context backupContext, @NonNull Activity sourceActivity) {
-        this.uploader = new DriveUploader(backupContext, sourceActivity);
-        this.downloader = new DriveDownloader(backupContext, sourceActivity);
+        this.mUploader = new DriveUploader(backupContext, sourceActivity);
+        this.mDownloader = new DriveDownloader(backupContext, sourceActivity);
     }
 
+    /**
+     * Does the backup by using
+     * {@link javinator9889.securepass.backup.drive.DriveUploader DriveUploader} class
+     *
+     * @see javinator9889.securepass.backup.drive.IDriveUploader
+     */
     @Override
     public void doBackup() {
-        this.uploader.uploadDatabase();
+        this.mUploader.uploadDatabase();
     }
 
+    /**
+     * Restores the backup by using
+     * {@link javinator9889.securepass.backup.drive.DriveDownloader DriveDownloader} class
+     *
+     * @see javinator9889.securepass.backup.drive.IDriveDownloader
+     */
     @Override
     public void restoreBackup() {
 
