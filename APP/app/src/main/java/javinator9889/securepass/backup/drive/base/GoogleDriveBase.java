@@ -141,12 +141,12 @@ public class GoogleDriveBase implements IDriveBase {
     /**
      * Sets the <code>DriveResourceClient</code> for classes that inherit from this
      *
-     * @param mDriveResourceClient <code>DriveResourceClient</code> when the user has signed-in
+     * @param resourceClient <code>DriveResourceClient</code> when the user has signed-in
      * @see DriveResourceClient
      */
     @Override
-    public void setDriveResourceClient(DriveResourceClient mDriveResourceClient) {
-        this.mDriveResourceClient = mDriveResourceClient;
+    public void setDriveResourceClient(DriveResourceClient resourceClient) {
+        this.mDriveResourceClient = resourceClient;
     }
 
     /**
