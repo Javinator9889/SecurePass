@@ -29,6 +29,18 @@ public abstract class ConfigFields implements IConfigFields, Serializable {
     private int mSortOrder;
     private long mConfigId;
 
+    /**
+     * Abstract constructor only visible for inheriting classes
+     *
+     * @param id          config field id
+     * @param description optional description
+     * @param sortOrder   fields sort order
+     * @param configId    configuration id
+     * @see ImagesConfig
+     * @see PassConfig
+     * @see LongTextConfig
+     * @see SmallTextConfig
+     */
     ConfigFields(long id, @Nullable String description, int sortOrder,
                  long configId) {
         mId = id;
@@ -37,49 +49,104 @@ public abstract class ConfigFields implements IConfigFields, Serializable {
         mConfigId = configId;
     }
 
+    /**
+     * Obtains current configuration ID (the same as in the database)
+     *
+     * @return long corresponding the ID
+     */
     @Override
     public long getConfigId() {
         return mConfigId;
     }
 
+    /**
+     * Obtains current description (the same as in the database)
+     *
+     * @return String corresponding the description (may be null)
+     */
     @Override
+    @Nullable
     public String getDescription() {
         return mDescription;
     }
 
+    /**
+     * Obtains current sort order (the same as in the database)
+     *
+     * @return int corresponding the sort order
+     */
     @Override
     public int getSortOrder() {
         return mSortOrder;
     }
 
+    /**
+     * Sets current configuration ID (the same as in the database)
+     *
+     * @param id long which must exists at configurations IDs
+     */
     @Override
     public void setConfigId(long id) {
         this.mConfigId = id;
     }
 
+    /**
+     * Sets current description (the same as in the database)
+     *
+     * @param description nullable String which contains the description
+     */
     @Override
-    public void setDescription(String description) {
+    public void setDescription(@Nullable String description) {
         this.mDescription = description;
     }
 
+    /**
+     * Sets current sort order (the same as in the database)
+     *
+     * @param index int which correspondents the order inside the fields objects
+     */
     @Override
     public void setSortOrder(int index) {
         this.mSortOrder = index;
     }
 
+    /**
+     * Gets current field ID (the same as in the database) - cannot be changed
+     *
+     * @return long corresponding the ID
+     */
     @Override
     public long getFieldId() {
         return mId;
     }
 
+    /**
+     * Changes field ID if there is any reason for
+     *
+     * @param id long corresponding the new ID
+     */
     @Override
     public void setFieldId(long id) {
         this.mId = id;
     }
 
+    /**
+     * Gets the proper table name - names available at
+     * {@link javinator9889.securepass.util.values.Constants.SQL SQL names} attributes
+     *
+     * @return String which is the table name
+     * @see javinator9889.securepass.util.values.Constants.SQL
+     */
     @Override
     public abstract String getTableName();
 
+    /**
+     * Gets the proper database type - types available at
+     * {@link DatabaseTables DatabaseTables enum} types
+     *
+     * @return DatabaseTables object with the correspondent type
+     * @see DatabaseTables
+     */
     @Override
     public abstract DatabaseTables getTableType();
 }
