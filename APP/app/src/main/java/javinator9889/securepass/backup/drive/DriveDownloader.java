@@ -2,7 +2,6 @@ package javinator9889.securepass.backup.drive;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.text.InputType;
 import android.util.Log;
 
@@ -26,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import androidx.annotation.NonNull;
 import javinator9889.securepass.R;
 import javinator9889.securepass.backup.drive.base.GoogleDriveBase;
 import javinator9889.securepass.io.IOManager;
@@ -34,21 +34,29 @@ import javinator9889.securepass.util.cipher.FileCipher;
 import javinator9889.securepass.util.cipher.ICipher;
 
 /**
+ * Class for downloading files into the device
  * Created by Javinator9889 on 03/09/2018.
+ *
+ * @see GoogleDriveBase
+ * @see IDriveDownloader
  */
 public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader {
     private static final String TAG = "DriveDownloader";
-//    private Context mDriveContext;
-//    private DriveResourceClient mResourceClient;
     private MaterialDialog mProgressBar;
 
+    /**
+     * Public constructor for starting the download activity
+     *
+     * @param driveContext <code>Context</code> when instantiating this class
+     * @param mainActivity <code>Activity</code> when instantiating this class
+     * @see Context
+     * @see Activity
+     * @see GoogleDriveBase
+     * @see MaterialDialog
+     */
     public DriveDownloader(@NonNull Context driveContext, @NonNull Activity mainActivity) {
         super(driveContext, mainActivity);
         super.signIn();
-//        this.mDriveContext = driveContext;
-//        this.mMainActivity = mainActivity;
-//        super.setDriveResourceClient(resourceClient);
-//        this.mResourceClient = resourceClient;
         mProgressBar = new MaterialDialog.Builder(driveContext)
                 .title(R.string.retrieving_data)
                 .content(R.string.wait)
@@ -57,11 +65,17 @@ public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader
                 .build();
     }
 
+    /**
+     * Restores the data and saves it into a <code>ResultsAdapter</code>
+     *
+     * @see DataBufferAdapter
+     * @see DriveFile
+     * @see Task
+     */
     @Override
     public void restoreData() {
         IOManager ioManager = IOManager.newInstance(getDriveContext());
         final ByteArrayKeeper ivVector = new ByteArrayKeeper();
-//        final AtomicReferenceArray<Byte> ivVector;
         if (!ioManager.isAnyIVVectorStored()) {
             DataBufferAdapter<Metadata> vectorData = new ResultsAdapter(getDriveContext());
             getIVVector(vectorData);
@@ -73,7 +87,6 @@ public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader
             ivFileTask.continueWith(task -> {
                 DriveContents contents = task.getResult();
                 try (InputStream stream = contents.getInputStream()) {
-//                    ivVector = new AtomicReferenceArray<>(ByteStreams.toByteArray(stream));
                     ivVector.storeArray(ByteStreams.toByteArray(stream));
                     return getDriveResourceClient().discardContents(contents);
                 }
@@ -83,13 +96,7 @@ public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }/* else {
-            try {
-                ivVector = new AtomicReferenceArray<>(Files.toByteArray(ioManager.getIVVector()));
-            } catch (IOException e) {
-                Log.e(TAG, "No IV vector available");
-            }
-        }*/
+        }
         DataBufferAdapter<Metadata> databaseBackup = new ResultsAdapter(getDriveContext());
         super.queryFiles(databaseBackup);
         DriveFile databaseFile = null;
@@ -98,7 +105,12 @@ public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader
         retrieveContents(databaseFile);
     }
 
-//    @Override
+    /**
+     * Retrieves contents by using supper methods for querying and saving files
+     *
+     * @param contents a <code>DriveFile</code> which has the databaseFile
+     * @see #restoreData()
+     */
     private void retrieveContents(@NonNull DriveFile contents) {
         mProgressBar.show();
         final DriveResourceClient resourceClient = super.getDriveResourceClient();
@@ -121,7 +133,6 @@ public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader
                                 IOManager io = IOManager.newInstance(driveContext);
                                 File destination = new File(io.downloadedDatabaseBackupPath());
                                 cipher.decryptFile(obtainedFile, destination);
-//                                io.writeDownloadedDatabaseBackup(obtainedFile);
                                 mProgressBar.dismiss();
                                 completeDownload();
                             }
@@ -137,6 +148,13 @@ public class DriveDownloader extends GoogleDriveBase implements IDriveDownloader
                 });
     }
 
+    /**
+     * As the database is encrypted, we must check if the user knows the password which used for
+     * doing the encryption
+     *
+     * @see SQLiteDatabase
+     * @see IOManager
+     */
     private void completeDownload() {
         final Context driveContext = super.getDriveContext();
         SQLiteDatabase.loadLibs(driveContext);
