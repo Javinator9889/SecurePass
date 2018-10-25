@@ -8,6 +8,8 @@ import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
+import java.util.Random;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import javinator9889.securepass.R;
@@ -28,14 +30,19 @@ public class MainActivity extends TabLayoutAdapter implements View.OnClickListen
         setSelectedTextFontRes(R.font.raleway_semibold);
         setNonSelectedTextFontRes(R.font.raleway);
         setMustChangeTypeface(true);
-        setMustShowBackButtonOnActionBar(true);
+        setMustShowBackButtonOnActionBar(false);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     protected FragmentPagerItems getItems() {
+        // Stress test
+        int amount = new Random().nextInt(1000000);
         FragmentPagerItems items = new FragmentPagerItems(this);
         items.add(FragmentPagerItem.of("Title test", EntriesDisplayer.class));
+        items.add(FragmentPagerItem.of("Another tab", EntriesDisplayer.class));
+        for (int i = 0; i < amount; ++i)
+            items.add(FragmentPagerItem.of("Tab #" + i, EntriesDisplayer.class));
         return items;
     }
 
@@ -51,7 +58,7 @@ public class MainActivity extends TabLayoutAdapter implements View.OnClickListen
                 .addMenuItem("item 3", MaterialDesignIconic.Icon.gmi_account)
                 .setLabelsCustomTypeface(R.font.raleway_semibold)
                 .setCustomIconsColor(ResourcesCompat.getColor(getResources(), R.color
-                        .colorPrimaryDark, null))
+                        .colorPrimary, null))
                 .setLabelsCustomBackgroundColor(Color.WHITE)
                 .withIconRotationEnabled(true)
                 .build();
