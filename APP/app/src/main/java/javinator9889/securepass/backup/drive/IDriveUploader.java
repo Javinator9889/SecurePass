@@ -13,16 +13,16 @@ public interface IDriveUploader {
      * General public method which invokes in order the following ones:
      * <ul>
      * <li>
-     * {@link #isAbleToSignIn()}
+     * {@link DriveUploader#isAbleToSignIn()} ()}
      * </li>
      * <li>
-     * {@link #queryFiles(DataBufferAdapter)}
+     * {@link DriveUploader#queryFiles(DataBufferAdapter)}
      * </li>
      * <li>
-     * {@link #createFileInAppFolder()}
+     * {@link DriveUploader#createFileInAppFolder()}
      * </li>
      * <li>
-     * {@link #deleteOldFiles(DataBufferAdapter)}
+     * {@link DriveUploader#deleteOldFiles(DataBufferAdapter)}
      * </li>
      * </ul>
      *
