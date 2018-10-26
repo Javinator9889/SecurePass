@@ -1,44 +1,74 @@
 package javinator9889.securepass.data.secret;
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
 
+import androidx.annotation.NonNull;
+
 /**
+ * Contains Fields of the {@link SecurityCode} class
  * Created by Javinator9889 on 29/03/2018.
  */
 public class Field implements Serializable {
-    private int id;
-    private String code;
-    private boolean isCodeUsed;
-    private SecurityCode fieldOf;
+    private long mId;
+    private String mCode;
+    private boolean mIsCodeUsed;
+    private SecurityCode mFieldOf;
 
-    public Field(int id, @NonNull String code, boolean isCodeUsed, @NonNull SecurityCode fieldOf) {
-        this.id = id;
-        this.code = code;
-        this.isCodeUsed = isCodeUsed;
-        this.fieldOf = fieldOf;
+    /**
+     * Public available constructor for Field
+     *
+     * @param id         field ID
+     * @param code       field code
+     * @param isCodeUsed whether the code has been used or not
+     * @param fieldOf    {@link SecurityCode} parent
+     * @see SecurityCode
+     */
+    public Field(long id, @NonNull String code, boolean isCodeUsed, @NonNull SecurityCode fieldOf) {
+        this.mId = id;
+        this.mCode = code;
+        this.mIsCodeUsed = isCodeUsed;
+        this.mFieldOf = fieldOf;
     }
 
-    public int getSecurityCodeID() {
-        return fieldOf.getId();
+    /**
+     * Obtains parent ID
+     *
+     * @return <code>long</code> with the parent ID
+     */
+    public long getSecurityCodeID() {
+        return mFieldOf.getId();
     }
 
+    /**
+     * Obtains field code
+     *
+     * @return <code>String</code> with the code
+     */
     public String getCode() {
-        return code;
+        return mCode;
     }
 
+    /**
+     * Determine whether the current code has been used
+     *
+     * @return <code>boolean</code>, 'true' if used, else 'false'
+     */
     public boolean isCodeUsed() {
-        return isCodeUsed;
+        return mIsCodeUsed;
     }
 
-    public int getId() {
-        return id;
+    /**
+     * Gets current field ID
+     *
+     * @return <code>long</code> with the ID
+     */
+    public long getId() {
+        return mId;
     }
 
     @Override
     public String toString() {
-        return "Field code: " + code + "\nField is used: " + isCodeUsed + "\nField field of: " +
-                fieldOf.toString();
+        return "Field mCode: " + mCode + "\nField is used: " + mIsCodeUsed + "\nField field of: " +
+                mFieldOf.toString();
     }
 }
