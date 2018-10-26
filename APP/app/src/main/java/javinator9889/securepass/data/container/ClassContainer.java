@@ -19,6 +19,7 @@ import javinator9889.securepass.io.database.DatabaseOperations;
 
 /**
  * Created by Javinator9889 on 06/04/2018.
+ * CLASS FOR TESTINGS
  */
 public class ClassContainer implements Serializable {
     private List<Category> categories;
