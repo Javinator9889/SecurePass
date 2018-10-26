@@ -1,56 +1,28 @@
 package javinator9889.securepass.data.entry.fields;
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Javinator9889 on 16/08/2018.
  */
-public class SmallText implements ISmallText, Serializable {
-    private long id;
-    private String text;
-    private String fieldDescription;
-
+public class SmallText extends Text implements Serializable {
+    /**
+     * Public available constructor that uses {@link Text#Text(long, String, String) super}
+     * constructor
+     *
+     * @param id               long text ID
+     * @param text             long text text
+     * @param fieldDescription description
+     */
     public SmallText(long id, @NonNull String text, @NonNull String fieldDescription) {
-        this.id = id;
-        this.text = text;
-        this.fieldDescription = fieldDescription;
-    }
-
-    @Override
-    public void setText(@NonNull String text) {
-        this.text = text;
-    }
-
-    @Override
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public long getSmallTextID() {
-        return id;
-    }
-
-    @Override
-    public void setSmallTextID(long smallTextID) {
-        this.id = smallTextID;
-    }
-
-    @Override
-    public void setFieldDescription(@NonNull String fieldDescription) {
-        this.fieldDescription = fieldDescription;
-    }
-
-    @Override
-    public String getFieldDescription() {
-        return fieldDescription;
+        super(id, text, fieldDescription);
     }
 
     @Override
     public String toString() {
-        return "Text: " + getText() + "\nID: " + getSmallTextID() + "\nField description: " +
+        return "Text: " + getText() + "\nID: " + getTextID() + "\nField description: " +
                 getFieldDescription();
     }
 }

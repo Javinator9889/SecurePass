@@ -16,9 +16,8 @@ import java.util.Map;
 
 import javinator9889.securepass.data.configuration.IConfigFields;
 import javinator9889.securepass.data.entry.fields.IImage;
-import javinator9889.securepass.data.entry.fields.ILongText;
 import javinator9889.securepass.data.entry.fields.IPassword;
-import javinator9889.securepass.data.entry.fields.ISmallText;
+import javinator9889.securepass.data.entry.fields.IText;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.util.values.Constants.SQL;
 import javinator9889.securepass.util.values.DatabaseTables;
@@ -60,8 +59,8 @@ public class DatabaseOperations {
                                  long entryParentCategoryId,
                                  long configurationId,
                                  @Nullable IPassword[] entryPasswords,
-                                 @Nullable ISmallText[] entrySmallTexts,
-                                 @Nullable ILongText[] entryLongTexts,
+                                 @Nullable IText[] entrySmallTexts,
+                                 @Nullable IText[] entryLongTexts,
                                  @Nullable IImage[] entryImages) {
         ContentValues params = setParams(DatabaseTables.ENTRY, entryName, icon,
                 entryParentCategoryId, configurationId);
@@ -77,23 +76,23 @@ public class DatabaseOperations {
             }
         }
         if (entrySmallTexts != null) {
-            for (ISmallText smallText : entrySmallTexts) {
+            for (IText smallText : entrySmallTexts) {
                 ContentValues smallTextParams = setParams(DatabaseTables.SMALL_TEXT,
                         smallText.getText(), smallText.getFieldDescription(), entryId,
                         entryParentCategoryId);
                 long smallTextId =
                         database.insert(SQL.SMALL_TEXT.NAME, null, smallTextParams);
-                smallText.setSmallTextID(smallTextId);
+                smallText.setTextID(smallTextId);
             }
         }
         if (entryLongTexts != null) {
-            for (ILongText longText : entryLongTexts) {
+            for (IText longText : entryLongTexts) {
                 ContentValues longTextParams = setParams(DatabaseTables.LONG_TEXT,
                         longText.getText(), longText.getFieldDescription(), entryId,
                         entryParentCategoryId);
                 long longTextId =
                         database.insert(SQL.LONG_TEXT.NAME, null, longTextParams);
-                longText.setLongTextID(longTextId);
+                longText.setTextID(longTextId);
             }
         }
         if (entryImages != null) {
@@ -194,8 +193,8 @@ public class DatabaseOperations {
                                           long entryId,
                                           long configurationId,
                                           @Nullable IPassword[] entryPasswords,
-                                          @Nullable ISmallText[] entrySmallTexts,
-                                          @Nullable ILongText[] entryLongTexts,
+                                          @Nullable IText[] entrySmallTexts,
+                                          @Nullable IText[] entryLongTexts,
                                           @Nullable IImage[] entryImages) {
         ContentValues params = setParams(DatabaseTables.ENTRY, entryName, icon,
                 entryParentCategoryId, configurationId);
@@ -213,21 +212,21 @@ public class DatabaseOperations {
             }
         }
         if (entrySmallTexts != null) {
-            for (ISmallText smallText : entrySmallTexts) {
+            for (IText smallText : entrySmallTexts) {
                 ContentValues smallTextParams = setParams(DatabaseTables.SMALL_TEXT,
                         smallText.getText(), smallText.getFieldDescription(), entryId,
                         entryParentCategoryId);
-                String[] smallTextSelectionArgs = setSelectionArgs(smallText.getSmallTextID());
+                String[] smallTextSelectionArgs = setSelectionArgs(smallText.getTextID());
                 database.update(SQL.SMALL_TEXT.NAME, smallTextParams,
                         SQL.DB_UPDATE_SMALL_TEXT_WHERE_CLAUSE, smallTextSelectionArgs);
             }
         }
         if (entryLongTexts != null) {
-            for (ILongText longText : entryLongTexts) {
+            for (IText longText : entryLongTexts) {
                 ContentValues longTextParams = setParams(DatabaseTables.LONG_TEXT,
                         longText.getText(), longText.getFieldDescription(), entryId,
                         entryParentCategoryId);
-                String[] longTextSelectionArgs = setSelectionArgs(longText.getLongTextID());
+                String[] longTextSelectionArgs = setSelectionArgs(longText.getTextID());
                 database.update(SQL.LONG_TEXT.NAME, longTextParams,
                         SQL.DB_UPDATE_LONG_TEXT_WHERE_CLAUSE, longTextSelectionArgs);
             }

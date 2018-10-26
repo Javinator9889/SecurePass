@@ -10,12 +10,14 @@ import androidx.annotation.NonNull;
 public interface ICommonMethods {
     /**
      * Updates the field description by te given one
+     *
      * @param fieldDescription new description
      */
     void setFieldDescription(@NonNull String fieldDescription);
 
     /**
      * Obtains the current field description
+     *
      * @return <code>String</code> with the description
      */
     String getFieldDescription();

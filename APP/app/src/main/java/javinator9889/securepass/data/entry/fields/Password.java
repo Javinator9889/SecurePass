@@ -1,8 +1,8 @@
 package javinator9889.securepass.data.entry.fields;
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
+
+import androidx.annotation.NonNull;
 
 /**
  * Stores Password fields
@@ -15,8 +15,9 @@ public class Password implements IPassword, Serializable {
 
     /**
      * Public available constructor fon generating a new instance
-     * @param id password ID
-     * @param password current password - cannot be null
+     *
+     * @param id               password ID
+     * @param password         current password - cannot be null
      * @param fieldDescription description for this field - cannot be null
      */
     public Password(long id, @NonNull String password, @NonNull String fieldDescription) {
@@ -27,6 +28,7 @@ public class Password implements IPassword, Serializable {
 
     /**
      * Sets a new password
+     *
      * @param password non null String with the password
      */
     @Override
@@ -36,6 +38,7 @@ public class Password implements IPassword, Serializable {
 
     /**
      * Obtains the current stored password
+     *
      * @return <code>String</code> with the password
      */
     @Override
@@ -45,6 +48,7 @@ public class Password implements IPassword, Serializable {
 
     /**
      * Gets the current password ID
+     *
      * @return <code>long</code> with the ID
      */
     @Override
@@ -54,6 +58,7 @@ public class Password implements IPassword, Serializable {
 
     /**
      * Sets a new ID - this method should not be called
+     *
      * @param passwordID new ID
      */
     @Override
@@ -63,6 +68,7 @@ public class Password implements IPassword, Serializable {
 
     /**
      * Updates the field description by te given one
+     *
      * @param fieldDescription new description
      * @see ICommonMethods
      */
@@ -73,6 +79,7 @@ public class Password implements IPassword, Serializable {
 
     /**
      * Obtains the current field description
+     *
      * @return <code>String</code> with the description
      * @see ICommonMethods
      */

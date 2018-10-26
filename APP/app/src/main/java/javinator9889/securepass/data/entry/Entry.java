@@ -5,9 +5,8 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 import javinator9889.securepass.data.entry.fields.IImage;
-import javinator9889.securepass.data.entry.fields.ILongText;
 import javinator9889.securepass.data.entry.fields.IPassword;
-import javinator9889.securepass.data.entry.fields.ISmallText;
+import javinator9889.securepass.data.entry.fields.IText;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
 
@@ -18,8 +17,8 @@ public class Entry implements Serializable {
     private int id;
     private GeneralObjectContainer<IImage> images;
     private GeneralObjectContainer<IPassword> passwords;
-    private GeneralObjectContainer<ISmallText> smallTexts;
-    private GeneralObjectContainer<ILongText> longTexts;
+    private GeneralObjectContainer<IText> smallTexts;
+    private GeneralObjectContainer<IText> longTexts;
     private String icon;
     private Category category;
     private String name;
@@ -38,7 +37,7 @@ public class Entry implements Serializable {
 //    }
 
     public Entry(int id, @NonNull IImage[] images, @NonNull IPassword[] passwords,
-                 @NonNull ISmallText[] smallTexts, @NonNull ILongText[] longTexts,
+                 @NonNull IText[] smallTexts, @NonNull IText[] longTexts,
                  @NonNull String icon, @NonNull Category category, @NonNull String name) {
         this.id = id;
         this.icon = icon;
@@ -66,7 +65,7 @@ public class Entry implements Serializable {
         return images;
     }
 
-    public GeneralObjectContainer<ILongText> getLongTexts() {
+    public GeneralObjectContainer<IText> getLongTexts() {
         return longTexts;
     }
 
@@ -74,7 +73,7 @@ public class Entry implements Serializable {
         return passwords;
     }
 
-    public GeneralObjectContainer<ISmallText> getSmallTexts() {
+    public GeneralObjectContainer<IText> getSmallTexts() {
         return smallTexts;
     }
 
@@ -86,11 +85,11 @@ public class Entry implements Serializable {
         this.passwords.storeObject(password);
     }
 
-    public void addSmallText(ISmallText smallText) {
+    public void addSmallText(IText smallText) {
         this.smallTexts.storeObject(smallText);
     }
 
-    public void addLongText(ILongText longText) {
+    public void addLongText(IText longText) {
         this.longTexts.storeObject(longText);
     }
 

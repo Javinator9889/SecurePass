@@ -1,9 +1,9 @@
 package javinator9889.securepass.data.entry.fields;
 
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
+
+import androidx.annotation.NonNull;
 
 /**
  * Stores Image fields
@@ -16,8 +16,9 @@ public class Image implements IImage, Serializable {
 
     /**
      * Public available constructor for generating a new instance
-     * @param id current image ID
-     * @param source Base64 image information
+     *
+     * @param id               current image ID
+     * @param source           Base64 image information
      * @param fieldDescription description
      * @see android.util.Base64
      */
@@ -29,6 +30,7 @@ public class Image implements IImage, Serializable {
 
     /**
      * Saves the image source
+     *
      * @param imageSource non null <code>String</code> containing the Base64 source
      * @see android.util.Base64
      */
@@ -39,6 +41,7 @@ public class Image implements IImage, Serializable {
 
     /**
      * Obtains the image source
+     *
      * @return <code>String</code> containing the Base64 image
      * @see android.util.Base64
      */
@@ -49,6 +52,7 @@ public class Image implements IImage, Serializable {
 
     /**
      * Obtains the current image ID
+     *
      * @return <code>long</code> corresponding the ID
      */
     @Override
@@ -58,6 +62,7 @@ public class Image implements IImage, Serializable {
 
     /**
      * Sets a new image ID for any reason - should not be called
+     *
      * @param imageID the new ID
      */
     @Override
@@ -67,6 +72,7 @@ public class Image implements IImage, Serializable {
 
     /**
      * Updates the field description by te given one
+     *
      * @param fieldDescription new description
      * @see ICommonMethods
      */
@@ -77,6 +83,7 @@ public class Image implements IImage, Serializable {
 
     /**
      * Obtains the current field description
+     *
      * @return <code>String</code> with the description
      * @see ICommonMethods
      */

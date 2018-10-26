@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 public interface IImage extends ICommonMethods {
     /**
      * Saves the image source
+     *
      * @param imageSource non null <code>String</code> containing the Base64 source
      * @see android.util.Base64
      */
@@ -16,6 +17,7 @@ public interface IImage extends ICommonMethods {
 
     /**
      * Obtains the image source
+     *
      * @return <code>String</code> containing the Base64 image
      * @see android.util.Base64
      */
@@ -23,12 +25,14 @@ public interface IImage extends ICommonMethods {
 
     /**
      * Obtains the current image ID
+     *
      * @return <code>long</code> corresponding the ID
      */
     long getImageID();
 
     /**
      * Sets a new image ID for any reason - should not be called
+     *
      * @param imageID the new ID
      */
     void setImageID(long imageID);
