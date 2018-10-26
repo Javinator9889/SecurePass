@@ -1,9 +1,8 @@
 package javinator9889.securepass.data.entry;
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
 
+import androidx.annotation.NonNull;
 import javinator9889.securepass.data.entry.fields.IImage;
 import javinator9889.securepass.data.entry.fields.IPassword;
 import javinator9889.securepass.data.entry.fields.IText;
@@ -14,133 +13,227 @@ import javinator9889.securepass.objects.ObjectContainer;
  * Created by Javinator9889 on 29/03/2018.
  */
 public class Entry implements Serializable {
-    private int id;
-    private GeneralObjectContainer<IImage> images;
-    private GeneralObjectContainer<IPassword> passwords;
-    private GeneralObjectContainer<IText> smallTexts;
-    private GeneralObjectContainer<IText> longTexts;
-    private String icon;
-    private Category category;
-    private String name;
-    //    private String description;
-    //    private String accountName;
-    //    private String accountPassword;
+    private long mId;
+    private GeneralObjectContainer<IImage> mImages;
+    private GeneralObjectContainer<IPassword> mPasswords;
+    private GeneralObjectContainer<IText> mSmallTexts;
+    private GeneralObjectContainer<IText> mLongTexts;
+    private String mIcon;
+    private Category mCategory;
+    private String mName;
 
-//    public Entry(int id, @NonNull String accountName, @NonNull String accountPassword,
-//                 @NonNull String icon, @Nullable String description, @NonNull Category category) {
-//        this.id = id;
-//        this.accountName = accountName;
-//        this.accountPassword = accountPassword;
-//        this.icon = icon;
-//        this.description = description;
-//        this.category = category;
-//    }
-
-    public Entry(int id, @NonNull IImage[] images, @NonNull IPassword[] passwords,
-                 @NonNull IText[] smallTexts, @NonNull IText[] longTexts,
-                 @NonNull String icon, @NonNull Category category, @NonNull String name) {
-        this.id = id;
-        this.icon = icon;
-        this.category = category;
-        this.name = name;
-        this.images = new ObjectContainer<>(images);
-        this.passwords = new ObjectContainer<>(passwords);
-        this.smallTexts = new ObjectContainer<>(smallTexts);
-        this.longTexts = new ObjectContainer<>(longTexts);
+    /**
+     * Public Entry constructor which contains some different fields
+     *
+     * @param id         entry ID
+     * @param images     array containing {@link IImage} classes
+     * @param passwords  array containing {@link IPassword} classes
+     * @param smallTexts array containing {@link IText} classes - see
+     *                   {@link javinator9889.securepass.data.entry.fields.SmallText}
+     * @param longTexts  array containing {@link IText} classes - see
+     *                   {@link javinator9889.securepass.data.entry.fields.LongText}
+     * @param icon       entry icon
+     * @param category   entry category
+     * @param name       entry name
+     * @see javinator9889.securepass.data.entry.fields.Image
+     * @see javinator9889.securepass.data.entry.fields.Password
+     * @see javinator9889.securepass.data.entry.fields.Text
+     * @see javinator9889.securepass.data.entry.fields.SmallText
+     * @see javinator9889.securepass.data.entry.fields.LongText
+     * @see Category
+     */
+    public Entry(long id,
+                 @NonNull IImage[] images,
+                 @NonNull IPassword[] passwords,
+                 @NonNull IText[] smallTexts,
+                 @NonNull IText[] longTexts,
+                 @NonNull String icon,
+                 @NonNull Category category,
+                 @NonNull String name) {
+        this.mId = id;
+        this.mIcon = icon;
+        this.mCategory = category;
+        this.mName = name;
+        this.mImages = new ObjectContainer<>(images);
+        this.mPasswords = new ObjectContainer<>(passwords);
+        this.mSmallTexts = new ObjectContainer<>(smallTexts);
+        this.mLongTexts = new ObjectContainer<>(longTexts);
     }
 
-    public int getId() {
-        return id;
+    /**
+     * Obtains current entry ID
+     *
+     * @return <code>long</code> with the ID
+     */
+    public long getId() {
+        return mId;
     }
 
+    /**
+     * Obtains current entry name
+     *
+     * @return <code>String</code> with the name
+     */
     public String getName() {
-        return name;
+        return mName;
     }
 
+    /**
+     * Updates entry name
+     *
+     * @param name new name
+     */
     public void setName(String name) {
-        this.name = name;
+        this.mName = name;
     }
 
+    /**
+     * Obtains all available images inside entry
+     *
+     * @return a {@link GeneralObjectContainer} with the images
+     * @see IImage
+     * @see javinator9889.securepass.data.entry.fields.Image
+     * @see GeneralObjectContainer
+     * @see ObjectContainer
+     */
     public GeneralObjectContainer<IImage> getImages() {
-        return images;
+        return mImages;
     }
 
+    /**
+     * Obtains all available long texts inside entry
+     *
+     * @return a {@link GeneralObjectContainer} with texts
+     * @see IText
+     * @see javinator9889.securepass.data.entry.fields.Text
+     * @see javinator9889.securepass.data.entry.fields.LongText
+     * @see GeneralObjectContainer
+     * @see ObjectContainer
+     */
     public GeneralObjectContainer<IText> getLongTexts() {
-        return longTexts;
+        return mLongTexts;
     }
 
+    /**
+     * Obtains all available passwords inside entry
+     *
+     * @return a {@link GeneralObjectContainer} with passwords
+     * @see IPassword
+     * @see javinator9889.securepass.data.entry.fields.Password
+     * @see GeneralObjectContainer
+     * @see ObjectContainer
+     */
     public GeneralObjectContainer<IPassword> getPasswords() {
-        return passwords;
+        return mPasswords;
     }
 
+    /**
+     * Obtains all available small texts inside entry
+     *
+     * @return a {@link GeneralObjectContainer} with texts
+     * @see IText
+     * @see javinator9889.securepass.data.entry.fields.Text
+     * @see javinator9889.securepass.data.entry.fields.SmallText
+     * @see GeneralObjectContainer
+     * @see ObjectContainer
+     */
     public GeneralObjectContainer<IText> getSmallTexts() {
-        return smallTexts;
+        return mSmallTexts;
     }
 
+    /**
+     * Add a new image to the entry
+     *
+     * @param image new image
+     * @see IImage
+     * @see javinator9889.securepass.data.entry.fields.Image
+     */
     public void addImage(IImage image) {
-        this.images.storeObject(image);
+        this.mImages.storeObject(image);
     }
 
+    /**
+     * Add a new password to the entry
+     *
+     * @param password new password
+     * @see IPassword
+     * @see javinator9889.securepass.data.entry.fields.Password
+     */
     public void addPassword(IPassword password) {
-        this.passwords.storeObject(password);
+        this.mPasswords.storeObject(password);
     }
 
+    /**
+     * Add a new small text to the entry
+     *
+     * @param smallText new text
+     * @see IText
+     * @see javinator9889.securepass.data.entry.fields.Text
+     * @see javinator9889.securepass.data.entry.fields.SmallText
+     */
     public void addSmallText(IText smallText) {
-        this.smallTexts.storeObject(smallText);
+        this.mSmallTexts.storeObject(smallText);
     }
 
+    /**
+     * Add a new long text to the entry
+     *
+     * @param longText new text
+     * @see IText
+     * @see javinator9889.securepass.data.entry.fields.Text
+     * @see javinator9889.securepass.data.entry.fields.LongText
+     */
     public void addLongText(IText longText) {
-        this.longTexts.storeObject(longText);
+        this.mLongTexts.storeObject(longText);
     }
 
-    //    public String getAccountName() {
-//        return accountName;
-//    }
-
-//    public void setAccountName(String accountName) {
-//        this.accountName = accountName;
-//    }
-
-//    public String getAccountPassword() {
-//        return accountPassword;
-//    }
-
-//    public void setAccountPassword(String accountPassword) {
-//        this.accountPassword = accountPassword;
-//    }
-
+    /**
+     * Obtains current entry icon
+     *
+     * @return <code>String</code> with the icon
+     */
     public String getIcon() {
-        return icon;
+        return mIcon;
     }
 
+    /**
+     * Sets a new icon for the entry
+     *
+     * @param icon new icon
+     */
     public void setIcon(String icon) {
-        this.icon = icon;
+        this.mIcon = icon;
     }
 
-//    public String getDescription() {
-//        return description;
-//    }
-
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
-
+    /**
+     * Gets current entry category
+     *
+     * @return <code>Category</code> in which this entry is stored
+     * @see Category
+     */
     public Category getCategory() {
-        return category;
+        return mCategory;
     }
 
+    /**
+     * Updates current entry category
+     *
+     * @param category new category
+     * @see Category
+     */
     public void setCategory(Category category) {
-        this.category = category;
+        this.mCategory = category;
     }
 
     @Override
     public String toString() {
-        return "Entry ID: " + id + "\nEntry passwords: " + passwords.toString() + "\nEntry icon: " +
-                icon + "\nEntry name: " + name + "\nEntry category: " + category.toString() +
-                "\nEntry small texts: " + smallTexts.toString() + "\nEntry long texts: " +
-                longTexts.toString() + "\nEntry images: " + images.toString();
-//        return "Entry ID: " + id + "\nEntry account name: " + accountName + "\nEntry password: " +
-//                accountPassword + "\nEntry icon: " + icon + "\nEntry description: " + description +
-//                "\nEntry category: " + category.toString();
+        return "Entry ID: " + mId +
+                "\nEntry mPasswords: " + mPasswords.toString() +
+                "\nEntry mIcon: " + mIcon +
+                "\nEntry mName: " + mName +
+                "\nEntry mCategory: " + mCategory.toString() +
+                "\nEntry small texts: " + mSmallTexts.toString() +
+                "\nEntry long texts: " + mLongTexts.toString() +
+                "\nEntry mImages: " + mImages.toString();
     }
 }
