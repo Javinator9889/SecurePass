@@ -1,8 +1,6 @@
 package javinator9889.securepass.io;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.common.util.IOUtils;
@@ -20,6 +18,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import javinator9889.securepass.R;
 import javinator9889.securepass.util.cipher.PasswordCipher;
 import javinator9889.securepass.util.cipher.PasswordSaver;
@@ -31,49 +31,93 @@ import javinator9889.securepass.util.values.Constants;
  */
 
 public class IOManager {
-    private Context activityContext;
-    private File filesCache;
-    private File databasePath;
-    private File dataDir;
+    private Context mActivityContext;
+    private File mFilesCache;
+    private File mDatabasePath;
+    private File mDataDir;
 
+    /**
+     * Private constructor used by {@link #newInstance(Context)} method
+     *
+     * @param activityContext <code>Context</code> when instantiated the class
+     * @see Context
+     * @see File
+     */
     private IOManager(@NonNull Context activityContext) {
-        this.activityContext = activityContext;
-        this.filesCache = activityContext.getCacheDir();
-        this.databasePath = activityContext.getDatabasePath(Constants.SQL.DB_FILENAME);
-        this.dataDir = activityContext.getFilesDir();
+        this.mActivityContext = activityContext;
+        this.mFilesCache = activityContext.getCacheDir();
+        this.mDatabasePath = activityContext.getDatabasePath(Constants.SQL.DB_FILENAME);
+        this.mDataDir = activityContext.getFilesDir();
     }
 
+    /**
+     * Public static available constructor for getting IOManager instances. Uses internally
+     * {@link #IOManager(Context)}
+     *
+     * @param activityContext <code>Context</code> when instantiated the class
+     * @return <code>IOManager</code> generated instance
+     * @see Context
+     */
     @NonNull
     public static IOManager newInstance(Context activityContext) {
         return new IOManager(activityContext);
     }
 
+    /**
+     * Checks if there is any IV Vector stored (for encryption/decryption) at cache or data dir
+     *
+     * @return <code>boolean</code> 'true' if there is any vector, else 'false'
+     * @see Context#getCacheDir()
+     * @see Context#getDataDir()
+     */
     public boolean isAnyIVVectorStored() {
-        File cacheFile = new File(filesCache.getAbsolutePath() + "/iv_vector.dat");
-        File dataFile = new File(dataDir.getAbsolutePath() + "/iv_vector.dat");
+        File cacheFile = new File(mFilesCache.getAbsolutePath() + "/iv_vector.dat");
+        File dataFile = new File(mDataDir.getAbsolutePath() + "/iv_vector.dat");
         return cacheFile.exists() || dataFile.exists();
     }
 
+    /**
+     * Gets IV Vector file description inside the {@link File} object
+     *
+     * @return <code>File</code> with IV Vector file data
+     * @see Context#getCacheDir()
+     * @see Context#getDataDir()
+     */
     public File getIVVector() {
-        File cacheFile = new File(filesCache.getAbsolutePath() + "/iv_vector.dat");
-        File dataFile = new File(dataDir.getAbsolutePath() + "/iv_vector.dat");
+        File cacheFile = new File(mFilesCache.getAbsolutePath() + "/iv_vector.dat");
+        File dataFile = new File(mDataDir.getAbsolutePath() + "/iv_vector.dat");
         return dataFile.exists() ?
-                dataDir.listFiles((dir, name) -> name.toLowerCase().equals("iv_vector.dat"))[0] :
+                mDataDir.listFiles((dir, name) -> name.toLowerCase().equals("iv_vector.dat"))[0] :
                 cacheFile.listFiles(((dir, name) -> name.toLowerCase().equals("iv_vector.dat")))[0];
     }
 
+    /**
+     * Stores the IV Vector at the {@link Context#getDataDir() data dir path}
+     *
+     * @param ivVector the vector (in bytes) which will be stored
+     * @throws IOException if it is not possible to write to the file
+     * @see Context#getDataDir()
+     * @see Files#write(byte[], File)
+     */
     public void saveIVVector(byte[] ivVector) throws IOException {
-        String filename = dataDir.getAbsolutePath() + "/iv_vector.dat";
+        String filename = mDataDir.getAbsolutePath() + "/iv_vector.dat";
         File outputFile = new File(filename);
         Files.write(ivVector, outputFile);
     }
 
+    /**
+     * Loads from {@link R.raw raw resources} all the SQL scripts
+     *
+     * @return a <code>List</code> of <code>String</code> with the correspondent scripts
+     * @throws IOException when there is no file available
+     * @see R.raw
+     */
     public List<String> loadSQLScript() throws IOException {
         List<String> result = new ArrayList<>(5);
         int[] sqlScripts = new int[]{R.raw.create_category, R.raw.create_entry, R.raw.create_qrcode,
                 R.raw.create_security_code, R.raw.create_field};
         for (int sqlScript : sqlScripts) {
-            InputStream sqlScriptInputFile = this.activityContext.getResources()
+            InputStream sqlScriptInputFile = this.mActivityContext.getResources()
                     .openRawResource(sqlScript);
             StringBuilder builder = new StringBuilder();
             BufferedReader sqlStringsInFile = new BufferedReader(
@@ -86,8 +130,14 @@ public class IOManager {
         return result;
     }
 
+    /**
+     * Loads from {@link R.raw raw resources} the <b>privacy</b> text saved as Markdown file
+     *
+     * @return <code>String</code> with the hole text
+     * @throws IOException when there is no file available
+     */
     public String loadPrivacyTextMD() throws IOException {
-        InputStream privacyPolicyInputStream = this.activityContext.getResources()
+        InputStream privacyPolicyInputStream = this.mActivityContext.getResources()
                 .openRawResource(R.raw.privacy);
         StringBuilder builder = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(privacyPolicyInputStream));
@@ -97,8 +147,16 @@ public class IOManager {
         return builder.toString();
     }
 
+    /**
+     * Loads from {@link R.raw raw resources} the <b>terms and conditions</b> text saved as
+     * Markdown
+     * file
+     *
+     * @return <code>String</code> with the hole text
+     * @throws IOException when there is no file available
+     */
     public String loadTermsConditionsTextMD() throws IOException {
-        InputStream termsConditionsStream = this.activityContext.getResources()
+        InputStream termsConditionsStream = this.mActivityContext.getResources()
                 .openRawResource(R.raw.terms_conditions);
         StringBuilder builder = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(termsConditionsStream));
@@ -108,19 +166,41 @@ public class IOManager {
         return builder.toString();
     }
 
+    /**
+     * Stores a password in {@link com.chamber.java.library.SharedChamber}
+     *
+     * @param userPassword password to save
+     * @deprecated method as the password is no longer saved in a file
+     */
+    @Deprecated
     public void storePassword(@NonNull String userPassword) {
-        PasswordCipher passwordSaver = PasswordSaver.instantiate(activityContext);
+        PasswordCipher passwordSaver = PasswordSaver.instantiate(mActivityContext);
         passwordSaver.putPassword(userPassword);
     }
 
+    /**
+     * Reads password from {@link com.chamber.java.library.SharedChamber}
+     *
+     * @return <code>String</code> with the password
+     * @deprecated method as the password is no longer saved in a file
+     */
+    @Deprecated
     @Nullable
     public String readPassword() {
-        PasswordCipher passwordReader = PasswordSaver.instantiate(activityContext);
+        PasswordCipher passwordReader = PasswordSaver.instantiate(mActivityContext);
         return passwordReader.getPassword();
     }
 
+    /**
+     * Writes an InputStream with a database backup to an OutputStream
+     *
+     * @param from source
+     * @deprecated everything is now done at
+     * {@link javinator9889.securepass.backup.drive.DriveDownloader DriveDownloader} class
+     */
+    @Deprecated
     public void writeDownloadedDatabaseBackup(@NonNull InputStream from) {
-        String filename = filesCache.getAbsolutePath() + "/SecurePass.db";
+        String filename = mFilesCache.getAbsolutePath() + "/SecurePass.db";
         try {
             OutputStream to = new FileOutputStream(filename);
             IOUtils.copyStream(from, to);
@@ -130,8 +210,16 @@ public class IOManager {
         }
     }
 
+    /**
+     * Reads a downloaded database backup from FilesCache
+     *
+     * @return <code>InputStream</code> when file is available
+     * @deprecated everything is now done at
+     * {@link javinator9889.securepass.backup.drive.DriveDownloader DriveDownloader} class
+     */
+    @Deprecated
     public InputStream readDownloadedDatabaseBackup() {
-        String filename = filesCache.getAbsolutePath() + "/SecurePass.db";
+        String filename = mFilesCache.getAbsolutePath() + "/SecurePass.db";
         try {
             return new FileInputStream(filename);
         } catch (FileNotFoundException e) {
@@ -140,19 +228,36 @@ public class IOManager {
         }
     }
 
+    /**
+     * Obtains the path where databases backups are saved temporally
+     *
+     * @return <code>String</code> with the path
+     */
     public String downloadedDatabaseBackupPath() {
-        return filesCache.getAbsolutePath() + "/SecurePass.db";
+        return mFilesCache.getAbsolutePath() + "/SecurePass.db";
     }
 
+    /**
+     * Removes downloaded database backup
+     *
+     * @deprecated everything is now done at
+     * {@link javinator9889.securepass.backup.drive.DriveDownloader DriveDownloader} class
+     */
+    @Deprecated
     public void deleteDownloadedDatabaseBackup() {
-        String filename = filesCache.getAbsolutePath() + "/class.bck";
+        String filename = mFilesCache.getAbsolutePath() + "/class.bck";
 
         File fileToDelete = new File(filename);
         if (!fileToDelete.delete())
             Log.e("Delete IO", "There was an error while trying to delete class.bck");
     }
 
+    /**
+     * Obtains the path where database is stored
+     *
+     * @return <code>File</code> with the path
+     */
     public File getDatabasePath() {
-        return databasePath;
+        return mDatabasePath;
     }
 }
