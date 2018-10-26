@@ -1,8 +1,8 @@
 package javinator9889.securepass.data.secret;
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
+
+import androidx.annotation.NonNull;
 
 /**
  * Class that contains Fields with SecurityCodes
@@ -34,6 +34,7 @@ public class SecurityCode implements Serializable {
 
     /**
      * Obtains current SecurityCode account name
+     *
      * @return <code>String</code> with the name
      */
     public String getAccountName() {
