@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 /**
+ * Stores Image fields
  * Created by Javinator9889 on 16/08/2018.
  */
 public class Image implements IImage, Serializable {
