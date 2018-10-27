@@ -1,31 +1,58 @@
 package javinator9889.securepass.objects;
 
 /**
+ * Class for containing a <code>ByteArray</code>
  * Created by Javinator9889 on 21/09/2018.
  */
 public class ByteArrayKeeper {
-    private byte[] array;
-    private int size;
+    private byte[] mArray;
+    private boolean mIsAnyArrayStored;
 
+    /**
+     * Default constructor creates an empty array
+     *
+     * @see #ByteArrayKeeper(byte[])
+     */
     public ByteArrayKeeper() {
-        this.size = -1;
-        this.array = new byte[]{};
+        this(new byte[]{});
     }
 
+    /**
+     * Stores the given array in the class
+     *
+     * @param array object to store
+     */
     public ByteArrayKeeper(byte[] array) {
-        this.array = array;
-        this.size = array.length;
+        this.mArray = array;
+        this.mIsAnyArrayStored = array.length > 0;
     }
 
-    public boolean isEmpty() {
-        return this.size == 0;
+    /**
+     * Checks if there is any array stored
+     *
+     * @return <code>boolean</code> 'true' if there is anyone stored, else 'false'
+     */
+    public boolean isAnyArrayStored() {
+        return mIsAnyArrayStored;
     }
 
+    /**
+     * Stores an array in class
+     *
+     * @param source the array to store
+     */
     public void storeArray(byte[] source) {
-        this.array = source;
+        this.mArray = source;
+        mIsAnyArrayStored = source.length > 0;
     }
 
+    /**
+     * Gets the stored array in class
+     *
+     * @return <code>byte[]</code> array if anyone stored, else {@code null}
+     * @see #isAnyArrayStored()
+     */
     public byte[] getArray() {
-        return array;
+        return isAnyArrayStored() ? mArray : null;
     }
 }
