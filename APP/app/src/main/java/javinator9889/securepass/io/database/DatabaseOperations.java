@@ -1,8 +1,6 @@
 package javinator9889.securepass.io.database;
 
 import android.content.ContentValues;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 
 import net.sqlcipher.Cursor;
@@ -14,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.IConfigFields;
 import javinator9889.securepass.data.entry.fields.IImage;
 import javinator9889.securepass.data.entry.fields.IPassword;
@@ -139,7 +139,7 @@ public class DatabaseOperations {
                                                  configurations) {
         ContentValues params = setParams(DatabaseTables.CONFIGURATION, configurationName);
         long configId = database.insert(SQL.CONFIGURATION.NAME, null, params);
-        Iterator<IConfigFields> storedObjects = configurations.getStoredObjectIterator();
+        Iterator<IConfigFields> storedObjects = configurations.iterator();
         while (storedObjects.hasNext()) {
             IConfigFields configurationField = storedObjects.next();
             configurationField.setConfigId(configId);
