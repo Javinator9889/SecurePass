@@ -1,4 +1,4 @@
-package javinator9889.securepass.io.database;
+package javinator9889.securepass.io.database.operations;
 
 import android.content.ContentValues;
 import android.util.Log;
@@ -8,7 +8,6 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +17,7 @@ import javinator9889.securepass.data.configuration.IConfigFields;
 import javinator9889.securepass.data.entry.fields.IImage;
 import javinator9889.securepass.data.entry.fields.IPassword;
 import javinator9889.securepass.data.entry.fields.IText;
+import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.util.values.Constants.SQL;
 import javinator9889.securepass.util.values.DatabaseTables;
@@ -25,37 +25,231 @@ import javinator9889.securepass.util.values.DatabaseTables;
 /**
  * Created by Javinator9889 on 29/03/2018.
  */
-public class DatabaseOperations {
-    private SQLiteDatabase database;
+public class CommonOperations {
+    private static final String TAG = "Database Operations";
+    private SQLiteDatabase mDatabase;
 
-    private DatabaseOperations(DatabaseManager databaseInstance) {
+    /**
+     * Public constructor for creating this class - use this instad of
+     * {@link #newInstance(DatabaseManager)}
+     *
+     * @param databaseInstance instance of the {@link DatabaseManager} object
+     * @see DatabaseManager
+     */
+    public CommonOperations(DatabaseManager databaseInstance) {
         try {
             databaseInstance.getDatabaseInitializer().join();
-            this.database = databaseInstance.getDatabaseInstance();
+            this.mDatabase = databaseInstance.getDatabaseInstance();
         } catch (InterruptedException e) {
-            Log.e("DATABASE-OP", "Error while trying to join thread \""
+            Log.e(getTag(), "Error while trying to join thread \""
                     + SQL.DB_INIT_THREAD_NAME + "\". Interrupted exception. Full trace:");
             e.printStackTrace();
         }
     }
 
-    public static DatabaseOperations newInstance(DatabaseManager databaseManagerInstance) {
-        return new DatabaseOperations(databaseManagerInstance);
+    /**
+     * Public class loader - uses {@link #CommonOperations(DatabaseManager) private constructor}
+     *
+     * @param databaseManagerInstance instance of the {@link DatabaseManager} object
+     * @return <code>CommonOperations</code>
+     * @deprecated use {@link #CommonOperations(DatabaseManager)} instead
+     */
+    @Deprecated
+    public static CommonOperations newInstance(DatabaseManager databaseManagerInstance) {
+        return new CommonOperations(databaseManagerInstance);
     }
 
+    /**
+     * Method for changing the database password
+     *
+     * @param newDatabasePassword new password
+     * @see SQLiteDatabase#changePassword(String)
+     */
     public void changeDatabasePassword(@NonNull String newDatabasePassword) {
-        this.database.changePassword(newDatabasePassword);
+        this.mDatabase.changePassword(newDatabasePassword);
     }
 
+    /**
+     * Registers the default ("Global") category
+     *
+     * @return <code>long</code> with the category ID (should be '1')
+     * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
+     */
     public long registerDefaultCategory() {
         ContentValues params = new ContentValues();
         params.put(SQL.CATEGORY.C_ID, 1);
         params.put(SQL.CATEGORY.C_NAME, "Global");
-        return database.insertWithOnConflict(SQL.CATEGORY.NAME, null, params,
+        return mDatabase.insertWithOnConflict(SQL.CATEGORY.NAME, null, params,
                 SQLiteDatabase.CONFLICT_IGNORE);
     }
 
-    public long registerNewEntry(@NonNull String entryName, @NonNull String icon,
+    /**
+     * Gets the tag for {@link Log} output - should be overridden
+     *
+     * @return <code>String</code> with the tag name
+     */
+    public String getTag() {
+        return TAG;
+    }
+
+    /**
+     * Tries to insert the data at the specified table
+     *
+     * @param tableName the table to insert the row
+     * @param params    map containing the initial values
+     * @return the row ID or -1 if any error occurred
+     * @see SQLiteDatabase#insert(String, String, ContentValues)
+     * @see ContentValues
+     */
+    protected long insert(@NonNull String tableName, @NonNull ContentValues params) {
+        return mDatabase.insert(tableName, null, params);
+    }
+
+    /**
+     * Tries to insert the data at the specified table ignoring conflicts
+     *
+     * @param tableName the table to insert the row
+     * @param params    map containing the initial values
+     * @return the row ID or -1 if any error occurred
+     * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
+     * @see SQLiteDatabase#CONFLICT_IGNORE
+     * @see ContentValues
+     */
+    protected long insertIgnoreOnConflict(@NonNull String tableName,
+                                          @NonNull ContentValues params) {
+        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+                .CONFLICT_IGNORE);
+    }
+
+    /**
+     * Tries to insert the data at the specified table aborting when conflicts occur
+     *
+     * @param tableName the table to insert the row
+     * @param params    map containing the initial values
+     * @return the row ID or -1 if any error occurred
+     * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
+     * @see SQLiteDatabase#CONFLICT_ABORT
+     * @see ContentValues
+     */
+    protected long insertAbortOnConflict(@NonNull String tableName, @NonNull ContentValues params) {
+        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+                .CONFLICT_ABORT);
+    }
+
+    /**
+     * Tries to insert the data at the specified table doing nothing with conflicts
+     *
+     * @param tableName the table to insert the row
+     * @param params    map containing the initial values
+     * @return the row ID or -1 if any error ocurred
+     * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
+     * @see SQLiteDatabase#CONFLICT_NONE
+     * @see ContentValues
+     */
+    protected long insertNoneOnConflit(@NonNull String tableName, @NonNull ContentValues params) {
+        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+                .CONFLICT_NONE);
+    }
+
+    /**
+     * Tries to insert the data at the specified table failing with conflicts
+     *
+     * @param tableName the table to insert the row
+     * @param params    map containing the initial values
+     * @return the row ID or -1 if any error occurred
+     * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
+     * @see SQLiteDatabase#CONFLICT_FAIL
+     * @see ContentValues
+     */
+    protected long insertFailOnConflict(@NonNull String tableName, @NonNull ContentValues params) {
+        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+                .CONFLICT_FAIL);
+    }
+
+    /**
+     * Tries to insert the data at the specified table replacing conflicts
+     *
+     * @param tableName the table to insert the row
+     * @param params    map containing the initial values
+     * @return the row ID or -1 if any error occurred
+     * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
+     * @see SQLiteDatabase#CONFLICT_REPLACE
+     * @see ContentValues
+     */
+    protected long insertReplaceOnConflict(@NonNull String tableName,
+                                           @NonNull ContentValues params) {
+        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+                .CONFLICT_REPLACE);
+    }
+
+    /**
+     * Tries to insert the data at the specified table rolling back on conflicts
+     *
+     * @param tableName the table to insert the row
+     * @param params    map containing the initial values
+     * @return the row ID or -1 if any error occurred
+     * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
+     * @see SQLiteDatabase#CONFLICT_ROLLBACK
+     * @see ContentValues
+     */
+    protected long insertRollbackOnConflict(@NonNull String tableName,
+                                            @NonNull ContentValues params) {
+        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+                .CONFLICT_ROLLBACK);
+    }
+
+    /**
+     * Updates table information if exists
+     *
+     * @param tableName   table name to modify
+     * @param values      new values to insert
+     * @param whereClause SQL where clause
+     * @param whereArgs   SQL where args (probably it is an ID)
+     * @return the affected rows
+     * @throws net.sqlcipher.SQLException If the SQL string is invalid for some reason
+     * @throws IllegalStateException      if the database is not open
+     */
+    protected int update(@NonNull String tableName,
+                         @NonNull ContentValues values,
+                         @NonNull String whereClause,
+                         @NonNull String[] whereArgs) {
+        return mDatabase.update(tableName, values, whereClause, whereArgs);
+    }
+
+    /**
+     * Deletes all columns for a given ID of a table
+     *
+     * @param tableName   table to delete values
+     * @param idFieldName table column name which contains the ID
+     * @param id          ID of the row to delete
+     * @return the number of rows affected
+     * @throws net.sqlcipher.SQLException If the SQL string is invalid for some reason
+     * @throws IllegalStateException      if the database is not open
+     */
+    protected int delete(@NonNull String tableName, @NonNull String idFieldName, long id) {
+        String whereClause = idFieldName + "=?";
+        return mDatabase.delete(tableName, whereClause, setSelectionArgs(id));
+    }
+
+    /**
+     * Registers a new entry
+     *
+     * @param entryName             entry name (non null)
+     * @param icon                  entry icon (non null)
+     * @param entryParentCategoryId category id of the entry
+     * @param configurationId       configuration id of the entry
+     * @param entryPasswords        nullable array of passwords
+     * @param entrySmallTexts       nullable array of small texts
+     * @param entryLongTexts        nullable array of long texts
+     * @param entryImages           nullable array of images
+     * @return <code>long</code> with the entry ID
+     * @see javinator9889.securepass.data.entry.Entry
+     * @see IPassword
+     * @see IText
+     * @see IImage
+     */
+    public long registerNewEntry(@NonNull String entryName,
+                                 @NonNull String icon,
                                  long entryParentCategoryId,
                                  long configurationId,
                                  @Nullable IPassword[] entryPasswords,
@@ -64,14 +258,14 @@ public class DatabaseOperations {
                                  @Nullable IImage[] entryImages) {
         ContentValues params = setParams(DatabaseTables.ENTRY, entryName, icon,
                 entryParentCategoryId, configurationId);
-        long entryId = database.insert(SQL.ENTRY.NAME, null, params);
+        long entryId = mDatabase.insert(SQL.ENTRY.NAME, null, params);
         if (entryPasswords != null) {
             for (IPassword password : entryPasswords) {
                 ContentValues passwordParams = setParams(DatabaseTables.PASSWORD,
                         password.getPassword(), password.getFieldDescription(), entryId,
                         entryParentCategoryId);
                 long passwordId =
-                        database.insert(SQL.PASSWORD.NAME, null, passwordParams);
+                        mDatabase.insert(SQL.PASSWORD.NAME, null, passwordParams);
                 password.setPasswordID(passwordId);
             }
         }
@@ -81,7 +275,7 @@ public class DatabaseOperations {
                         smallText.getText(), smallText.getFieldDescription(), entryId,
                         entryParentCategoryId);
                 long smallTextId =
-                        database.insert(SQL.SMALL_TEXT.NAME, null, smallTextParams);
+                        mDatabase.insert(SQL.SMALL_TEXT.NAME, null, smallTextParams);
                 smallText.setTextID(smallTextId);
             }
         }
@@ -91,7 +285,7 @@ public class DatabaseOperations {
                         longText.getText(), longText.getFieldDescription(), entryId,
                         entryParentCategoryId);
                 long longTextId =
-                        database.insert(SQL.LONG_TEXT.NAME, null, longTextParams);
+                        mDatabase.insert(SQL.LONG_TEXT.NAME, null, longTextParams);
                 longText.setTextID(longTextId);
             }
         }
@@ -101,94 +295,182 @@ public class DatabaseOperations {
                         image.getImageSource(), image.getFieldDescription(), entryId,
                         entryParentCategoryId);
                 long imageId =
-                        database.insert(SQL.IMAGE.NAME, null, imageParams);
+                        mDatabase.insert(SQL.IMAGE.NAME, null, imageParams);
                 image.setImageID(imageId);
             }
         }
         return entryId;
     }
 
+    /**
+     * Registers a new category
+     *
+     * @param name category name
+     * @return <code>long</code> with the category ID
+     * @see javinator9889.securepass.data.entry.Category
+     */
     public long registerNewCategory(@NonNull String name) {
         ContentValues params = setParams(DatabaseTables.CATEGORY, name);
-        return database.insert(SQL.CATEGORY.NAME, null, params);
+        return mDatabase.insert(SQL.CATEGORY.NAME, null, params);
     }
 
-    public long registerQRCode(long sourceEntryId, @NonNull String name,
-                               @Nullable String description, @NonNull String qrData) {
+    /**
+     * Registers a new QR Code
+     *
+     * @param sourceEntryId parent entry ID
+     * @param name          QR Code name
+     * @param description   QR Code description (nullable)
+     * @param qrData        QR Code data
+     * @return <code>long</code> with the QRCode ID
+     * @see javinator9889.securepass.data.entry.QRCode
+     */
+    public long registerQRCode(long sourceEntryId,
+                               @NonNull String name,
+                               @Nullable String description,
+                               @NonNull String qrData) {
         ContentValues params = setParams(DatabaseTables.QR_CODE, name, description, qrData,
                 sourceEntryId);
-        return database.insert(SQL.QR_CODE.NAME, null, params);
+        return mDatabase.insert(SQL.QR_CODE.NAME, null, params);
     }
 
+    /**
+     * Registers a new Security Code
+     *
+     * @param securityCodeName name of the security code
+     * @return <code>long</code> with the security code ID
+     * @see javinator9889.securepass.data.secret.SecurityCode
+     */
     public long registerNewSecurityCodeSource(@NonNull String securityCodeName) {
         ContentValues params = setParams(DatabaseTables.SECURITY_CODE,
                 securityCodeName);
-        return database.insert(SQL.SECURITY_CODE.NAME, null, params);
+        return mDatabase.insert(SQL.SECURITY_CODE.NAME, null, params);
     }
 
+    /**
+     * Registers a new Field of a Security Code
+     *
+     * @param fieldCode            the field data
+     * @param isCodeUsed           whether the code is already used or not
+     * @param parentSecurityCodeId Security Code ID
+     * @return <code>long</code> with the field ID
+     * @see javinator9889.securepass.data.secret.Field
+     * @see #registerNewSecurityCodeSource(String)
+     */
     public long registerNewFieldForSecurityCodeSource(@NonNull String fieldCode,
                                                       boolean isCodeUsed,
                                                       long parentSecurityCodeId) {
         ContentValues params = setParams(DatabaseTables.FIELD,
                 fieldCode, isCodeUsed, parentSecurityCodeId);
-        return database.insert(SQL.FIELD.NAME, null, params);
+        return mDatabase.insert(SQL.FIELD.NAME, null, params);
     }
 
+    /**
+     * Registers a new configuration
+     *
+     * @param configurationName the name
+     * @param configurations    <code>Container</code> with the configurations
+     * @return <code>long</code> with the configuration ID
+     * @see GeneralObjectContainer
+     * @see javinator9889.securepass.objects.ObjectContainer
+     * @see IConfigFields
+     */
     public long registerNewConfiguration(@NonNull String configurationName,
                                          @NonNull GeneralObjectContainer<IConfigFields>
                                                  configurations) {
         ContentValues params = setParams(DatabaseTables.CONFIGURATION, configurationName);
-        long configId = database.insert(SQL.CONFIGURATION.NAME, null, params);
-        Iterator<IConfigFields> storedObjects = configurations.iterator();
-        while (storedObjects.hasNext()) {
-            IConfigFields configurationField = storedObjects.next();
+        long configId = mDatabase.insert(SQL.CONFIGURATION.NAME, null, params);
+        for (IConfigFields configurationField : configurations) {
             configurationField.setConfigId(configId);
             ContentValues configurationFieldParams = setParams(configurationField.getTableType(),
                     configurationField.getDescription(),
                     configurationField.getSortOrder(),
                     configId);
-            long configFieldId = database.insert(configurationField.getTableName(), null,
+            long configFieldId = mDatabase.insert(configurationField.getTableName(), null,
                     configurationFieldParams);
             configurationField.setFieldId(configFieldId);
         }
         return configId;
     }
 
-    public void deleteAccount(long accountID) {
-        String[] selectionArgs = setSelectionArgs(accountID);
-        database.delete(SQL.ENTRY.NAME, SQL.DB_DELETE_ENTRY_WHERE_CLAUSE, selectionArgs);
+    /**
+     * Removes the given entry from the database
+     *
+     * @param entryID ID of the entry to delete
+     * @see javinator9889.securepass.data.entry.Entry
+     */
+    public void deleteEntry(long entryID) {
+        String[] selectionArgs = setSelectionArgs(entryID);
+        mDatabase.delete(SQL.ENTRY.NAME, SQL.DB_DELETE_ENTRY_WHERE_CLAUSE, selectionArgs);
     }
 
+    /**
+     * Removes the given category from the database
+     *
+     * @param categoryID ID of the category to delete
+     * @see javinator9889.securepass.data.entry.Category
+     */
     public void deleteCategory(long categoryID) {
         String[] selectionArgs = setSelectionArgs(categoryID);
         ContentValues entryUpdatedValues = new ContentValues();
         entryUpdatedValues.put(SQL.ENTRY.E_PARENT_CATEGORY, 0);
-        database.update(
+        mDatabase.update(
                 SQL.ENTRY.NAME, entryUpdatedValues,
                 SQL.DB_UPDATE_FOR_DELETED_CATEGORY_WHERE_CLAUSE,
                 selectionArgs);
-        database.delete(SQL.CATEGORY.NAME, SQL.DB_DELETE_CATEGORY_WHERE_CLAUSE, selectionArgs);
+        mDatabase.delete(SQL.CATEGORY.NAME, SQL.DB_DELETE_CATEGORY_WHERE_CLAUSE, selectionArgs);
     }
 
+    /**
+     * Removes the given QRCode from the database
+     *
+     * @param qrID ID of the QRCode to delete
+     * @see javinator9889.securepass.data.entry.QRCode
+     */
     public void deleteQRCode(long qrID) {
         String[] selectionArgs = setSelectionArgs(qrID);
-        database.delete(SQL.QR_CODE.NAME, SQL.DB_DELETE_QR_CODE_WHERE_CLAUSE, selectionArgs);
+        mDatabase.delete(SQL.QR_CODE.NAME, SQL.DB_DELETE_QR_CODE_WHERE_CLAUSE, selectionArgs);
     }
 
+    /**
+     * Removes the given security code from the database
+     *
+     * @param securityCodeID ID of the security code to remove
+     * @see javinator9889.securepass.data.secret.SecurityCode
+     */
     public void deleteSecurityCode(long securityCodeID) {
         String[] selectionArgs = setSelectionArgs(securityCodeID);
-        database.delete(SQL.FIELD.NAME,
+        mDatabase.delete(SQL.FIELD.NAME,
                 SQL.DB_DELETE_FIELD_FROM_SECURITY_CODE_WHERE_CLAUSE, selectionArgs);
-        database.delete(SQL.SECURITY_CODE.NAME, SQL.DB_DELETE_SECURITY_CODE_WHERE_CLAUSE,
+        mDatabase.delete(SQL.SECURITY_CODE.NAME, SQL.DB_DELETE_SECURITY_CODE_WHERE_CLAUSE,
                 selectionArgs);
     }
 
+    /**
+     * Removes the given field from the database
+     *
+     * @param fieldCodeID ID of the field to remove
+     * @see javinator9889.securepass.data.secret.Field
+     */
     public void deleteField(long fieldCodeID) {
         String[] selectionArgs = setSelectionArgs(fieldCodeID);
-        database.delete(SQL.FIELD.NAME, SQL.DB_DELETE_FIELD_WHERE_CLAUSE, selectionArgs);
+        mDatabase.delete(SQL.FIELD.NAME, SQL.DB_DELETE_FIELD_WHERE_CLAUSE, selectionArgs);
     }
 
-    public void updateInformationForEntry(@NonNull String entryName, @NonNull String icon,
+    /**
+     * Updates the given entry data
+     *
+     * @param entryName             new entry name
+     * @param icon                  new entry icon
+     * @param entryParentCategoryId new parent entry category ID
+     * @param entryId               current entry ID
+     * @param configurationId       new
+     * @param entryPasswords
+     * @param entrySmallTexts
+     * @param entryLongTexts
+     * @param entryImages
+     */
+    public void updateInformationForEntry(@NonNull String entryName,
+                                          @NonNull String icon,
                                           long entryParentCategoryId,
                                           long entryId,
                                           long configurationId,
@@ -199,7 +481,7 @@ public class DatabaseOperations {
         ContentValues params = setParams(DatabaseTables.ENTRY, entryName, icon,
                 entryParentCategoryId, configurationId);
         String[] selectionArgs = setSelectionArgs(entryId);
-        database.update(SQL.ENTRY.NAME, params, SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE,
+        mDatabase.update(SQL.ENTRY.NAME, params, SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE,
                 selectionArgs);
         if (entryPasswords != null) {
             for (IPassword password : entryPasswords) {
@@ -207,7 +489,7 @@ public class DatabaseOperations {
                         password.getPassword(), password.getFieldDescription(), entryId,
                         entryParentCategoryId);
                 String[] passwordSelectionArgs = setSelectionArgs(password.getPasswordID());
-                database.update(SQL.PASSWORD.NAME, passwordParams,
+                mDatabase.update(SQL.PASSWORD.NAME, passwordParams,
                         SQL.DB_UPDATE_PASSWORD_WHERE_CLAUSE, passwordSelectionArgs);
             }
         }
@@ -217,7 +499,7 @@ public class DatabaseOperations {
                         smallText.getText(), smallText.getFieldDescription(), entryId,
                         entryParentCategoryId);
                 String[] smallTextSelectionArgs = setSelectionArgs(smallText.getTextID());
-                database.update(SQL.SMALL_TEXT.NAME, smallTextParams,
+                mDatabase.update(SQL.SMALL_TEXT.NAME, smallTextParams,
                         SQL.DB_UPDATE_SMALL_TEXT_WHERE_CLAUSE, smallTextSelectionArgs);
             }
         }
@@ -227,7 +509,7 @@ public class DatabaseOperations {
                         longText.getText(), longText.getFieldDescription(), entryId,
                         entryParentCategoryId);
                 String[] longTextSelectionArgs = setSelectionArgs(longText.getTextID());
-                database.update(SQL.LONG_TEXT.NAME, longTextParams,
+                mDatabase.update(SQL.LONG_TEXT.NAME, longTextParams,
                         SQL.DB_UPDATE_LONG_TEXT_WHERE_CLAUSE, longTextSelectionArgs);
             }
         }
@@ -237,7 +519,7 @@ public class DatabaseOperations {
                         image.getImageSource(), image.getFieldDescription(), entryId,
                         entryParentCategoryId);
                 String[] imageSelectionArgs = setSelectionArgs(image.getImageID());
-                database.update(SQL.IMAGE.NAME, imageParams,
+                mDatabase.update(SQL.IMAGE.NAME, imageParams,
                         SQL.DB_UPDATE_IMAGE_WHERE_CLAUSE, imageSelectionArgs);
             }
         }
@@ -246,7 +528,7 @@ public class DatabaseOperations {
     public void updateInformationForCategory(@NonNull String categoryName, long categoryId) {
         ContentValues params = setParams(DatabaseTables.CATEGORY, categoryName);
         String[] selectionArgs = setSelectionArgs(categoryId);
-        database.update(SQL.CATEGORY.NAME, params, SQL.DB_UPDATE_CATEGORY_WHERE_CLAUSE,
+        mDatabase.update(SQL.CATEGORY.NAME, params, SQL.DB_UPDATE_CATEGORY_WHERE_CLAUSE,
                 selectionArgs);
     }
 
@@ -258,7 +540,7 @@ public class DatabaseOperations {
                 qrData,
                 sourceEntryId);
         String[] selectionArgs = setSelectionArgs(qrCodeId);
-        database.update(SQL.QR_CODE.NAME, params, SQL.DB_UPDATE_QR_CODE_WHERE_CLAUSE,
+        mDatabase.update(SQL.QR_CODE.NAME, params, SQL.DB_UPDATE_QR_CODE_WHERE_CLAUSE,
                 selectionArgs);
     }
 
@@ -267,7 +549,7 @@ public class DatabaseOperations {
         ContentValues params = setParams(DatabaseTables.SECURITY_CODE,
                 newSecurityCodeName);
         String[] selectionArgs = setSelectionArgs(securityCodeId);
-        database.update(SQL.SECURITY_CODE.NAME, params, SQL.DB_UPDATE_SECURITY_CODE_WHERE_CLAUSE,
+        mDatabase.update(SQL.SECURITY_CODE.NAME, params, SQL.DB_UPDATE_SECURITY_CODE_WHERE_CLAUSE,
                 selectionArgs);
     }
 
@@ -277,7 +559,7 @@ public class DatabaseOperations {
         ContentValues params = setParams(DatabaseTables.FIELD, newFieldCode,
                 isCodeUsed, securityCodeId);
         String[] selectionArgs = setSelectionArgs(fieldId);
-        database.update(SQL.FIELD.NAME, params, SQL.DB_UPDATE_FIELD_WHERE_CLAUSE, selectionArgs);
+        mDatabase.update(SQL.FIELD.NAME, params, SQL.DB_UPDATE_FIELD_WHERE_CLAUSE, selectionArgs);
     }
 
     private Map<String, Object> getValuesFromCursor(Cursor sourceData, DatabaseTables type) {
@@ -367,7 +649,7 @@ public class DatabaseOperations {
 
     public List<Map<String, Object>> getAllCategories() {
         String sortOrder = SQL.CATEGORY.C_ID + " DESC";
-        Cursor categoriesCursor = database.query(SQL.CATEGORY.NAME,
+        Cursor categoriesCursor = mDatabase.query(SQL.CATEGORY.NAME,
                 null,
                 null,
                 null,
@@ -384,7 +666,7 @@ public class DatabaseOperations {
 
     public List<Map<String, Object>> getAllEntries() {
         String sortOrder = SQL.ENTRY.E_ID + " DESC";
-        Cursor entriesCursor = database.query(SQL.ENTRY.NAME,
+        Cursor entriesCursor = mDatabase.query(SQL.ENTRY.NAME,
                 null,
                 null,
                 null,
@@ -401,7 +683,7 @@ public class DatabaseOperations {
 
     public List<Map<String, Object>> getAllQRCodes() {
         String sortOrder = SQL.QR_CODE.Q_ID + " DESC";
-        Cursor qrCodesCursor = database.query(SQL.QR_CODE.NAME,
+        Cursor qrCodesCursor = mDatabase.query(SQL.QR_CODE.NAME,
                 null,
                 null,
                 null,
@@ -418,7 +700,7 @@ public class DatabaseOperations {
 
     public List<Map<String, Object>> getAllSecurityCodes() {
         String sortOrder = SQL.SECURITY_CODE.S_ID + " DESC";
-        Cursor securityCodesCursor = database.query(SQL.SECURITY_CODE.NAME,
+        Cursor securityCodesCursor = mDatabase.query(SQL.SECURITY_CODE.NAME,
                 null,
                 null,
                 null,
@@ -436,7 +718,7 @@ public class DatabaseOperations {
 
     public List<Map<String, Object>> getAllFields() {
         String sortOrder = SQL.FIELD.F_ID + " DESC";
-        Cursor fieldsCursor = database.query(SQL.FIELD.NAME,
+        Cursor fieldsCursor = mDatabase.query(SQL.FIELD.NAME,
                 null,
                 null,
                 null,
@@ -452,7 +734,7 @@ public class DatabaseOperations {
     }
 
     public void finishConnection() {
-        database.close();
+        mDatabase.close();
     }
 
     private ContentValues setParams(DatabaseTables table, Object... values) {

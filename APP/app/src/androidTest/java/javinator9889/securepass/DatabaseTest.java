@@ -6,14 +6,12 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Arrays;
 import java.util.Map;
 
 import javinator9889.securepass.io.database.DatabaseManager;
-import javinator9889.securepass.io.database.DatabaseOperations;
+import javinator9889.securepass.io.database.operations.CommonOperations;
 
 /**
  * Created by Javinator9889 on 20/05/2018.
@@ -22,12 +20,12 @@ import javinator9889.securepass.io.database.DatabaseOperations;
 public class DatabaseTest {
     private Context context = InstrumentationRegistry.getTargetContext();
 
-    private DatabaseOperations op;
+    private CommonOperations op;
 
     @Before
     public void initParams() {
         DatabaseManager manager = DatabaseManager.newInstance(context, "1234");
-        this.op = DatabaseOperations.newInstance(manager);
+        this.op = CommonOperations.newInstance(manager);
     }
 
 //    @Test
@@ -61,7 +59,7 @@ public class DatabaseTest {
 //                newSecurityCodeId);
 //        printer();
 //        op.deleteCategory(newCategoryId);
-//        op.deleteAccount(newAccountId);
+//        op.deleteEntry(newAccountId);
 //        op.deleteQRCode(newQRCodeId);
 //        op.deleteSecurityCode(newSecurityCodeId);
 //        op.deleteField(newFieldForSecCodeId);

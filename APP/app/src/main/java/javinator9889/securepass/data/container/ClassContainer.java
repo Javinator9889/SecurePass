@@ -1,21 +1,15 @@
 package javinator9889.securepass.data.container;
 
-import android.content.Context;
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import javinator9889.securepass.SecurePass;
+import androidx.annotation.NonNull;
 import javinator9889.securepass.data.entry.Category;
 import javinator9889.securepass.data.entry.Entry;
 import javinator9889.securepass.data.entry.QRCode;
 import javinator9889.securepass.data.secret.Field;
 import javinator9889.securepass.data.secret.SecurityCode;
-import javinator9889.securepass.io.IOManager;
-import javinator9889.securepass.io.database.DatabaseManager;
-import javinator9889.securepass.io.database.DatabaseOperations;
 
 /**
  * Created by Javinator9889 on 06/04/2018.
@@ -73,7 +67,7 @@ public class ClassContainer implements Serializable {
 //        Context appContext = SecurePass.getApplicationInstance().getApplicationContext();
 //        String password = IOManager.newInstance(appContext).readPassword();
 //        DatabaseManager manager = DatabaseManager.newInstance(appContext, password);
-//        DatabaseOperations operations = DatabaseOperations.newInstance(manager);
+//        CommonOperations operations = CommonOperations.newInstance(manager);
 //        for (Category actualCategory : categories)
 //            operations.registerNewCategory(actualCategory.getName());
 //        for (Entry entry : entries)

@@ -11,6 +11,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import javinator9889.securepass.io.IOManager;
+import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.PreferencesManager;
 import javinator9889.securepass.util.values.Constants;
@@ -139,7 +140,7 @@ public class DatabaseManager {
      * Creates the default category necessary in order to allow the hole application work
      */
     private void createDefaultCategory() {
-        DatabaseOperations operations = DatabaseOperations.newInstance(this);
+        CommonOperations operations = CommonOperations.newInstance(this);
         operations.registerDefaultCategory();
         operations.finishConnection();
     }

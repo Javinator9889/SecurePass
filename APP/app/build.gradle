@@ -91,7 +91,7 @@ dependencies {
     // SQLCipher - https://guardianproject.info/code/sqlcipher/
     implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
     // AppIntro - https://github.com/apl-devs/AppIntro
-    implementation 'com.github.apl-devs:appintro:v5.0.0'
+    implementation 'com.github.paolorotolo:appintro:v5.1.0'
     // Google Play Services - https://developers.google.com/android/guides/setup
     implementation 'com.google.android.gms:play-services-drive:16.0.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
