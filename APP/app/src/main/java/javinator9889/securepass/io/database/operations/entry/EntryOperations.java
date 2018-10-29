@@ -38,6 +38,7 @@ public class EntryOperations extends CommonOperations implements
     private static final String TAG = "Entry Operations";
     private static final String TABLE_NAME = ENTRY.NAME;
     private static final String NAME = ENTRY.E_NAME;
+    private static final String ID = ENTRY.E_ID;
     private static final String ICON = ENTRY.E_ICON;
     private static final String CATEGORY = ENTRY.E_PARENT_CATEGORY;
     private static final String CONFIGURATION = ENTRY.E_PARENT_CONFIGURATION;
@@ -78,6 +79,7 @@ public class EntryOperations extends CommonOperations implements
                                  @NonNull String entryName,
                                  @NonNull String icon) {
         ContentValues params = setParams(entryName, icon, parentCategoryId, configId);
+        return insertReplaceOnConflict(TABLE_NAME, params);
     }
 
     /**
@@ -101,7 +103,9 @@ public class EntryOperations extends CommonOperations implements
                                  @NonNull String entryName,
                                  @NonNull String icon,
                                  @NonNull IPassword[] passwords) {
-        return 0;
+        long id = registerNewEntry(parentCategoryId, configId, entryName, icon);
+        updatePasswords(id, passwords);
+        return id;
     }
 
     /**
@@ -127,7 +131,9 @@ public class EntryOperations extends CommonOperations implements
                                  @NonNull String entryName,
                                  @NonNull String icon,
                                  @NonNull IText[] texts) {
-        return 0;
+        long id = registerNewEntry(parentCategoryId, configId, entryName, icon);
+        updateTexts(id, texts);
+        return id;
     }
 
     /**
@@ -151,7 +157,21 @@ public class EntryOperations extends CommonOperations implements
                                  @NonNull String entryName,
                                  @NonNull String icon,
                                  @NonNull IImage[] images) {
-        return 0;
+        long id = registerNewEntry(parentCategoryId, configId, entryName, icon);
+        updateImages(id, images);
+        return id;
+    }
+
+    /**
+     * Determines whether the text is a {@link SmallText} or a {@link LongText} and updates the
+     * entry
+     *
+     * @param entryId entry ID
+     * @param texts   {@code IText} array
+     */
+    private void updateTexts(long entryId,
+                             @NonNull IText[] texts) {
+
     }
 
     /**
@@ -291,6 +311,16 @@ public class EntryOperations extends CommonOperations implements
     @Override
     public void removeImages(long entryId) {
 
+    }
+
+    /**
+     * Removes the hole entry by the given ID
+     *
+     * @param entryId entry ID
+     */
+    @Override
+    public void removeEntry(long entryId) {
+        delete(TABLE_NAME, ID, entryId);
     }
 
     private ContentValues setParams(@NonNull String entryName,

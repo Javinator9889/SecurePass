@@ -189,4 +189,11 @@ public interface IEntrySetOperations {
      * @param entryId entry ID
      */
     void removeImages(long entryId);
+
+    /**
+     * Removes the hole entry by the given ID
+     *
+     * @param entryId entry ID
+     */
+    void removeEntry(long entryId);
 }
