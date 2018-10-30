@@ -3,9 +3,11 @@ package javinator9889.securepass.io.database.operations;
 import android.content.ContentValues;
 import android.util.Log;
 
+import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.util.values.Constants.SQL;
 
@@ -201,6 +203,47 @@ public class CommonOperations {
                          @NonNull String whereClause,
                          @NonNull String[] whereArgs) {
         return mDatabase.update(tableName, values, whereClause, whereArgs);
+    }
+
+    /**
+     * Obtains the specified table information and saves it inside a {@link Cursor}
+     *
+     * @param tableName    where to obtain the values.
+     * @param columnsToGet which columns to get - passing null will return all columns.
+     * @param whereClause  where to obtain data - passing null will return all rows.
+     * @param args         args for modifying the whereClause statement.
+     * @param groupBy      a filter declaring how to group rows - passing null will cause the rows to
+     *                     not to be grouped.
+     * @param having       a filter declaring which row groups to include in the cursor, if groupBy is
+     *                     being used
+     * @param orderBy      how to order the rows - passing null will use the default sort order
+     * @return a {@link Cursor} object positioned before the first entry
+     * @throws net.sqlcipher.SQLException if there is an issue executing the SQL
+     * @throws IllegalStateException      if the database is not open
+     * @see Cursor
+     */
+    protected Cursor get(@NonNull String tableName,
+                         @Nullable String[] columnsToGet,
+                         @Nullable String whereClause,
+                         @Nullable String[] args,
+                         @Nullable String groupBy,
+                         @Nullable String having,
+                         @Nullable String orderBy) {
+        return mDatabase
+                .query(tableName, columnsToGet, whereClause, args, groupBy, having, orderBy);
+    }
+
+    /**
+     * Gets all fields for the given table name
+     *
+     * @param tableName where to obtain the values
+     * @return a {@link Cursor} object positioned before the first entry
+     * @throws net.sqlcipher.SQLException if there is an issue executing the SQL
+     * @throws IllegalStateException      if the database is not open
+     * @see Cursor
+     */
+    protected Cursor getAll(@NonNull String tableName) {
+        return get(tableName, null, null, null, null, null, null);
     }
 
     /**

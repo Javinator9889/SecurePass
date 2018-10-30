@@ -1,5 +1,8 @@
 package javinator9889.securepass.io.database.operations.entry;
 
+import javinator9889.securepass.data.entry.Entry;
+import javinator9889.securepass.objects.GeneralObjectContainer;
+
 /**
  * Copyright © 2018 - present | APP by Javinator9889
  *
@@ -19,4 +22,47 @@ package javinator9889.securepass.io.database.operations.entry;
  * Created by Javinator9889 on 28/10/2018 - APP.
  */
 public interface IEntryGetOperations {
+    /**
+     * Obtains the entry name by using the given ID
+     *
+     * @param entryId entry ID
+     * @return {@code String} with the entry name
+     */
+    String getEntryName(long entryId);
+
+    /**
+     * Obtains the entry icon by using the given ID
+     *
+     * @param entryId entry ID
+     * @return {@code String} with the entry icon
+     */
+    String getEntryIcon(long entryId);
+
+    /**
+     * Obtains the entry parent category by using the given ID
+     *
+     * @param entryId entry ID
+     * @return {@code long} with the category ID
+     * @see javinator9889.securepass.data.entry.Category
+     */
+    long getEntryCategory(long entryId);
+
+    /**
+     * Obtains the entry configuration by using the given ID
+     *
+     * @param entryId entry ID
+     * @return {@code long} with the configuration ID
+     * @see javinator9889.securepass.data.configuration.Configuration
+     */
+    long getEntryConfiguration(long entryId);
+
+    /**
+     * Obtains all entries' data and saves it inside a {@link GeneralObjectContainer} of
+     * {@link Entry}
+     *
+     * @return {@code GeneralObjectContainer} of entries
+     * @see javinator9889.securepass.objects.ObjectContainer
+     * @see Entry
+     */
+    GeneralObjectContainer<Entry> getAllEntries();
 }

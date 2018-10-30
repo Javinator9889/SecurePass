@@ -2,13 +2,19 @@ package javinator9889.securepass.io.database.operations.entry;
 
 import android.content.ContentValues;
 
+import net.sqlcipher.Cursor;
+
 import java.util.Arrays;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.Configuration;
 import javinator9889.securepass.data.entry.Category;
+import javinator9889.securepass.data.entry.Entry;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
+import javinator9889.securepass.objects.GeneralObjectContainer;
+import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.threading.ThreadingExecutor;
 import javinator9889.securepass.util.threading.thread.NotifyingThread;
 import javinator9889.securepass.util.values.Constants;
@@ -180,5 +186,72 @@ public class EntryOperations extends CommonOperations implements
 
     private String[] whereArgs(@NonNull Object... args) {
         return Arrays.copyOf(args, args.length, String[].class);
+    }
+
+    /**
+     * Obtains the entry name by using the given ID
+     *
+     * @param entryId entry ID
+     * @return {@code String} with the entry name - null if ID does not exists
+     */
+    @Override
+    @Nullable
+    public String getEntryName(long entryId) {
+        String name = null;
+        try (Cursor entryCursor = get(TABLE_NAME, whereArgs(NAME), ENTRY_WHERE_ID, whereArgs
+                        (entryId),
+                null, null, ID + " ASC")) {
+            if (entryCursor.moveToNext())
+                name = entryCursor.getString(2);
+        }
+        return name;
+    }
+
+    /**
+     * Obtains the entry icon by using the given ID
+     *
+     * @param entryId entry ID
+     * @return {@code String} with the entry icon
+     */
+    @Override
+    public String getEntryIcon(long entryId) {
+        return null;
+    }
+
+    /**
+     * Obtains the entry parent category by using the given ID
+     *
+     * @param entryId entry ID
+     * @return {@code long} with the category ID
+     * @see Category
+     */
+    @Override
+    public long getEntryCategory(long entryId) {
+        return 0;
+    }
+
+    /**
+     * Obtains the entry configuration by using the given ID
+     *
+     * @param entryId entry ID
+     * @return {@code long} with the configuration ID
+     * @see Configuration
+     */
+    @Override
+    public long getEntryConfiguration(long entryId) {
+        return 0;
+    }
+
+    /**
+     * Obtains all entries' data and saves it inside a {@link GeneralObjectContainer} of
+     * {@link Entry}
+     *
+     * @return {@code GeneralObjectContainer} of entries
+     * @see ObjectContainer
+     * @see Entry
+     */
+    @Override
+    public GeneralObjectContainer<Entry> getAllEntries() {
+        return null;
     }
 }
