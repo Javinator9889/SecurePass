@@ -242,8 +242,8 @@ public class CommonOperations {
      * @throws IllegalStateException      if the database is not open
      * @see Cursor
      */
-    protected Cursor getAll(@NonNull String tableName) {
-        return get(tableName, null, null, null, null, null, null);
+    protected Cursor getAll(@NonNull String tableName, @Nullable String orderBy) {
+        return get(tableName, null, null, null, null, null, orderBy);
     }
 
     /**

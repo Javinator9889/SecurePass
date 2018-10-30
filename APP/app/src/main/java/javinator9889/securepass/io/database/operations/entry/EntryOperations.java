@@ -19,6 +19,7 @@ import javinator9889.securepass.util.threading.ThreadingExecutor;
 import javinator9889.securepass.util.threading.thread.NotifyingThread;
 import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.Constants.SQL.ENTRY;
+import javinator9889.securepass.util.values.database.EntryFields;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
@@ -42,11 +43,11 @@ public class EntryOperations extends CommonOperations implements
         IEntrySetOperations, IEntryGetOperations {
     private static final String TAG = "Entry Operations";
     private static final String TABLE_NAME = ENTRY.NAME;
-    private static final String NAME = ENTRY.E_NAME;
-    private static final String ID = ENTRY.E_ID;
-    private static final String ICON = ENTRY.E_ICON;
-    private static final String CATEGORY = ENTRY.E_PARENT_CATEGORY;
-    private static final String CONFIGURATION = ENTRY.E_PARENT_CONFIGURATION;
+    private static final EntryFields NAME = EntryFields.NAME;
+    private static final EntryFields ID = EntryFields.ID;
+    private static final EntryFields ICON = EntryFields.ICON;
+    private static final EntryFields CATEGORY = EntryFields.CATEGORY;
+    private static final EntryFields CONFIGURATION = EntryFields.CONFIGURATION;
     private static final String ENTRY_WHERE_ID = Constants.SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE;
     private ThreadingExecutor mExecutor;
 
@@ -116,7 +117,7 @@ public class EntryOperations extends CommonOperations implements
     public void updateName(long entryId,
                            @NonNull String name) {
         ContentValues params = new ContentValues(1);
-        params.put(NAME, name);
+        params.put(NAME.getFieldName(), name);
         runUpdateExecutor(entryId, params);
     }
 
@@ -130,7 +131,7 @@ public class EntryOperations extends CommonOperations implements
     public void updateIcon(long entryId,
                            @NonNull String icon) {
         ContentValues params = new ContentValues(1);
-        params.put(ICON, icon);
+        params.put(ICON.getFieldName(), icon);
         runUpdateExecutor(entryId, params);
     }
 
@@ -144,7 +145,7 @@ public class EntryOperations extends CommonOperations implements
     public void updateCategory(long entryId,
                                long categoryId) {
         ContentValues params = new ContentValues(1);
-        params.put(CATEGORY, categoryId);
+        params.put(CATEGORY.getFieldName(), categoryId);
         runUpdateExecutor(entryId, params);
     }
 
@@ -158,7 +159,7 @@ public class EntryOperations extends CommonOperations implements
     public void updateConfiguration(long entryId,
                                     long configurationId) {
         ContentValues params = new ContentValues(1);
-        params.put(CONFIGURATION, configurationId);
+        params.put(CONFIGURATION.getFieldName(), configurationId);
         runUpdateExecutor(entryId, params);
     }
 
@@ -169,7 +170,7 @@ public class EntryOperations extends CommonOperations implements
      */
     @Override
     public void removeEntry(long entryId) {
-        delete(TABLE_NAME, ID, entryId);
+        delete(TABLE_NAME, ID.getFieldName(), entryId);
     }
 
     private ContentValues setParams(@NonNull String entryName,
@@ -177,10 +178,10 @@ public class EntryOperations extends CommonOperations implements
                                     long categoryId,
                                     long configurationId) {
         ContentValues params = new ContentValues(4);
-        params.put(NAME, entryName);
-        params.put(ICON, entryIcon);
-        params.put(CATEGORY, categoryId);
-        params.put(CONFIGURATION, configurationId);
+        params.put(NAME.getFieldName(), entryName);
+        params.put(ICON.getFieldName(), entryIcon);
+        params.put(CATEGORY.getFieldName(), categoryId);
+        params.put(CONFIGURATION.getFieldName(), configurationId);
         return params;
     }
 
@@ -192,17 +193,17 @@ public class EntryOperations extends CommonOperations implements
      * Obtains the entry name by using the given ID
      *
      * @param entryId entry ID
-     * @return {@code String} with the entry name - null if ID does not exists
+     * @return {@code String} with the entry name - null if ID does not exist
      */
     @Override
     @Nullable
     public String getEntryName(long entryId) {
         String name = null;
-        try (Cursor entryCursor = get(TABLE_NAME, whereArgs(NAME), ENTRY_WHERE_ID, whereArgs
+        try (Cursor entryCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()), ENTRY_WHERE_ID, whereArgs
                         (entryId),
-                null, null, ID + " ASC")) {
+                null, null, ID.getFieldName() + " ASC")) {
             if (entryCursor.moveToNext())
-                name = entryCursor.getString(2);
+                name = entryCursor.getString(NAME.getFieldIndex());
         }
         return name;
     }
@@ -211,35 +212,56 @@ public class EntryOperations extends CommonOperations implements
      * Obtains the entry icon by using the given ID
      *
      * @param entryId entry ID
-     * @return {@code String} with the entry icon
+     * @return {@code String} with the entry icon - null if ID does not exist
      */
     @Override
+    @Nullable
     public String getEntryIcon(long entryId) {
-        return null;
+        String icon = null;
+        try (Cursor iconCursor = get(TABLE_NAME, whereArgs(ICON.getFieldName()), ENTRY_WHERE_ID,
+                whereArgs(entryId), null, null, ID.getFieldName() + " ASC")) {
+            if (iconCursor.moveToNext())
+                icon = iconCursor.getString(ICON.getFieldIndex());
+        }
+        return icon;
     }
 
     /**
      * Obtains the entry parent category by using the given ID
      *
      * @param entryId entry ID
-     * @return {@code long} with the category ID
+     * @return {@code long} with the category ID - 0 if ID does not exist
      * @see Category
      */
     @Override
     public long getEntryCategory(long entryId) {
-        return 0;
+        long id = 0;
+        try (Cursor categoryCursor = get(TABLE_NAME, whereArgs(CATEGORY.getFieldName()),
+                ENTRY_WHERE_ID, whereArgs(entryId), null, null,
+                ID.getFieldName() + " ASC")) {
+            if (categoryCursor.moveToNext())
+                id = categoryCursor.getLong(CATEGORY.getFieldIndex());
+        }
+        return id;
     }
 
     /**
      * Obtains the entry configuration by using the given ID
      *
      * @param entryId entry ID
-     * @return {@code long} with the configuration ID
+     * @return {@code long} with the configuration ID - 0 if ID does not exist
      * @see Configuration
      */
     @Override
     public long getEntryConfiguration(long entryId) {
-        return 0;
+        long id = 0;
+        try (Cursor configCursor = get(TABLE_NAME, whereArgs(CONFIGURATION.getFieldName()),
+                ENTRY_WHERE_ID, whereArgs(entryId), null, null,
+                ID.getFieldName() + " ASC")) {
+            if (configCursor.moveToNext())
+                id = configCursor.getLong(CONFIGURATION.getFieldIndex());
+        }
+        return id;
     }
 
     /**
@@ -252,6 +274,18 @@ public class EntryOperations extends CommonOperations implements
      */
     @Override
     public GeneralObjectContainer<Entry> getAllEntries() {
-        return null;
+        GeneralObjectContainer<Entry> entries = new ObjectContainer<>();
+        try (Cursor entriesCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+            while (entriesCursor.moveToNext()) {
+                long id = entriesCursor.getLong(ID.getFieldIndex());
+                String name = entriesCursor.getString(NAME.getFieldIndex());
+                String icon = entriesCursor.getString(ICON.getFieldIndex());
+                long categoryId = entriesCursor.getLong(CATEGORY.getFieldIndex());
+                long configurationId = entriesCursor.getLong(CONFIGURATION.getFieldIndex());
+                Entry currentEntry = new Entry(id, name, icon, categoryId, configurationId);
+                entries.storeObject(currentEntry);
+            }
+        }
+        return entries;
     }
 }

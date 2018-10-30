@@ -19,7 +19,8 @@ public class Entry implements Serializable {
     private GeneralObjectContainer<IText> mSmallTexts;
     private GeneralObjectContainer<IText> mLongTexts;
     private String mIcon;
-    private Category mCategory;
+    private long mCategoryId;
+    private long mConfigId;
     private String mName;
 
     /**
@@ -41,7 +42,9 @@ public class Entry implements Serializable {
      * @see javinator9889.securepass.data.entry.fields.SmallText
      * @see javinator9889.securepass.data.entry.fields.LongText
      * @see Category
+     * @deprecated use {@link #Entry(long, String, String, long, long)} instead
      */
+    @Deprecated
     public Entry(long id,
                  @NonNull IImage[] images,
                  @NonNull IPassword[] passwords,
@@ -52,12 +55,33 @@ public class Entry implements Serializable {
                  @NonNull String name) {
         this.mId = id;
         this.mIcon = icon;
-        this.mCategory = category;
+//        this.mCategoryId = category;
         this.mName = name;
         this.mImages = new ObjectContainer<>(images);
         this.mPasswords = new ObjectContainer<>(passwords);
         this.mSmallTexts = new ObjectContainer<>(smallTexts);
         this.mLongTexts = new ObjectContainer<>(longTexts);
+    }
+
+    /**
+     * Public constructor declaring only the needed entry params
+     *
+     * @param id              entry ID
+     * @param name            entry name
+     * @param icon            entry icon
+     * @param categoryId      entry parent category ID
+     * @param configurationId entry parent configuration ID
+     */
+    public Entry(long id,
+                 @NonNull String name,
+                 @NonNull String icon,
+                 long categoryId,
+                 long configurationId) {
+        mId = id;
+        mName = name;
+        mIcon = icon;
+        mCategoryId = categoryId;
+        mConfigId = configurationId;
     }
 
     /**
@@ -211,29 +235,29 @@ public class Entry implements Serializable {
      * @return <code>Category</code> in which this entry is stored
      * @see Category
      */
-    public Category getCategory() {
-        return mCategory;
-    }
+    /*public Category getCategoryId() {
+        return mCategoryId;
+    }*/
 
     /**
-     * Updates current entry category
+     * Updates current entry categoryId
      *
-     * @param category new category
+     * @param categoryId new categoryId
      * @see Category
      */
-    public void setCategory(Category category) {
-        this.mCategory = category;
+    public void setCategoryId(Category categoryId) {
+        this.mCategoryId = categoryId;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "Entry ID: " + mId +
                 "\nEntry mPasswords: " + mPasswords.toString() +
                 "\nEntry mIcon: " + mIcon +
                 "\nEntry mName: " + mName +
-                "\nEntry mCategory: " + mCategory.toString() +
+                "\nEntry mCategoryId: " + mCategoryId.toString() +
                 "\nEntry small texts: " + mSmallTexts.toString() +
                 "\nEntry long texts: " + mLongTexts.toString() +
                 "\nEntry mImages: " + mImages.toString();
-    }
+    }*/
 }
