@@ -3,6 +3,7 @@ package javinator9889.securepass.io.database.operations.entry;
 import android.content.ContentValues;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,9 @@ import javinator9889.securepass.data.entry.fields.LongText;
 import javinator9889.securepass.data.entry.fields.SmallText;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
+import javinator9889.securepass.util.threading.ThreadingExecutor;
+import javinator9889.securepass.util.threading.thread.NotifyingThread;
+import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.Constants.SQL.ENTRY;
 
 /**
@@ -44,6 +48,8 @@ public class EntryOperations extends CommonOperations implements
     private static final String ICON = ENTRY.E_ICON;
     private static final String CATEGORY = ENTRY.E_PARENT_CATEGORY;
     private static final String CONFIGURATION = ENTRY.E_PARENT_CONFIGURATION;
+    private static final String ENTRY_WHERE_ID = Constants.SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE;
+    private ThreadingExecutor mExecutor;
 
     /**
      * Available constructor, matching
@@ -54,6 +60,7 @@ public class EntryOperations extends CommonOperations implements
      */
     public EntryOperations(@NonNull DatabaseManager databaseManager) {
         super(databaseManager);
+        mExecutor = ThreadingExecutor.Builder().build();
     }
 
     /**
@@ -173,17 +180,39 @@ public class EntryOperations extends CommonOperations implements
      */
     private void updateTexts(long entryId,
                              @NonNull IText[] texts) {
-        // Very probably they are only one type of texts so initial capacity is "texts.length"
-        ArrayList<SmallText> smallTexts = new ArrayList<>(texts.length);
-        ArrayList<LongText> longTexts = new ArrayList<>(texts.length);
-        for (IText text : texts) {
-            if (text instanceof SmallText)
-                smallTexts.add(SmallText.class.cast(text));
-            else
-                longTexts.add(LongText.class.cast(text));
-        }
-        updateSmallTexts(entryId, (SmallText[]) smallTexts.toArray());
-        updateLongTexts(entryId, (LongText[]) longTexts.toArray());
+        mExecutor.add(new NotifyingThread() {
+            @Override
+            public void doRun() {
+                // Very probably they are only one type of texts so initial capacity is "texts.length"
+                ArrayList<SmallText> smallTexts = new ArrayList<>(texts.length);
+                ArrayList<LongText> longTexts = new ArrayList<>(texts.length);
+                for (IText text : texts) {
+                    if (text instanceof SmallText)
+                        smallTexts.add(SmallText.class.cast(text));
+                    else
+                        longTexts.add(LongText.class.cast(text));
+                }
+                updateSmallTexts(entryId, (SmallText[]) smallTexts.toArray());
+                updateLongTexts(entryId, (LongText[]) longTexts.toArray());
+            }
+        });
+        mExecutor.run();
+    }
+
+    /**
+     * Runs an update operation by using the given ID and new values
+     *
+     * @param entryId ID where changing values
+     * @param params  new values
+     */
+    private void runUpdateExecutor(long entryId, @NonNull ContentValues params) {
+        mExecutor.add(new NotifyingThread() {
+            @Override
+            public void doRun() {
+                update(TABLE_NAME, params, ENTRY_WHERE_ID, whereArgs(entryId));
+            }
+        });
+        mExecutor.run();
     }
 
     /**
@@ -195,7 +224,9 @@ public class EntryOperations extends CommonOperations implements
     @Override
     public void updateName(long entryId,
                            @NonNull String name) {
-
+        ContentValues params = new ContentValues(1);
+        params.put(NAME, name);
+        runUpdateExecutor(entryId, params);
     }
 
     /**
@@ -207,7 +238,9 @@ public class EntryOperations extends CommonOperations implements
     @Override
     public void updateIcon(long entryId,
                            @NonNull String icon) {
-
+        ContentValues params = new ContentValues(1);
+        params.put(ICON, icon);
+        runUpdateExecutor(entryId, params);
     }
 
     /**
@@ -219,7 +252,9 @@ public class EntryOperations extends CommonOperations implements
     @Override
     public void updateCategory(long entryId,
                                long categoryId) {
-
+        ContentValues params = new ContentValues(1);
+        params.put(CATEGORY, categoryId);
+        runUpdateExecutor(entryId, params);
     }
 
     /**
@@ -231,7 +266,9 @@ public class EntryOperations extends CommonOperations implements
     @Override
     public void updateConfiguration(long entryId,
                                     long configurationId) {
-
+        ContentValues params = new ContentValues(1);
+        params.put(CONFIGURATION, configurationId);
+        runUpdateExecutor(entryId, params);
     }
 
     /**
@@ -244,7 +281,7 @@ public class EntryOperations extends CommonOperations implements
     @Override
     public void updatePasswords(long entryId,
                                 @Nullable IPassword[] passwords) {
-
+        ContentValues params = new ContentValues(passwords.length);
     }
 
     /**
@@ -345,5 +382,9 @@ public class EntryOperations extends CommonOperations implements
         params.put(CATEGORY, categoryId);
         params.put(CONFIGURATION, configurationId);
         return params;
+    }
+
+    private String[] whereArgs(@NonNull Object... args) {
+        return Arrays.copyOf(args, args.length, String[].class);
     }
 }
