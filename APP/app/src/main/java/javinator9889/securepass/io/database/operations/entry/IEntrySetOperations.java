@@ -1,10 +1,6 @@
 package javinator9889.securepass.io.database.operations.entry;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import javinator9889.securepass.data.entry.fields.IImage;
-import javinator9889.securepass.data.entry.fields.IPassword;
-import javinator9889.securepass.data.entry.fields.IText;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
@@ -40,62 +36,6 @@ public interface IEntrySetOperations {
                           @NonNull String icon);
 
     /**
-     * Registers a new entry with passwords - uses
-     * {@link #registerNewEntry(long, long, String, String)} and
-     * {@link #updatePasswords(long, IPassword[])}
-     *
-     * @param parentCategoryId category ID
-     * @param configId         configuration ID
-     * @param entryName        entry name
-     * @param icon             entry icon
-     * @param passwords        array of passwords
-     * @return <code>long</code> with the new entry ID
-     * @see javinator9889.securepass.data.entry.Category
-     * @see javinator9889.securepass.data.configuration.Configuration
-     * @see IPassword
-     */
-    long registerNewEntry(long parentCategoryId, long configId, @NonNull String entryName,
-                          @NonNull String icon, @NonNull IPassword[] passwords);
-
-    /**
-     * Registers a new entry with long or small texts - uses
-     * {@link #registerNewEntry(long, long, String, String)} and
-     * {@link #updateLongTexts(long, IText[])} or {@link #updateSmallTexts(long, IText[])}
-     *
-     * @param parentCategoryId category ID
-     * @param configId         configuration ID
-     * @param entryName        entry name
-     * @param icon             entry icon
-     * @param texts            array of texts
-     * @return <code>long</code> with the new entry ID
-     * @see javinator9889.securepass.data.entry.Category
-     * @see javinator9889.securepass.data.configuration.Configuration
-     * @see IText
-     * @see javinator9889.securepass.data.entry.fields.SmallText
-     * @see javinator9889.securepass.data.entry.fields.LongText
-     */
-    long registerNewEntry(long parentCategoryId, long configId, @NonNull String entryName,
-                          @NonNull String icon, @NonNull IText[] texts);
-
-    /**
-     * Registers a new entry with iamges - uses
-     * {@link #registerNewEntry(long, long, String, String)} and
-     * {@link #updateImages(long, IImage[])}
-     *
-     * @param parentCategoryId category ID
-     * @param configId         configuration ID
-     * @param entryName        entry name
-     * @param icon             entry icon
-     * @param images           array of images
-     * @return <code>long</code> with the new entry ID
-     * @see javinator9889.securepass.data.entry.Category
-     * @see javinator9889.securepass.data.configuration.Configuration
-     * @see IImage
-     */
-    long registerNewEntry(long parentCategoryId, long configId, @NonNull String entryName,
-                          @NonNull String icon, @NonNull IImage[] images);
-
-    /**
      * Updates entry name
      *
      * @param entryId entry ID
@@ -126,69 +66,6 @@ public interface IEntrySetOperations {
      * @param configurationId new configuration ID
      */
     void updateConfiguration(long entryId, long configurationId);
-
-    /**
-     * Updates entry passwords - if null, removes passwords
-     *
-     * @param entryId   entry ID
-     * @param passwords new passwords
-     * @see #removePasswords(long)
-     */
-    void updatePasswords(long entryId, @Nullable IPassword[] passwords);
-
-    /**
-     * Updates entry small texts - if null, removes texts
-     *
-     * @param entryId    entry ID
-     * @param smallTexts new small texts
-     * @see #removeSmallTexts(long)
-     */
-    void updateSmallTexts(long entryId, @Nullable IText[] smallTexts);
-
-    /**
-     * Updates entry long texts - if null, removes texts
-     *
-     * @param entryId   entry ID
-     * @param longTexts new long texts
-     */
-    void updateLongTexts(long entryId, @Nullable IText[] longTexts);
-
-    /**
-     * Updates entry images - if null, removes images
-     *
-     * @param entryId entry ID
-     * @param images  new images
-     * @see #removeImages(long)
-     */
-    void updateImages(long entryId, @Nullable IImage[] images);
-
-    /**
-     * Removes passwords for the given ID
-     *
-     * @param entryId entry ID
-     */
-    void removePasswords(long entryId);
-
-    /**
-     * Removes small texts for the given ID
-     *
-     * @param entryId entry ID
-     */
-    void removeSmallTexts(long entryId);
-
-    /**
-     * Removes long texts for the given ID
-     *
-     * @param entryId entry ID
-     */
-    void removeLongTexts(long entryId);
-
-    /**
-     * Removes images for the given ID
-     *
-     * @param entryId entry ID
-     */
-    void removeImages(long entryId);
 
     /**
      * Removes the hole entry by the given ID

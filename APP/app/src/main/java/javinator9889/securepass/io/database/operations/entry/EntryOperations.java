@@ -2,18 +2,11 @@ package javinator9889.securepass.io.database.operations.entry;
 
 import android.content.ContentValues;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.Configuration;
 import javinator9889.securepass.data.entry.Category;
-import javinator9889.securepass.data.entry.fields.IImage;
-import javinator9889.securepass.data.entry.fields.IPassword;
-import javinator9889.securepass.data.entry.fields.IText;
-import javinator9889.securepass.data.entry.fields.LongText;
-import javinator9889.securepass.data.entry.fields.SmallText;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.util.threading.ThreadingExecutor;
@@ -92,114 +85,6 @@ public class EntryOperations extends CommonOperations implements
     }
 
     /**
-     * Registers a new entry with passwords - uses
-     * {@link #registerNewEntry(long, long, String, String)} and
-     * {@link #updatePasswords(long, IPassword[])}
-     *
-     * @param parentCategoryId category ID
-     * @param configId         configuration ID
-     * @param entryName        entry name
-     * @param icon             entry icon
-     * @param passwords        array of passwords
-     * @return <code>long</code> with the new entry ID
-     * @see Category
-     * @see Configuration
-     * @see IPassword
-     */
-    @Override
-    public long registerNewEntry(long parentCategoryId,
-                                 long configId,
-                                 @NonNull String entryName,
-                                 @NonNull String icon,
-                                 @NonNull IPassword[] passwords) {
-        long id = registerNewEntry(parentCategoryId, configId, entryName, icon);
-        updatePasswords(id, passwords);
-        return id;
-    }
-
-    /**
-     * Registers a new entry with long or small texts - uses
-     * {@link #registerNewEntry(long, long, String, String)} and
-     * {@link #updateLongTexts(long, IText[])} or {@link #updateSmallTexts(long, IText[])}
-     *
-     * @param parentCategoryId category ID
-     * @param configId         configuration ID
-     * @param entryName        entry name
-     * @param icon             entry icon
-     * @param texts            array of texts
-     * @return <code>long</code> with the new entry ID
-     * @see Category
-     * @see Configuration
-     * @see IText
-     * @see SmallText
-     * @see LongText
-     */
-    @Override
-    public long registerNewEntry(long parentCategoryId,
-                                 long configId,
-                                 @NonNull String entryName,
-                                 @NonNull String icon,
-                                 @NonNull IText[] texts) {
-        long id = registerNewEntry(parentCategoryId, configId, entryName, icon);
-        updateTexts(id, texts);
-        return id;
-    }
-
-    /**
-     * Registers a new entry with iamges - uses
-     * {@link #registerNewEntry(long, long, String, String)} and
-     * {@link #updateImages(long, IImage[])}
-     *
-     * @param parentCategoryId category ID
-     * @param configId         configuration ID
-     * @param entryName        entry name
-     * @param icon             entry icon
-     * @param images           array of images
-     * @return <code>long</code> with the new entry ID
-     * @see Category
-     * @see Configuration
-     * @see IImage
-     */
-    @Override
-    public long registerNewEntry(long parentCategoryId,
-                                 long configId,
-                                 @NonNull String entryName,
-                                 @NonNull String icon,
-                                 @NonNull IImage[] images) {
-        long id = registerNewEntry(parentCategoryId, configId, entryName, icon);
-        updateImages(id, images);
-        return id;
-    }
-
-    /**
-     * Determines whether the text is a {@link SmallText} or a {@link LongText} and updates the
-     * entry
-     *
-     * @param entryId entry ID
-     * @param texts   {@code IText} array
-     */
-    private void updateTexts(long entryId,
-                             @NonNull IText[] texts) {
-        mExecutor.add(new NotifyingThread() {
-            @Override
-            public void doRun() {
-                // Very probably they are only one type of texts so initial capacity is "texts.length"
-                ArrayList<SmallText> smallTexts = new ArrayList<>(texts.length);
-                ArrayList<LongText> longTexts = new ArrayList<>(texts.length);
-                for (IText text : texts) {
-                    if (text instanceof SmallText)
-                        smallTexts.add(SmallText.class.cast(text));
-                    else
-                        longTexts.add(LongText.class.cast(text));
-                }
-                updateSmallTexts(entryId, (SmallText[]) smallTexts.toArray());
-                updateLongTexts(entryId, (LongText[]) longTexts.toArray());
-            }
-        });
-        mExecutor.run();
-    }
-
-    /**
      * Runs an update operation by using the given ID and new values
      *
      * @param entryId ID where changing values
@@ -269,97 +154,6 @@ public class EntryOperations extends CommonOperations implements
         ContentValues params = new ContentValues(1);
         params.put(CONFIGURATION, configurationId);
         runUpdateExecutor(entryId, params);
-    }
-
-    /**
-     * Updates entry passwords - if null, removes passwords
-     *
-     * @param entryId   entry ID
-     * @param passwords new passwords
-     * @see #removePasswords(long)
-     */
-    @Override
-    public void updatePasswords(long entryId,
-                                @Nullable IPassword[] passwords) {
-        ContentValues params = new ContentValues(passwords.length);
-    }
-
-    /**
-     * Updates entry small texts - if null, removes texts
-     *
-     * @param entryId    entry ID
-     * @param smallTexts new small texts
-     * @see #removeSmallTexts(long)
-     */
-    @Override
-    public void updateSmallTexts(long entryId,
-                                 @Nullable IText[] smallTexts) {
-
-    }
-
-    /**
-     * Updates entry long texts - if null, removes texts
-     *
-     * @param entryId   entry ID
-     * @param longTexts new long texts
-     */
-    @Override
-    public void updateLongTexts(long entryId,
-                                @Nullable IText[] longTexts) {
-
-    }
-
-    /**
-     * Updates entry images - if null, removes images
-     *
-     * @param entryId entry ID
-     * @param images  new images
-     * @see #removeImages(long)
-     */
-    @Override
-    public void updateImages(long entryId,
-                             @Nullable IImage[] images) {
-
-    }
-
-    /**
-     * Removes passwords for the given ID
-     *
-     * @param entryId entry ID
-     */
-    @Override
-    public void removePasswords(long entryId) {
-
-    }
-
-    /**
-     * Removes small texts for the given ID
-     *
-     * @param entryId entry ID
-     */
-    @Override
-    public void removeSmallTexts(long entryId) {
-
-    }
-
-    /**
-     * Removes long texts for the given ID
-     *
-     * @param entryId entry ID
-     */
-    @Override
-    public void removeLongTexts(long entryId) {
-
-    }
-
-    /**
-     * Removes images for the given ID
-     *
-     * @param entryId entry ID
-     */
-    @Override
-    public void removeImages(long entryId) {
-
     }
 
     /**
