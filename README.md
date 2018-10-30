@@ -1,37 +1,16 @@
-## Welcome to GitHub Pages
+# SecurePass
+Store and keep your passwords and accounts secure
 
-You can use the [editor on GitHub](https://github.com/Javinator9889/SecurePass/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## View SRS and current application development
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+If you access [this link](https://github.com/Javinator9889/SecurePass/blob/master/DESIGN/REQUIREMENTS/SecurePass%20-%20SRS.pdf) you will be able to read the **SRS - *Software Requirement Development***, in which all the information and detailed documentation is written and explained.
 
-### Markdown
+If you want to **follow the development**, click on the *"Watch"* icon [👁] and you will get notified of all changes done.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Active branches
 
-```markdown
-Syntax highlighted code block
+Currently the active branch is the **[development](https://github.com/Javinator9889/SecurePass/tree/development)** one, and there will be more branches when needed (for example, *developing JavaDocs, database, etc*).
 
-# Header 1
-## Header 2
-### Header 3
+## If you are following this project...
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Javinator9889/SecurePass/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+... and you would like to help, you can just revise the code I wrote and open issues with errors you found **always following the [issue template](https://github.com/Javinator9889/SecurePass/blob/master/.github/ISSUE_TEMPLATE/bug_report.md)** so I can solve errors fastly :)
