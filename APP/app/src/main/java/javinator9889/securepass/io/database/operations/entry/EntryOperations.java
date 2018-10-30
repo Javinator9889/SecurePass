@@ -2,6 +2,8 @@ package javinator9889.securepass.io.database.operations.entry;
 
 import android.content.ContentValues;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.Configuration;
@@ -171,7 +173,17 @@ public class EntryOperations extends CommonOperations implements
      */
     private void updateTexts(long entryId,
                              @NonNull IText[] texts) {
-
+        // Very probably they are only one type of texts so initial capacity is "texts.length"
+        ArrayList<SmallText> smallTexts = new ArrayList<>(texts.length);
+        ArrayList<LongText> longTexts = new ArrayList<>(texts.length);
+        for (IText text : texts) {
+            if (text instanceof SmallText)
+                smallTexts.add(SmallText.class.cast(text));
+            else
+                longTexts.add(LongText.class.cast(text));
+        }
+        updateSmallTexts(entryId, (SmallText[]) smallTexts.toArray());
+        updateLongTexts(entryId, (LongText[]) longTexts.toArray());
     }
 
     /**
