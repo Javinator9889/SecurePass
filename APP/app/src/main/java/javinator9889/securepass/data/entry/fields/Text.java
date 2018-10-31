@@ -1,5 +1,7 @@
 package javinator9889.securepass.data.entry.fields;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 
 /**
@@ -22,6 +24,7 @@ import androidx.annotation.NonNull;
  */
 public abstract class Text implements IText {
     private long mId;
+    private long mParentEntryId;
     private String mText;
     private String mFieldDescription;
 
@@ -32,8 +35,9 @@ public abstract class Text implements IText {
      * @param text             the current text
      * @param fieldDescription description
      */
-    Text(long id, @NonNull String text, @NonNull String fieldDescription) {
+    Text(long id, long parentEntryId, @NonNull String text, @NonNull String fieldDescription) {
         mId = id;
+        mParentEntryId = parentEntryId;
         mText = text;
         mFieldDescription = fieldDescription;
     }
@@ -92,5 +96,48 @@ public abstract class Text implements IText {
      */
     public String getFieldDescription() {
         return mFieldDescription;
+    }
+
+    /**
+     * Gets the parent entry ID for this image
+     *
+     * @return {@code long} with the ID
+     */
+    @Override
+    public long getEntryId() {
+        return mParentEntryId;
+    }
+
+    /**
+     * Sets a new image parent entry ID
+     *
+     * @param id new parent entry ID
+     */
+    @Override
+    public void setEntryId(long id) {
+        mParentEntryId = id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Text text = (Text) o;
+        return mId == text.mId &&
+                mParentEntryId == text.mParentEntryId &&
+                Objects.equals(mText, text.mText) &&
+                Objects.equals(mFieldDescription, text.mFieldDescription);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(mId, mParentEntryId, mText, mFieldDescription);
     }
 }

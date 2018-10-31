@@ -1,6 +1,7 @@
 package javinator9889.securepass.data.entry.fields;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
  */
 public class Password implements IPassword, Serializable {
     private long mId;
+    private long mParentEntryId;
     private String mPassword;
     private String mFieldDescription;
 
@@ -20,8 +22,12 @@ public class Password implements IPassword, Serializable {
      * @param password         current password - cannot be null
      * @param fieldDescription description for this field - cannot be null
      */
-    public Password(long id, @NonNull String password, @NonNull String fieldDescription) {
+    public Password(long id,
+                    long parentEntryId,
+                    @NonNull String password,
+                    @NonNull String fieldDescription) {
         this.mId = id;
+        this.mParentEntryId = parentEntryId;
         this.mPassword = password;
         this.mFieldDescription = fieldDescription;
     }
@@ -88,9 +94,55 @@ public class Password implements IPassword, Serializable {
         return mFieldDescription;
     }
 
+    /**
+     * Gets the parent entry ID for this image
+     *
+     * @return {@code long} with the ID
+     */
+    @Override
+    public long getEntryId() {
+        return mParentEntryId;
+    }
+
+    /**
+     * Sets a new image parent entry ID
+     *
+     * @param id new parent entry ID
+     */
+    @Override
+    public void setEntryId(long id) {
+        mParentEntryId = id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "Password: " + getPassword() + "\nID: " + getPasswordID() + "\nField description: " +
                 getFieldDescription();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Password password = (Password) o;
+        return mId == password.mId &&
+                mParentEntryId == password.mParentEntryId &&
+                Objects.equals(mPassword, password.mPassword) &&
+                Objects.equals(mFieldDescription, password.mFieldDescription);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(mId, mParentEntryId, mPassword, mFieldDescription);
     }
 }

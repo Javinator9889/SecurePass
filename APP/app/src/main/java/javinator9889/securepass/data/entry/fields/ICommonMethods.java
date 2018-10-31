@@ -21,4 +21,18 @@ public interface ICommonMethods {
      * @return <code>String</code> with the description
      */
     String getFieldDescription();
+
+    /**
+     * Gets the parent entry ID for this image
+     *
+     * @return {@code long} with the ID
+     */
+    long getEntryId();
+
+    /**
+     * Sets a new image parent entry ID
+     *
+     * @param id new parent entry ID
+     */
+    void setEntryId(long id);
 }

@@ -1,6 +1,7 @@
 package javinator9889.securepass.data.entry;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,27 +15,27 @@ public class QRCode implements Serializable {
     private String mName;
     private String description;
     private String mQrData;
-    private Entry mParentEntry;
+    private long mParentEntryId;
 
     /**
      * Public constructor available for generating a new QRCode
      *
-     * @param id          QRCode ID
-     * @param name        QRCode name
-     * @param description QRCode description
-     * @param qrData      QRCode data
-     * @param parentEntry QRCode parent entry
+     * @param id            QRCode ID
+     * @param name          QRCode name
+     * @param description   QRCode description
+     * @param qrData        QRCode data
+     * @param parentEntryId QRCode parent entry ID
      */
     public QRCode(long id,
                   @NonNull String name,
                   @Nullable String description,
                   @NonNull String qrData,
-                  @NonNull Entry parentEntry) {
+                  long parentEntryId) {
         this.mId = id;
         this.mName = name;
         this.description = description;
         this.mQrData = qrData;
-        this.mParentEntry = parentEntry;
+        this.mParentEntryId = parentEntryId;
     }
 
     /**
@@ -112,27 +113,54 @@ public class QRCode implements Serializable {
     /**
      * Obtains QRCode parent entry
      *
-     * @return parent <code>Entry</code>
+     * @return parent entry ID
      */
-    public Entry getEntry() {
-        return mParentEntry;
+    public long getEntryId() {
+        return mParentEntryId;
     }
 
     /**
-     * Updates QRCode parent entry
+     * Updates QRCode parent entryId
      *
-     * @param entry new entry
+     * @param entryId new entryId
      */
-    public void setEntry(@NonNull Entry entry) {
-        this.mParentEntry = entry;
+    public void setEntryId(@NonNull long entryId) {
+        this.mParentEntryId = entryId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "QRCode ID: " + mId +
                 "\nQRCode mName: " + mName +
                 "\nQRCode description: " + description +
                 "\nQRCode data: " + mQrData +
-                "\nQRCode entry: " + mParentEntry.toString();
+                "\nQRCode entry ID: " + mParentEntryId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QRCode qrCode = (QRCode) o;
+        return mId == qrCode.mId &&
+                mParentEntryId == qrCode.mParentEntryId &&
+                Objects.equals(mName, qrCode.mName) &&
+                Objects.equals(description, qrCode.description) &&
+                Objects.equals(mQrData, qrCode.mQrData);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(mId, mName, description, mQrData, mParentEntryId);
     }
 }

@@ -16,13 +16,20 @@ public class SmallText extends Text implements Serializable {
      * @param text             long text text
      * @param fieldDescription description
      */
-    public SmallText(long id, @NonNull String text, @NonNull String fieldDescription) {
-        super(id, text, fieldDescription);
+    public SmallText(long id,
+                     long parentEntryId,
+                     @NonNull String text,
+                     @NonNull String fieldDescription) {
+        super(id, parentEntryId, text, fieldDescription);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
-        return "Text: " + getText() + "\nID: " + getTextID() + "\nField description: " +
-                getFieldDescription();
+        return "Text: " + getText() +
+                "\nID: " + getTextID() +
+                "\nField description: " + getFieldDescription();
     }
 }

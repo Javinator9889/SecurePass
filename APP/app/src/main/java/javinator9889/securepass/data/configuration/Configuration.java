@@ -1,6 +1,7 @@
 package javinator9889.securepass.data.configuration;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import javinator9889.securepass.objects.GeneralObjectContainer;
@@ -96,5 +97,27 @@ public class Configuration implements IConfiguration, Serializable {
     public void addConfigurationField(IConfigFields field) {
         int position = field.getSortOrder();
         mContainer.storeObject(field, position);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Configuration that = (Configuration) o;
+        return mId == that.mId &&
+                Objects.equals(mConfigurationName, that.mConfigurationName) &&
+                Objects.equals(mContainer, that.mContainer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(mId, mConfigurationName, mContainer);
     }
 }

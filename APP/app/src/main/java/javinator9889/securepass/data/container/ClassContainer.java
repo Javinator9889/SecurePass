@@ -79,7 +79,7 @@ public class ClassContainer implements Serializable {
 //                    entry.getCategoryId().getId());
 //        for (QRCode qrCode : qrCodes)
 //            operations.registerQRCode(
-//                    qrCode.getEntry().getId(),
+//                    qrCode.getEntryId().getId(),
 //                    qrCode.getName(),
 //                    qrCode.getDescription(),
 //                    qrCode.getQrData());

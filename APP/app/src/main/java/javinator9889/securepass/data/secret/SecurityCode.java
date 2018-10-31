@@ -1,6 +1,7 @@
 package javinator9889.securepass.data.secret;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 
@@ -41,9 +42,33 @@ public class SecurityCode implements Serializable {
         return mAccountName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "SecurityCode ID: " + mId +
                 "\nSecurityCode account name: " + mAccountName + "\n";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SecurityCode that = (SecurityCode) o;
+        return mId == that.mId &&
+                Objects.equals(mAccountName, that.mAccountName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(mId, mAccountName);
     }
 }

@@ -1,6 +1,7 @@
 package javinator9889.securepass.data.entry;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Class for containing categories
@@ -57,9 +58,34 @@ public class Category implements Serializable {
         this.mName = name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "Category ID: " + mId + "\n" +
                 "Category name: " + mName + "\n";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return mId == category.mId &&
+                Objects.equals(mName, category.mName);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see Objects#hash(Object...)
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(mId, mName);
     }
 }

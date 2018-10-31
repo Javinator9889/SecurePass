@@ -2,6 +2,7 @@ package javinator9889.securepass.data.entry.fields;
 
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 
@@ -10,8 +11,9 @@ import androidx.annotation.NonNull;
  * Created by Javinator9889 on 16/08/2018.
  */
 public class Image implements IImage, Serializable {
-    private String mSource;
     private long mId;
+    private long mParentEntryId;
+    private String mSource;
     private String mFieldDescription;
 
     /**
@@ -22,8 +24,12 @@ public class Image implements IImage, Serializable {
      * @param fieldDescription description
      * @see android.util.Base64
      */
-    public Image(long id, @NonNull String source, @NonNull String fieldDescription) {
+    public Image(long id,
+                 long parentEntryId,
+                 @NonNull String source,
+                 @NonNull String fieldDescription) {
         this.mId = id;
+        this.mParentEntryId = parentEntryId;
         this.mSource = source;
         this.mFieldDescription = fieldDescription;
     }
@@ -71,6 +77,26 @@ public class Image implements IImage, Serializable {
     }
 
     /**
+     * Gets the parent entry ID for this image
+     *
+     * @return {@code long} with the ID
+     */
+    @Override
+    public long getEntryId() {
+        return mParentEntryId;
+    }
+
+    /**
+     * Sets a new image parent entry ID
+     *
+     * @param id new parent entry ID
+     */
+    @Override
+    public void setEntryId(long id) {
+        mParentEntryId = id;
+    }
+
+    /**
      * Updates the field description by te given one
      *
      * @param fieldDescription new description
@@ -92,9 +118,37 @@ public class Image implements IImage, Serializable {
         return mFieldDescription;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
-        return "Source: " + getImageSource() + "\nmId: " + getImageID() + "\nField description: "
-                + getFieldDescription();
+        return "Source: " + getImageSource() +
+                "\nId: " + getImageID() +
+                "\nEntry ID: " + getEntryId() +
+                "\nField description: " + getFieldDescription();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image image = (Image) o;
+        return mId == image.mId &&
+                mParentEntryId == image.mParentEntryId &&
+                Objects.equals(mSource, image.mSource) &&
+                Objects.equals(mFieldDescription, image.mFieldDescription);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(mId, mParentEntryId, mSource, mFieldDescription);
     }
 }
