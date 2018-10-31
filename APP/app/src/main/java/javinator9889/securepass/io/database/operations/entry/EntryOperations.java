@@ -4,8 +4,6 @@ import android.content.ContentValues;
 
 import net.sqlcipher.Cursor;
 
-import java.util.Arrays;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.Configuration;
@@ -15,6 +13,7 @@ import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
+import javinator9889.securepass.util.threading.ThreadExceptionListener;
 import javinator9889.securepass.util.threading.ThreadingExecutor;
 import javinator9889.securepass.util.threading.thread.NotifyingThread;
 import javinator9889.securepass.util.values.Constants;
@@ -55,12 +54,18 @@ public class EntryOperations extends CommonOperations implements
      * Available constructor, matching
      * {@link CommonOperations#CommonOperations(DatabaseManager) super} one
      *
-     * @param databaseManager instance of the {@link DatabaseManager} object
+     * @param databaseManager     instance of the {@link DatabaseManager} object
+     * @param onExceptionListener class that implements {@link ThreadExceptionListener} interface
+     *                            - can be null if no listener is set up
      * @see DatabaseManager
      */
-    public EntryOperations(@NonNull DatabaseManager databaseManager) {
+    public EntryOperations(@NonNull DatabaseManager databaseManager,
+                           @Nullable ThreadExceptionListener onExceptionListener) {
         super(databaseManager);
-        mExecutor = ThreadingExecutor.Builder().build();
+        mExecutor = onExceptionListener == null ?
+                ThreadingExecutor.Builder().build() :
+                ThreadingExecutor.Builder().addOnThreadExceptionListener(onExceptionListener)
+                        .build();
     }
 
     /**
@@ -173,6 +178,16 @@ public class EntryOperations extends CommonOperations implements
         delete(TABLE_NAME, ID.getFieldName(), entryId);
     }
 
+    /**
+     * Generates a map with the provided params
+     *
+     * @param entryName       entry name
+     * @param entryIcon       entry icon
+     * @param categoryId      category ID
+     * @param configurationId configuration ID
+     * @return {@code ContentValues} with the params
+     * @see ContentValues
+     */
     private ContentValues setParams(@NonNull String entryName,
                                     @NonNull String entryIcon,
                                     long categoryId,
@@ -185,10 +200,6 @@ public class EntryOperations extends CommonOperations implements
         return params;
     }
 
-    private String[] whereArgs(@NonNull Object... args) {
-        return Arrays.copyOf(args, args.length, String[].class);
-    }
-
     /**
      * Obtains the entry name by using the given ID
      *
@@ -199,9 +210,8 @@ public class EntryOperations extends CommonOperations implements
     @Nullable
     public String getEntryName(long entryId) {
         String name = null;
-        try (Cursor entryCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()), ENTRY_WHERE_ID, whereArgs
-                        (entryId),
-                null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor entryCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()), ENTRY_WHERE_ID,
+                whereArgs(entryId), null, null, ID.getFieldName() + " ASC")) {
             if (entryCursor.moveToNext())
                 name = entryCursor.getString(NAME.getFieldIndex());
         }

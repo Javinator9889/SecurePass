@@ -6,6 +6,8 @@ import android.util.Log;
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
+import java.util.Arrays;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.io.database.DatabaseManager;
@@ -278,5 +280,15 @@ public class CommonOperations {
      */
     private String[] setSelectionArgs(long id) {
         return new String[]{String.valueOf(id)};
+    }
+
+    /**
+     * Converts an array of {@code Object} varargs into a {@code String} array
+     *
+     * @param args amount of elements to store in a {@code String} array
+     * @return {@code String[]} containing the args
+     */
+    protected String[] whereArgs(@NonNull Object... args) {
+        return Arrays.copyOf(args, args.length, String[].class);
     }
 }

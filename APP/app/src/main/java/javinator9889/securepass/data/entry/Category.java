@@ -8,7 +8,7 @@ import java.util.Objects;
  * Created by Javinator9889 on 29/03/2018.
  */
 public class Category implements Serializable {
-    private int mId;
+    private long mId;
     private String mName;
 
     /**
@@ -17,7 +17,7 @@ public class Category implements Serializable {
      * @param id   category ID
      * @param name category name
      */
-    public Category(int id, String name) {
+    public Category(long id, String name) {
         this.mId = id;
         this.mName = name;
     }
@@ -36,7 +36,7 @@ public class Category implements Serializable {
      *
      * @return <code>long</code> with the ID
      */
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
