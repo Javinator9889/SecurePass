@@ -22,4 +22,4 @@ android:
     - extra-google-m2repository
 
 script:
-   - ./APP/gradlew clean build connectedCheck
+   - ./APP/gradlew build connectedCheck --stacktrace
