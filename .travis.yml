@@ -22,4 +22,4 @@ android:
     - extra-google-m2repository
 
 script:
-   - ./APP/gradlew clean build lint test
+   - ./APP/gradlew clean build connectedCheck
