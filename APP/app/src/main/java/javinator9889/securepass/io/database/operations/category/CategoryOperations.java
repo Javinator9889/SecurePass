@@ -1,5 +1,8 @@
 package javinator9889.securepass.io.database.operations.category;
 
+import android.content.ContentValues;
+import android.util.Log;
+
 import net.sqlcipher.Cursor;
 
 import androidx.annotation.NonNull;
@@ -11,6 +14,7 @@ import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.threading.ThreadExceptionListener;
 import javinator9889.securepass.util.threading.ThreadingExecutor;
+import javinator9889.securepass.util.threading.thread.NotifyingThread;
 import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.Constants.SQL.CATEGORY;
 import javinator9889.securepass.util.values.database.CategoryFields;
@@ -108,7 +112,8 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
      */
     @Override
     public long registerNewCategory(@NonNull String categoryName) {
-        return 0;
+        ContentValues params = setParams(categoryName);
+        return insertReplaceOnConflict(TABLE_NAME, params);
     }
 
     /**
@@ -119,7 +124,8 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
      */
     @Override
     public void updateCategoryName(long categoryId, @NonNull String categoryName) {
-
+        ContentValues params = setParams(categoryName);
+        runUpdateExecutor(categoryId, params);
     }
 
     /**
@@ -129,6 +135,34 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
      */
     @Override
     public void removeCategory(long categoryId) {
+        delete(TABLE_NAME, ID.getFieldName(), categoryId);
+    }
 
+    /**
+     * Generates a map with the provided params
+     *
+     * @param categoryName category name
+     * @return {@code ContentValues} with the params
+     */
+    private ContentValues setParams(@NonNull String categoryName) {
+        ContentValues params = new ContentValues(1);
+        params.put(NAME.getFieldName(), categoryName);
+        return params;
+    }
+
+    /**
+     * Runs an update operation by using the given ID and new values
+     *
+     * @param categoryId ID where changing values
+     * @param params     new values
+     */
+    private void runUpdateExecutor(long categoryId, @NonNull ContentValues params) {
+        mExecutor.add(new NotifyingThread() {
+            @Override
+            public void doRun() {
+                update(TABLE_NAME, params, CATEGORY_WHERE_ID, whereArgs(categoryId));
+            }
+        });
+        mExecutor.run();
     }
 }
