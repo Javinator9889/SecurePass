@@ -13,8 +13,6 @@ import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.threading.ThreadExceptionListener;
-import javinator9889.securepass.util.threading.ThreadingExecutor;
-import javinator9889.securepass.util.threading.thread.NotifyingThread;
 import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.Constants.SQL.CATEGORY;
 import javinator9889.securepass.util.values.database.CategoryFields;
@@ -44,15 +42,20 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     private static final CategoryFields ID = CategoryFields.ID;
     private static final CategoryFields NAME = CategoryFields.NAME;
     private static final String CATEGORY_WHERE_ID = Constants.SQL.DB_UPDATE_CATEGORY_WHERE_CLAUSE;
-    private ThreadingExecutor mExecutor;
 
+    /**
+     * Available constructor, matching
+     * {@link CommonOperations#CommonOperations(DatabaseManager, ThreadExceptionListener) super} one
+     *
+     * @param databaseManager     instance of the {@link DatabaseManager} object
+     * @param onExceptionListener class that implements {@link ThreadExceptionListener} interface
+     *                            - can be null if no listener is set up
+     * @see DatabaseManager
+     * @see ThreadExceptionListener
+     */
     public CategoryOperations(@NonNull DatabaseManager databaseManager,
                               @Nullable ThreadExceptionListener onExceptionListener) {
-        super(databaseManager);
-        mExecutor = onExceptionListener == null ?
-                ThreadingExecutor.Builder().build() :
-                ThreadingExecutor.Builder().addOnThreadExceptionListener(onExceptionListener)
-                        .build();
+        super(databaseManager, onExceptionListener);
     }
 
     /**
@@ -63,6 +66,30 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     @Override
     public String getTag() {
         return TAG;
+    }
+
+    /**
+     * Gets the WHERE ID clause for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * should be overridden
+     *
+     * @return {@code String} with the WHERE clause - null if not defined
+     */
+    @NonNull
+    @Override
+    public String getWhereId() {
+        return CATEGORY_WHERE_ID;
+    }
+
+    /**
+     * Gets the TABLE NAME for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * should be overridden
+     *
+     * @return {@code String} with the TABLE NAME - null if not defined
+     */
+    @NonNull
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     /**
@@ -148,21 +175,5 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
         ContentValues params = new ContentValues(1);
         params.put(NAME.getFieldName(), categoryName);
         return params;
-    }
-
-    /**
-     * Runs an update operation by using the given ID and new values
-     *
-     * @param categoryId ID where changing values
-     * @param params     new values
-     */
-    private void runUpdateExecutor(long categoryId, @NonNull ContentValues params) {
-        mExecutor.add(new NotifyingThread() {
-            @Override
-            public void doRun() {
-                update(TABLE_NAME, params, CATEGORY_WHERE_ID, whereArgs(categoryId));
-            }
-        });
-        mExecutor.run();
     }
 }

@@ -10,7 +10,12 @@ import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import javinator9889.securepass.errors.ExecutorNonDefinedException;
+import javinator9889.securepass.errors.OverriddenMethodsNotDefinedError;
 import javinator9889.securepass.io.database.DatabaseManager;
+import javinator9889.securepass.util.threading.ThreadExceptionListener;
+import javinator9889.securepass.util.threading.ThreadingExecutor;
+import javinator9889.securepass.util.threading.thread.NotifyingThread;
 import javinator9889.securepass.util.values.Constants.SQL;
 
 /**
@@ -18,16 +23,19 @@ import javinator9889.securepass.util.values.Constants.SQL;
  */
 public class CommonOperations {
     private static final String TAG = "Database Operations";
+    private static final String WHERE_ID = null;
+    private static final String TABLE_NAME = null;
     private SQLiteDatabase mDatabase;
+    private ThreadingExecutor mExecutor;
 
     /**
-     * Public constructor for creating this class - use this instad of
+     * Public constructor for creating this class - use this instead of
      * {@link #newInstance(DatabaseManager)}
      *
      * @param databaseInstance instance of the {@link DatabaseManager} object
      * @see DatabaseManager
      */
-    public CommonOperations(DatabaseManager databaseInstance) {
+    public CommonOperations(@NonNull DatabaseManager databaseInstance) {
         try {
             databaseInstance.getDatabaseInitializer().join();
             this.mDatabase = databaseInstance.getDatabaseInstance();
@@ -36,6 +44,23 @@ public class CommonOperations {
                     + SQL.DB_INIT_THREAD_NAME + "\". Interrupted exception. Full trace:");
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Public constructor for creating this class and providing a {@link ThreadExceptionListener}
+     *
+     * @param databaseInstance    instance of the {@link DatabaseManager} object
+     * @param onExceptionListener nullable class listening on threading errors
+     * @see DatabaseManager
+     * @see ThreadExceptionListener
+     */
+    public CommonOperations(@NonNull DatabaseManager databaseInstance,
+                            @Nullable ThreadExceptionListener onExceptionListener) {
+        this(databaseInstance);
+        mExecutor = onExceptionListener == null ?
+                ThreadingExecutor.Builder().build() :
+                ThreadingExecutor.Builder().addOnThreadExceptionListener(onExceptionListener)
+                        .build();
     }
 
     /**
@@ -81,6 +106,28 @@ public class CommonOperations {
      */
     public String getTag() {
         return TAG;
+    }
+
+    /**
+     * Gets the WHERE ID clause for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * should be overridden
+     *
+     * @return {@code String} with the WHERE clause - null if not defined
+     */
+    @Nullable
+    public String getWhereId() {
+        return WHERE_ID;
+    }
+
+    /**
+     * Gets the TABLE NAME for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * should be overridden
+     *
+     * @return {@code String} with the TABLE NAME - null if not defined
+     */
+    @Nullable
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     /**
@@ -290,5 +337,47 @@ public class CommonOperations {
      */
     protected String[] whereArgs(@NonNull Object... args) {
         return Arrays.copyOf(args, args.length, String[].class);
+    }
+
+    /**
+     * Runs an update operation by using the given ID and new values
+     *
+     * @param id     ID where changing values
+     * @param params new values
+     * @throws OverriddenMethodsNotDefinedError when {@link #getTableName()} or
+     *                                          {@link #getWhereId()} are not overridden
+     * @throws ExecutorNonDefinedException      when constructor
+     *                                          {@link #CommonOperations(DatabaseManager,
+     *                                          ThreadExceptionListener)}
+     *                                          has not been used
+     * @see ThreadingExecutor#add(NotifyingThread)
+     * @see ThreadingExecutor#run()
+     */
+    protected void runUpdateExecutor(long id, @NonNull ContentValues params) {
+        if (getTableName() == null || getWhereId() == null) {
+            StringBuilder nonDefinedAttributes = new StringBuilder(3);
+            boolean isFirstDefined = false;
+            if (getTableName() == null) {
+                nonDefinedAttributes.append("getTableName()");
+                isFirstDefined = true;
+            }
+            if (getWhereId() == null)
+                if (isFirstDefined)
+                    nonDefinedAttributes.append(", ");
+            nonDefinedAttributes.append("getWhereId()");
+            throw new OverriddenMethodsNotDefinedError("Following methods not overridden: " +
+                    nonDefinedAttributes.toString());
+        }
+        if (mExecutor == null)
+            throw new ExecutorNonDefinedException("You must define the \"ThreadingExecutor\" by " +
+                    "using \"CommonOperations(DatabaseManager, ThreadExceptionListener)\" " +
+                    "constructor");
+        mExecutor.add(new NotifyingThread() {
+            @Override
+            public void doRun() {
+                update(getTableName(), params, getWhereId(), whereArgs(id));
+            }
+        });
+        mExecutor.run();
     }
 }
