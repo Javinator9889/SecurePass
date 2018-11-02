@@ -13,7 +13,6 @@ import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.threading.ThreadExceptionListener;
-import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.Constants.SQL.CATEGORY;
 import javinator9889.securepass.util.values.database.CategoryFields;
 
@@ -41,7 +40,7 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     private static final String TABLE_NAME = CATEGORY.NAME;
     private static final CategoryFields ID = CategoryFields.ID;
     private static final CategoryFields NAME = CategoryFields.NAME;
-    private static final String CATEGORY_WHERE_ID = Constants.SQL.DB_UPDATE_CATEGORY_WHERE_CLAUSE;
+    private static final String CATEGORY_WHERE_ID = ID.getFieldName() + "=?";
 
     /**
      * Available constructor, matching

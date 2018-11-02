@@ -14,7 +14,6 @@ import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.threading.ThreadExceptionListener;
-import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.Constants.SQL.ENTRY;
 import javinator9889.securepass.util.values.database.EntryFields;
 
@@ -45,7 +44,7 @@ public class EntryOperations extends CommonOperations implements
     private static final EntryFields ICON = EntryFields.ICON;
     private static final EntryFields CATEGORY = EntryFields.CATEGORY;
     private static final EntryFields CONFIGURATION = EntryFields.CONFIGURATION;
-    private static final String ENTRY_WHERE_ID = Constants.SQL.DB_UPDATE_ENTRY_WHERE_CLAUSE;
+    private static final String ENTRY_WHERE_ID = ID.getFieldName() + "=?";
 
     /**
      * Available constructor, matching

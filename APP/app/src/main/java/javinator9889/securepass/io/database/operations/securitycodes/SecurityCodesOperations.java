@@ -39,7 +39,7 @@ public class SecurityCodesOperations extends CommonOperations implements
     private static final String TABLE_NAME = Constants.SQL.SECURITY_CODE.NAME;
     private static final SecurityCodesFields ID = SecurityCodesFields.ID;
     private static final SecurityCodesFields NAME = SecurityCodesFields.NAME;
-    private static final String WHERE_ID = Constants.SQL.DB_UPDATE_SECURITY_CODE_WHERE_CLAUSE;
+    private static final String WHERE_ID = ID.getFieldName() + "=?";
 
     /**
      * Available constructor, matching
