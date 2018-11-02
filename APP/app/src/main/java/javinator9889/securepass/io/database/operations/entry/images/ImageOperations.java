@@ -120,7 +120,7 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public String getImageDescription(long imageId) {
         String description = null;
-        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(SOURCE.getFieldName()), WHERE_ID,
+        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()), WHERE_ID,
                 whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
             if (imagesCursor.moveToNext())
                 description = imagesCursor.getString(DESCRIPTION.getFieldIndex());
@@ -137,7 +137,7 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public int getImageOrder(long imageId) {
         int order = -1;
-        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(SOURCE.getFieldName()), WHERE_ID,
+        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
                 whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
             if (imagesCursor.moveToNext())
                 order = imagesCursor.getInt(ORDER.getFieldIndex());
@@ -154,7 +154,7 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public long getImageEntryId(long imageId) {
         long entryId = -1;
-        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(SOURCE.getFieldName()), WHERE_ID,
+        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
                 whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
             if (imagesCursor.moveToNext())
                 entryId = imagesCursor.getLong(ENTRY.getFieldIndex());

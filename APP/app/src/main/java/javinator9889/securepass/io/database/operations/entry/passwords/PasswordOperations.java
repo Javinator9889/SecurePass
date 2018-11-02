@@ -120,7 +120,7 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public String getPasswordDescription(long passwordId) {
         String description = null;
-        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(PASSWORD.getFieldName()), WHERE_ID,
+        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()), WHERE_ID,
                 whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
             if (passwordCursor.moveToNext())
                 description = passwordCursor.getString(DESCRIPTION.getFieldIndex());
@@ -137,7 +137,7 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public int getPasswordOrder(long passwordId) {
         int order = -1;
-        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(PASSWORD.getFieldName()), WHERE_ID,
+        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
                 whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
             if (passwordCursor.moveToNext())
                 order = passwordCursor.getInt(ORDER.getFieldIndex());
@@ -154,7 +154,7 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public long getPasswordEntryId(long passwordId) {
         long entryId = -1;
-        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(PASSWORD.getFieldName()), WHERE_ID,
+        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
                 whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
             if (passwordCursor.moveToNext())
                 entryId = passwordCursor.getLong(ENTRY.getFieldIndex());
