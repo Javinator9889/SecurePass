@@ -43,4 +43,9 @@ public interface ICategorySetOperations {
      * @param categoryId category ID to remove
      */
     void removeCategory(long categoryId);
+
+    /**
+     * Applies pending changes to the database
+     */
+    void apply();
 }

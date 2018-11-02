@@ -73,4 +73,9 @@ public interface IEntrySetOperations {
      * @param entryId entry ID
      */
     void removeEntry(long entryId);
+
+    /**
+     * Applies pending changes to the database
+     */
+    void apply();
 }

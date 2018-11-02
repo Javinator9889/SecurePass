@@ -23,8 +23,7 @@ public enum SmallTextFields implements FieldsOperations {
     TEXT("text", 1),
     DESCRIPTION("field_desc", 2),
     ORDER("sortOrder", 3),
-    ENTRY("idEntry", 4),
-    CATEGORY("cidCategory", 5);
+    ENTRY("idEntry", 4);
 
     private String mFieldName;
     private int mFieldIndex;

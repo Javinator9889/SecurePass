@@ -53,4 +53,9 @@ public interface IFieldsSetOperations {
      * @param fieldId ID of the field to delete
      */
     void removeField(long fieldId);
+
+    /**
+     * Applies pending changes to the database
+     */
+    void apply();
 }

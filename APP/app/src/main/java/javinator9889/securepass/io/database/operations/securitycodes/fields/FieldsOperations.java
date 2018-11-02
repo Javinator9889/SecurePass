@@ -1,6 +1,7 @@
 package javinator9889.securepass.io.database.operations.securitycodes.fields;
 
 import android.content.ContentValues;
+import android.util.Log;
 
 import net.sqlcipher.Cursor;
 

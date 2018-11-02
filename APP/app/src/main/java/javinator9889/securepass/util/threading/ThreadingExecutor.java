@@ -133,6 +133,28 @@ public class ThreadingExecutor implements ThreadCompleteListener, Thread.Uncaugh
         mShouldContinueExecuting.set(shouldContinueExecuting);
     }
 
+    /**
+     * Prepares pending threads for executing and running at the correspondent addition order.
+     *
+     * <p>
+     * Iterates starting at {@link #mActiveThreads current active threads} until the
+     * {@link #mMaxActiveThreads maximum active threads}.
+     *
+     * <ul>
+     * <li>
+     * Obtains the {@link LinkedList#remove() head of the queue}.
+     * </li>
+     * <li>
+     * Adds the head of the queue to the
+     * {@link GeneralObjectContainer#storeObject(Object) in execution threads} list.
+     * </li>
+     * <li>
+     * Starts the retrieved thread running in the background and updates the
+     * {@link #mActiveThreads count of active threads}.
+     * </li>
+     * </ul>
+     * </p>
+     */
     private void doPlanning() {
         for (int i = mActiveThreads.get(); i < mMaxActiveThreads.get(); ++i) {
             try {
@@ -193,6 +215,18 @@ public class ThreadingExecutor implements ThreadCompleteListener, Thread.Uncaugh
      */
     public void run() {
         doPlanning();
+    }
+
+    /**
+     * Checks if there is any pending thread waiting for being executed. For that purpose, it
+     * checks if the {@link LinkedList#size() size of the queue} is higher than 0 (if it is zero
+     * means that there is no pending thread at the queue)
+     *
+     * @return {@code boolean} {@code true} when there is at least one pending thread, else {@code
+     * false}
+     */
+    public boolean isAnyPendingThread() {
+        return mThreads.size() > 0;
     }
 
     /**

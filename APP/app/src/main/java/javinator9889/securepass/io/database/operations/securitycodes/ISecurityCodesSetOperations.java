@@ -43,4 +43,9 @@ public interface ISecurityCodesSetOperations {
      * @param securityCodeId ID to remove
      */
     void removeSecurityCode(long securityCodeId);
+
+    /**
+     * Applies pending changes to the database
+     */
+    void apply();
 }

@@ -11,6 +11,7 @@ import java.util.Arrays;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.errors.ExecutorNonDefinedException;
+import javinator9889.securepass.errors.NoJobsEnqueuedError;
 import javinator9889.securepass.errors.OverriddenMethodsNotDefinedError;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.util.threading.ThreadExceptionListener;
@@ -100,7 +101,7 @@ public class CommonOperations {
     }
 
     /**
-     * Gets the tag for {@link Log} output - should be overridden
+     * Gets the tag for {@link android.util.Log} output - should be overridden
      *
      * @return <code>String</code> with the tag name
      */
@@ -378,6 +379,15 @@ public class CommonOperations {
                 update(getTableName(), params, getWhereId(), whereArgs(id));
             }
         });
-        mExecutor.run();
+    }
+
+    /**
+     * Runs the {@link ThreadingExecutor}
+     */
+    public void apply() {
+        if (mExecutor.isAnyPendingThread())
+            mExecutor.run();
+        else
+            throw new NoJobsEnqueuedError("There is no pending thread waiting to be executed");
     }
 }
