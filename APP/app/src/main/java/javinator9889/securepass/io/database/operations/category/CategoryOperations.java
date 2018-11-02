@@ -69,7 +69,7 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     }
 
     /**
-     * Gets the WHERE ID clause for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * Gets the WHERE ID clause for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
      * should be overridden
      *
      * @return {@code String} with the WHERE clause - null if not defined
@@ -81,7 +81,7 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     }
 
     /**
-     * Gets the TABLE NAME for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
      * should be overridden
      *
      * @return {@code String} with the TABLE NAME - null if not defined
@@ -152,7 +152,7 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     @Override
     public void updateCategoryName(long categoryId, @NonNull String categoryName) {
         ContentValues params = setParams(categoryName);
-        runUpdateExecutor(categoryId, params);
+        scheduleUpdateExecutor(categoryId, params);
     }
 
     /**

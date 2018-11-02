@@ -71,7 +71,7 @@ public class EntryOperations extends CommonOperations implements
     }
 
     /**
-     * Gets the WHERE ID clause for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * Gets the WHERE ID clause for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
      * should be overridden
      *
      * @return {@code String} with the WHERE clause - null if not defined
@@ -83,7 +83,7 @@ public class EntryOperations extends CommonOperations implements
     }
 
     /**
-     * Gets the TABLE NAME for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
      * should be overridden
      *
      * @return {@code String} with the TABLE NAME - null if not defined
@@ -125,7 +125,7 @@ public class EntryOperations extends CommonOperations implements
                            @NonNull String name) {
         ContentValues params = new ContentValues(1);
         params.put(NAME.getFieldName(), name);
-        runUpdateExecutor(entryId, params);
+        scheduleUpdateExecutor(entryId, params);
     }
 
     /**
@@ -139,7 +139,7 @@ public class EntryOperations extends CommonOperations implements
                            @NonNull String icon) {
         ContentValues params = new ContentValues(1);
         params.put(ICON.getFieldName(), icon);
-        runUpdateExecutor(entryId, params);
+        scheduleUpdateExecutor(entryId, params);
     }
 
     /**
@@ -153,7 +153,7 @@ public class EntryOperations extends CommonOperations implements
                                long categoryId) {
         ContentValues params = new ContentValues(1);
         params.put(CATEGORY.getFieldName(), categoryId);
-        runUpdateExecutor(entryId, params);
+        scheduleUpdateExecutor(entryId, params);
     }
 
     /**
@@ -167,7 +167,7 @@ public class EntryOperations extends CommonOperations implements
                                     long configurationId) {
         ContentValues params = new ContentValues(1);
         params.put(CONFIGURATION.getFieldName(), configurationId);
-        runUpdateExecutor(entryId, params);
+        scheduleUpdateExecutor(entryId, params);
     }
 
     /**

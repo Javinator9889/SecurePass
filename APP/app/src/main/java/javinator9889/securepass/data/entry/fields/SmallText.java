@@ -9,10 +9,11 @@ import androidx.annotation.NonNull;
  */
 public class SmallText extends Text implements Serializable {
     /**
-     * Public available constructor that uses {@link Text#Text(long, String, String) super}
+     * Public available constructor that uses {@link Text#Text(long, long, String, String) super}
      * constructor
      *
      * @param id               long text ID
+     * @param parentEntryId    long parent entry ID
      * @param text             long text text
      * @param fieldDescription description
      */

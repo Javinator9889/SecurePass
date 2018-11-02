@@ -28,11 +28,10 @@ public interface IPasswordSetOperations {
      * @param description current entry description
      * @param order       ordinal order when showing it on UI
      * @param entryId     parent entry ID
-     * @param categoryId  parent category ID
      * @return {@code long} with the new password ID
      */
     long registerNewPassword(@NonNull String password, @NonNull String description, int order,
-                             long entryId, long categoryId);
+                             long entryId);
 
     /**
      * Updates the saved password by using the given ID
@@ -59,7 +58,14 @@ public interface IPasswordSetOperations {
     void updateSortOrder(long passwordId, int order);
 
     /**
-     * Applies pending changes to the database
+     * Removes the hole password by using the given ID
+     *
+     * @param passwordId password ID to remove
+     */
+    void removePassword(long passwordId);
+
+    /**
+     * Applies pending changes to the database - only necessary when doing UPDATE operations
      */
     void apply();
 }

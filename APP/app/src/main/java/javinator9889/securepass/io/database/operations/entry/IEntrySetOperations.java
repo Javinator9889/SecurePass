@@ -75,7 +75,7 @@ public interface IEntrySetOperations {
     void removeEntry(long entryId);
 
     /**
-     * Applies pending changes to the database
+     * Applies pending changes to the database - only necessary when doing UPDATE operations
      */
     void apply();
 }

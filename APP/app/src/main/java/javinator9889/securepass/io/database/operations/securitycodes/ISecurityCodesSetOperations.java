@@ -45,7 +45,7 @@ public interface ISecurityCodesSetOperations {
     void removeSecurityCode(long securityCodeId);
 
     /**
-     * Applies pending changes to the database
+     * Applies pending changes to the database - only necessary when doing UPDATE operations
      */
     void apply();
 }

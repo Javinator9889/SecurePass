@@ -65,7 +65,7 @@ public class SecurityCodesOperations extends CommonOperations implements
     }
 
     /**
-     * Gets the WHERE ID clause for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * Gets the WHERE ID clause for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
      * should be overridden
      *
      * @return {@code String} with the WHERE clause - null if not defined
@@ -77,7 +77,7 @@ public class SecurityCodesOperations extends CommonOperations implements
     }
 
     /**
-     * Gets the TABLE NAME for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
      * should be overridden
      *
      * @return {@code String} with the TABLE NAME - null if not defined
@@ -148,7 +148,7 @@ public class SecurityCodesOperations extends CommonOperations implements
     @Override
     public void updateName(long securityCodeId, @NonNull String newName) {
         ContentValues params = setParams(newName);
-        runUpdateExecutor(securityCodeId, params);
+        scheduleUpdateExecutor(securityCodeId, params);
     }
 
     /**

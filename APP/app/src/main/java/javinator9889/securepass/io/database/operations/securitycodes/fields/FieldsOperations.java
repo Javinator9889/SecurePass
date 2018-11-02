@@ -71,7 +71,7 @@ public class FieldsOperations extends CommonOperations implements IFieldsSetOper
     }
 
     /**
-     * Gets the WHERE ID clause for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * Gets the WHERE ID clause for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
      * should be overridden
      *
      * @return {@code String} with the WHERE clause - null if not defined
@@ -83,7 +83,7 @@ public class FieldsOperations extends CommonOperations implements IFieldsSetOper
     }
 
     /**
-     * Gets the TABLE NAME for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
      * should be overridden
      *
      * @return {@code String} with the TABLE NAME - null if not defined
@@ -177,7 +177,7 @@ public class FieldsOperations extends CommonOperations implements IFieldsSetOper
     public void updateFieldCode(long fieldId, @NonNull String newCode) {
         ContentValues params = new ContentValues(1);
         params.put(CODE.getFieldName(), newCode);
-        runUpdateExecutor(fieldId, params);
+        scheduleUpdateExecutor(fieldId, params);
     }
 
     /**
@@ -190,7 +190,7 @@ public class FieldsOperations extends CommonOperations implements IFieldsSetOper
     public void updateFieldCodeBeenUsed(long fieldId, boolean isCodeUsed) {
         ContentValues params = new ContentValues(1);
         params.put(USED.getFieldName(), isCodeUsed);
-        runUpdateExecutor(fieldId, params);
+        scheduleUpdateExecutor(fieldId, params);
     }
 
     /**

@@ -55,7 +55,7 @@ public interface IFieldsSetOperations {
     void removeField(long fieldId);
 
     /**
-     * Applies pending changes to the database
+     * Applies pending changes to the database - only necessary when doing UPDATE operations
      */
     void apply();
 }

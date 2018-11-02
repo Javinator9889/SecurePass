@@ -110,7 +110,7 @@ public class CommonOperations {
     }
 
     /**
-     * Gets the WHERE ID clause for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * Gets the WHERE ID clause for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
      * should be overridden
      *
      * @return {@code String} with the WHERE clause - null if not defined
@@ -121,7 +121,7 @@ public class CommonOperations {
     }
 
     /**
-     * Gets the TABLE NAME for using {@link #runUpdateExecutor(long, ContentValues)} -
+     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
      * should be overridden
      *
      * @return {@code String} with the TABLE NAME - null if not defined
@@ -341,7 +341,7 @@ public class CommonOperations {
     }
 
     /**
-     * Runs an update operation by using the given ID and new values
+     * Schedules an update operation by using the given ID and new values
      *
      * @param id     ID where changing values
      * @param params new values
@@ -354,7 +354,7 @@ public class CommonOperations {
      * @see ThreadingExecutor#add(NotifyingThread)
      * @see ThreadingExecutor#run()
      */
-    protected void runUpdateExecutor(long id, @NonNull ContentValues params) {
+    protected void scheduleUpdateExecutor(long id, @NonNull ContentValues params) {
         if (getTableName() == null || getWhereId() == null) {
             StringBuilder nonDefinedAttributes = new StringBuilder(3);
             boolean isFirstDefined = false;
@@ -382,7 +382,9 @@ public class CommonOperations {
     }
 
     /**
-     * Runs the {@link ThreadingExecutor}
+     * Runs the {@link ThreadingExecutor} - only necessary when doing UPDATE operations
+     *
+     * @throws NoJobsEnqueuedError when there is no job added to the queue
      */
     public void apply() {
         if (mExecutor.isAnyPendingThread())

@@ -1,5 +1,8 @@
 package javinator9889.securepass.io.database.operations.entry.passwords;
 
+import javinator9889.securepass.data.entry.fields.Password;
+import javinator9889.securepass.objects.GeneralObjectContainer;
+
 /**
  * Copyright © 2018 - present | APP by Javinator9889
  *
@@ -19,4 +22,45 @@ package javinator9889.securepass.io.database.operations.entry.passwords;
  * Created by Javinator9889 on 01/11/2018 - APP.
  */
 public interface IPasswordGetOperations {
+    /**
+     * Obtains the stored password
+     *
+     * @param passwordId ID of the password in the DB
+     * @return {@code String} with the password
+     */
+    String getPasswordPassword(long passwordId);
+
+    /**
+     * Obtains the password description
+     *
+     * @param passwordId ID of the password in DB
+     * @return {@code String} with the description
+     */
+    String getPasswordDescription(long passwordId);
+
+    /**
+     * Obtains the password ordinal order
+     *
+     * @param passwordId ID of the password in DB
+     * @return {@code int} with the order
+     */
+    int getPasswordOrder(long passwordId);
+
+    /**
+     * Obtains the password parent entry ID
+     *
+     * @param passwordId ID of the password in DB
+     * @return {@code long} with the entry ID
+     */
+    long getPasswordEntryId(long passwordId);
+
+    /**
+     * Obtains all entries' data and saves it inside a {@link GeneralObjectContainer} of
+     * {@link Password}
+     *
+     * @return {@code GeneralObjectContainer} of entries
+     * @see javinator9889.securepass.objects.ObjectContainer
+     * @see Password
+     */
+    GeneralObjectContainer<Password> getAllPasswords();
 }
