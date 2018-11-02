@@ -1,6 +1,6 @@
-package javinator9889.securepass.io.database.operations.entry.passwords;
+package javinator9889.securepass.io.database.operations.entry.image;
 
-import javinator9889.securepass.data.entry.fields.Password;
+import javinator9889.securepass.data.entry.fields.Image;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
@@ -19,48 +19,48 @@ import javinator9889.securepass.objects.GeneralObjectContainer;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  *
- * Created by Javinator9889 on 01/11/2018 - APP.
+ * Created by Javinator9889 on 02/11/2018 - APP.
  */
-public interface IPasswordGetOperations {
+public interface IImageGetOperations {
     /**
-     * Obtains the stored password
+     * Obtains the image source by its ID
      *
-     * @param passwordId ID of the password in the DB
-     * @return {@code String} with the password
+     * @param imageId ID of the image to get the source
+     * @return {@code String} with the source
      */
-    String getPasswordPassword(long passwordId);
+    String getImageSource(long imageId);
 
     /**
-     * Obtains the password description
+     * Obtains the image description by its ID
      *
-     * @param passwordId ID of the password in DB
+     * @param imageId ID of the image to get the description
      * @return {@code String} with the description
      */
-    String getPasswordDescription(long passwordId);
+    String getImageDescription(long imageId);
 
     /**
-     * Obtains the password ordinal order
+     * Obtains the image order by its ID
      *
-     * @param passwordId ID of the password in DB
-     * @return {@code int} with the order
+     * @param imageId ID of the image to get the order
+     * @return {@code int} with the ordinal order
      */
-    int getPasswordOrder(long passwordId);
+    int getImageOrder(long imageId);
 
     /**
-     * Obtains the password parent entry ID
+     * Obtains the image parent entry ID
      *
-     * @param passwordId ID of the password in DB
+     * @param imageId ID of the image to get the parent entry ID
      * @return {@code long} with the entry ID
      */
-    long getPasswordEntryId(long passwordId);
+    long getImageEntryId(long imageId);
 
     /**
-     * Obtains all passwords' data and saves it inside a {@link GeneralObjectContainer} of
-     * {@link Password}
+     * Obtains all images' data and saves it inside a {@link GeneralObjectContainer} of
+     * {@link Image}
      *
      * @return {@code GeneralObjectContainer} of entries
      * @see javinator9889.securepass.objects.ObjectContainer
-     * @see Password
+     * @see Image
      */
-    GeneralObjectContainer<Password> getAllPasswords();
+    GeneralObjectContainer<Image> getAllImages();
 }

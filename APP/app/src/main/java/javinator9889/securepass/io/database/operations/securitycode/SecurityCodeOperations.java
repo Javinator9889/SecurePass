@@ -1,4 +1,4 @@
-package javinator9889.securepass.io.database.operations.securitycodes;
+package javinator9889.securepass.io.database.operations.securitycode;
 
 import android.content.ContentValues;
 
@@ -33,8 +33,8 @@ import javinator9889.securepass.util.values.database.SecurityCodesFields;
  *
  * Created by Javinator9889 on 01/11/2018 - APP.
  */
-public class SecurityCodesOperations extends CommonOperations implements
-        ISecurityCodesSetOperations, ISecurityCodesGetOperations {
+public class SecurityCodeOperations extends CommonOperations implements
+        ISecurityCodeSetOperations, ISecurityCodeGetOperations {
     private static final String TAG = "Security Codes Operations";
     private static final String TABLE_NAME = Constants.SQL.SECURITY_CODE.NAME;
     private static final SecurityCodesFields ID = SecurityCodesFields.ID;
@@ -51,8 +51,8 @@ public class SecurityCodesOperations extends CommonOperations implements
      * @see DatabaseManager
      * @see ThreadExceptionListener
      */
-    public SecurityCodesOperations(@NonNull DatabaseManager databaseManager,
-                                   @Nullable ThreadExceptionListener onExceptionListener) {
+    public SecurityCodeOperations(@NonNull DatabaseManager databaseManager,
+                                  @Nullable ThreadExceptionListener onExceptionListener) {
         super(databaseManager, onExceptionListener);
     }
 

@@ -1,4 +1,4 @@
-package javinator9889.securepass.io.database.operations.entry.passwords;
+package javinator9889.securepass.io.database.operations.entry.password;
 
 import androidx.annotation.NonNull;
 

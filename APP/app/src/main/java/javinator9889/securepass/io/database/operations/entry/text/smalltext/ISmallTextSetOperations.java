@@ -1,7 +1,7 @@
-package javinator9889.securepass.io.database.operations.entry.texts.longtext;
+package javinator9889.securepass.io.database.operations.entry.text.smalltext;
 
 import androidx.annotation.NonNull;
-import javinator9889.securepass.io.database.operations.entry.texts.ITextSetOperations;
+import javinator9889.securepass.io.database.operations.entry.text.ITextSetOperations;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
@@ -21,16 +21,16 @@ import javinator9889.securepass.io.database.operations.entry.texts.ITextSetOpera
  *
  * Created by Javinator9889 on 02/11/2018 - APP.
  */
-public interface ILongTextSetOperations extends ITextSetOperations {
+public interface ISmallTextSetOperations extends ITextSetOperations {
     /**
-     * Registers a new simple long text
+     * Registers a new simple small text
      *
      * @param text        text to store in the DB
-     * @param description long text description
+     * @param description small text description
      * @param order       ordinal order
      * @param entryId     parent entry ID
-     * @return {@code long} with the new long text ID
+     * @return {@code long} with the new small text ID
      */
-    long registerNewLongText(@NonNull String text, @NonNull String description, int order,
-                             long entryId);
+    long registerNewSmallText(@NonNull String text, @NonNull String description, int order,
+                              long entryId);
 }

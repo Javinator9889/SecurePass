@@ -1,7 +1,7 @@
-package javinator9889.securepass.io.database.operations.entry.texts.longtext;
+package javinator9889.securepass.io.database.operations.entry.text.smalltext;
 
-import javinator9889.securepass.data.entry.fields.LongText;
-import javinator9889.securepass.io.database.operations.entry.texts.ITextGetOperations;
+import javinator9889.securepass.data.entry.fields.SmallText;
+import javinator9889.securepass.io.database.operations.entry.text.ITextGetOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
@@ -22,14 +22,14 @@ import javinator9889.securepass.objects.GeneralObjectContainer;
  *
  * Created by Javinator9889 on 02/11/2018 - APP.
  */
-public interface ILongTextGetOperations extends ITextGetOperations {
+public interface ISmallTextGetOperations extends ITextGetOperations {
     /**
-     * Obtains all long texts' data and saves it inside a {@link GeneralObjectContainer} of
-     * {@link LongText}
+     * Obtains all small texts' data and saves it inside a {@link GeneralObjectContainer} of
+     * {@link SmallText}
      *
      * @return {@code GeneralObjectContainer} of entries
      * @see javinator9889.securepass.objects.ObjectContainer
-     * @see LongText
+     * @see SmallText
      */
-    GeneralObjectContainer<LongText> getAllSmallTexts();
+    GeneralObjectContainer<SmallText> getAllSmallTexts();
 }

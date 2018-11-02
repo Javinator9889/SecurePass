@@ -1,4 +1,4 @@
-package javinator9889.securepass.io.database.operations.entry.texts;
+package javinator9889.securepass.io.database.operations.entry.text;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889

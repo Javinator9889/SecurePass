@@ -1,6 +1,6 @@
-package javinator9889.securepass.io.database.operations.securitycodes.fields;
+package javinator9889.securepass.io.database.operations.securitycode;
 
-import javinator9889.securepass.data.secret.Field;
+import javinator9889.securepass.data.secret.SecurityCode;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
@@ -21,30 +21,22 @@ import javinator9889.securepass.objects.GeneralObjectContainer;
  *
  * Created by Javinator9889 on 01/11/2018 - APP.
  */
-public interface IFieldsGetOperations {
+public interface ISecurityCodeGetOperations {
     /**
-     * Obtains the field's code by using the provided ID
+     * Obtains the security code name by using the given ID
      *
-     * @param fieldId ID of the field where obtaining the code
-     * @return {@code String} with the code
+     * @param securityCodeId ID where obtaining the name
+     * @return {@code String} with the name
      */
-    String getFieldCode(long fieldId);
+    String getSecurityCodeName(long securityCodeId);
 
     /**
-     * Obtains if the field's code has been used
+     * Obtains all security codes' data and saves it inside a {@link GeneralObjectContainer} of
+     * {@link SecurityCode}
      *
-     * @param fieldId ID of the field where obtaining the code
-     * @return {@code boolean} with the value
-     */
-    boolean getFieldCodeBeenUsed(long fieldId);
-
-    /**
-     * Obtains all the fields' data and stores it inside a {@link GeneralObjectContainer} of
-     * {@link Field}
-     *
-     * @return {@code GeneralObjectContainer} with the fields
+     * @return {@code GeneralObjectContainer} of security codes
      * @see javinator9889.securepass.objects.ObjectContainer
-     * @see Field
+     * @see SecurityCode
      */
-    GeneralObjectContainer<Field> getAllFields();
+    GeneralObjectContainer<SecurityCode> getAllSecurityCodes();
 }

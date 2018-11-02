@@ -1,4 +1,4 @@
-package javinator9889.securepass.io.database.operations.entry.images;
+package javinator9889.securepass.io.database.operations.entry.image;
 
 import android.content.ContentValues;
 import android.util.Log;

@@ -1,4 +1,4 @@
-package javinator9889.securepass.io.database.operations.entry.texts.smalltext;
+package javinator9889.securepass.io.database.operations.entry.text.longtext;
 
 import android.content.ContentValues;
 import android.util.Log;
@@ -7,14 +7,14 @@ import net.sqlcipher.Cursor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import javinator9889.securepass.data.entry.fields.SmallText;
+import javinator9889.securepass.data.entry.fields.LongText;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.threading.ThreadExceptionListener;
 import javinator9889.securepass.util.values.Constants;
-import javinator9889.securepass.util.values.database.SmallTextFields;
+import javinator9889.securepass.util.values.database.LongTextFields;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
@@ -34,15 +34,15 @@ import javinator9889.securepass.util.values.database.SmallTextFields;
  *
  * Created by Javinator9889 on 02/11/2018 - APP.
  */
-public class SmallTextOperations extends CommonOperations implements ISmallTextSetOperations,
-        ISmallTextGetOperations {
-    private static final String TAG = "SmallText Operations";
-    private static final String TABLE_NAME = Constants.SQL.SMALL_TEXT.NAME;
-    private static final SmallTextFields ID = SmallTextFields.ID;
-    private static final SmallTextFields TEXT = SmallTextFields.TEXT;
-    private static final SmallTextFields DESCRIPTION = SmallTextFields.DESCRIPTION;
-    private static final SmallTextFields ORDER = SmallTextFields.ORDER;
-    private static final SmallTextFields ENTRY = SmallTextFields.ENTRY;
+public class LongTextOperations extends CommonOperations implements ILongTextSetOperations,
+        ILongTextGetOperations {
+    private static final String TAG = "LongText Operations";
+    private static final String TABLE_NAME = Constants.SQL.LONG_TEXT.NAME;
+    private static final LongTextFields ID = LongTextFields.ID;
+    private static final LongTextFields TEXT = LongTextFields.TEXT;
+    private static final LongTextFields DESCRIPTION = LongTextFields.DESCRIPTION;
+    private static final LongTextFields ORDER = LongTextFields.ORDER;
+    private static final LongTextFields ENTRY = LongTextFields.ENTRY;
     private static final String WHERE_ID = ID.getFieldName() + "=?";
 
     /**
@@ -55,8 +55,8 @@ public class SmallTextOperations extends CommonOperations implements ISmallTextS
      * @see DatabaseManager
      * @see ThreadExceptionListener
      */
-    public SmallTextOperations(@NonNull DatabaseManager databaseInstance,
-                               @Nullable ThreadExceptionListener onExceptionListener) {
+    public LongTextOperations(@NonNull DatabaseManager databaseInstance,
+                              @Nullable ThreadExceptionListener onExceptionListener) {
         super(databaseInstance, onExceptionListener);
     }
 
@@ -103,10 +103,10 @@ public class SmallTextOperations extends CommonOperations implements ISmallTextS
     @Override
     public String getTextText(long textId) {
         String text = null;
-        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(TEXT.getFieldName()), WHERE_ID,
+        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ID.getFieldName()), WHERE_ID,
                 whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
-            if (smallTextsCursor.moveToNext())
-                text = smallTextsCursor.getString(TEXT.getFieldIndex());
+            if (longTextsCursor.moveToNext())
+                text = longTextsCursor.getString(TEXT.getFieldIndex());
         }
         return text;
     }
@@ -120,10 +120,10 @@ public class SmallTextOperations extends CommonOperations implements ISmallTextS
     @Override
     public String getTextDescription(long textId) {
         String description = null;
-        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()), WHERE_ID,
-                whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
-            if (smallTextsCursor.moveToNext())
-                description = smallTextsCursor.getString(DESCRIPTION.getFieldIndex());
+        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()),
+                WHERE_ID, whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+            if (longTextsCursor.moveToNext())
+                description = longTextsCursor.getString(DESCRIPTION.getFieldIndex());
         }
         return description;
     }
@@ -137,10 +137,10 @@ public class SmallTextOperations extends CommonOperations implements ISmallTextS
     @Override
     public int getTextOrder(long textId) {
         int order = -1;
-        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
+        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
                 whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
-            if (smallTextsCursor.moveToNext())
-                order = smallTextsCursor.getInt(ORDER.getFieldIndex());
+            if (longTextsCursor.moveToNext())
+                order = longTextsCursor.getInt(ORDER.getFieldIndex());
         }
         return order;
     }
@@ -154,28 +154,28 @@ public class SmallTextOperations extends CommonOperations implements ISmallTextS
     @Override
     public long getTextEntryId(long textId) {
         long entryId = -1;
-        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
+        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
                 whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
-            if (smallTextsCursor.moveToNext())
-                entryId = smallTextsCursor.getLong(ENTRY.getFieldIndex());
+            if (longTextsCursor.moveToNext())
+                entryId = longTextsCursor.getLong(ENTRY.getFieldIndex());
         }
         return entryId;
     }
 
     /**
-     * Registers a new simple small text
+     * Registers a new simple long text
      *
      * @param text        text to store in the DB
-     * @param description small text description
+     * @param description long text description
      * @param order       ordinal order
      * @param entryId     parent entry ID
-     * @return {@code long} with the new small text ID
+     * @return {@code long} with the new long text ID
      */
     @Override
-    public long registerNewSmallText(@NonNull String text,
-                                     @NonNull String description,
-                                     int order,
-                                     long entryId) {
+    public long registerNewLongText(@NonNull String text,
+                                    @NonNull String description,
+                                    int order,
+                                    long entryId) {
         ContentValues params = setParams(text, description, order, entryId);
         return insertReplaceOnConflict(TABLE_NAME, params);
     }
@@ -230,28 +230,28 @@ public class SmallTextOperations extends CommonOperations implements ISmallTextS
     }
 
     /**
-     * Obtains all small texts' data and saves it inside a {@link GeneralObjectContainer} of
-     * {@link SmallText}
+     * Obtains all long texts' data and saves it inside a {@link GeneralObjectContainer} of
+     * {@link LongText}
      *
      * @return {@code GeneralObjectContainer} of entries
      * @see ObjectContainer
-     * @see SmallText
+     * @see LongText
      */
     @Override
-    public GeneralObjectContainer<SmallText> getAllSmallTexts() {
-        GeneralObjectContainer<SmallText> smallTexts = new ObjectContainer<>();
-        try (Cursor smallTextsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
-            while (smallTextsCursor.moveToNext()) {
-                long id = smallTextsCursor.getLong(ID.getFieldIndex());
-                String text = smallTextsCursor.getString(TEXT.getFieldIndex());
-                String description = smallTextsCursor.getString(DESCRIPTION.getFieldIndex());
-                int order = smallTextsCursor.getInt(ORDER.getFieldIndex());
-                long entryId = smallTextsCursor.getLong(ENTRY.getFieldIndex());
-                SmallText currentSmallText = new SmallText(id, entryId, text, description);
-                smallTexts.storeObject(currentSmallText);
+    public GeneralObjectContainer<LongText> getAllSmallTexts() {
+        GeneralObjectContainer<LongText> longTexts = new ObjectContainer<>();
+        try (Cursor longTextsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+            while (longTextsCursor.moveToNext()) {
+                long id = longTextsCursor.getLong(ID.getFieldIndex());
+                String text = longTextsCursor.getString(TEXT.getFieldIndex());
+                String description = longTextsCursor.getString(DESCRIPTION.getFieldIndex());
+                int order = longTextsCursor.getInt(ORDER.getFieldIndex());
+                long entryId = longTextsCursor.getLong(ENTRY.getFieldIndex());
+                LongText currentLongText = new LongText(id, entryId, text, description);
+                longTexts.storeObject(currentLongText);
             }
         }
-        return smallTexts;
+        return longTexts;
     }
 
     /**

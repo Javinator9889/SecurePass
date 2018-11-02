@@ -1,4 +1,4 @@
-package javinator9889.securepass.io.database.operations.securitycodes.fields;
+package javinator9889.securepass.io.database.operations.securitycode.field;
 
 import androidx.annotation.NonNull;
 
@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
  *
  * Created by Javinator9889 on 01/11/2018 - APP.
  */
-public interface IFieldsSetOperations {
+public interface IFieldSetOperations {
     /**
      * Registers a new simple field
      *

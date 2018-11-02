@@ -1,4 +1,4 @@
-package javinator9889.securepass.io.database.operations.securitycodes;
+package javinator9889.securepass.io.database.operations.securitycode;
 
 import androidx.annotation.NonNull;
 
@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
  *
  * Created by Javinator9889 on 01/11/2018 - APP.
  */
-public interface ISecurityCodesSetOperations {
+public interface ISecurityCodeSetOperations {
     /**
      * Registers a new simple security code
      *

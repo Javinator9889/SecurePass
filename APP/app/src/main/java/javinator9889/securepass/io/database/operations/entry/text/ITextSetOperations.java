@@ -1,4 +1,4 @@
-package javinator9889.securepass.io.database.operations.entry.texts;
+package javinator9889.securepass.io.database.operations.entry.text;
 
 import androidx.annotation.NonNull;
 import javinator9889.securepass.errors.NoJobsEnqueuedError;
