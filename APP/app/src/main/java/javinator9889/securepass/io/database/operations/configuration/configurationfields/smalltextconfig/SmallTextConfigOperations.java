@@ -36,7 +36,7 @@ import javinator9889.securepass.util.values.Constants;
  * Created by Javinator9889 on 02/11/2018 - APP.
  */
 public class SmallTextConfigOperations extends ConfigFieldsOperations {
-    private static final String TAG = "ImagesConfig Operations";
+    private static final String TAG = "SmallTextConfig Operations";
     private static final String TABLE_NAME = Constants.SQL.IMAGES_CONFIG.NAME;
 
     /**
