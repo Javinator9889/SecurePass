@@ -1,8 +1,10 @@
 package javinator9889.securepass.io;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
+import com.github.javinator9889.exporter.FileToBytesExporter;
 import com.google.android.gms.common.util.IOUtils;
 import com.google.common.io.Files;
 
@@ -15,7 +17,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -59,7 +64,7 @@ public class IOManager {
      * @see Context
      */
     @NonNull
-    public static IOManager newInstance(Context activityContext) {
+    public static IOManager newInstance(@NonNull Context activityContext) {
         return new IOManager(activityContext);
     }
 
@@ -111,8 +116,11 @@ public class IOManager {
      * @return a <code>List</code> of <code>String</code> with the correspondent scripts
      * @throws IOException when there is no file available
      * @see R.raw
+     * @deprecated this method is no longer valid - use {@link #obtainSQLScript()} instead
      */
+    @Deprecated
     public List<String> loadSQLScript() throws IOException {
+        FileToBytesExporter exporter = new FileToBytesExporter();
         List<String> result = new ArrayList<>(5);
         int[] sqlScripts = new int[]{R.raw.create_category, R.raw.create_entry, R.raw.create_qrcode,
                 R.raw.create_security_code, R.raw.create_field};
@@ -128,6 +136,30 @@ public class IOManager {
             result.add(builder.toString());
         }
         return result;
+    }
+
+    /**
+     * Loads from {@link R.raw raw resources} the binary SQL script, using
+     * {@link FileToBytesExporter} for recovering data
+     *
+     * @return {@code ArrayList} with the different SQL parts.
+     * @throws URISyntaxException when the URI is malformed while recovering file from resources.
+     * @throws IOException        if something happens while recovering the data from the source
+     *                            file.
+     * @see FileToBytesExporter#readObject(File)
+     */
+    public List<String> obtainSQLScript() throws URISyntaxException, IOException {
+        String sqlScriptFilenameUri = mActivityContext
+                .getResources()
+                .getResourceName(R.raw.database_script);
+        Uri androidUri = Uri.parse(sqlScriptFilenameUri);
+        URI javaUri = new URI(androidUri.toString());
+        File sourceFile = new File(javaUri);
+        FileToBytesExporter reader = new FileToBytesExporter();
+        reader.readObject(sourceFile);
+        String obtainedData = reader.getReadData();
+        String[] separateScripts = obtainedData.split("(\\r?\\n){2}");
+        return new ArrayList<>(Arrays.asList(separateScripts));
     }
 
     /**
