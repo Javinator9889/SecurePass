@@ -55,6 +55,18 @@ public interface ITextSetOperations {
     void removeText(long textId);
 
     /**
+     * Registers a new simple small text
+     *
+     * @param text        text to store in the DB
+     * @param description small text description
+     * @param order       ordinal order
+     * @param entryId     parent entry ID
+     * @return {@code long} with the new small text ID
+     */
+    long registerNewText(@NonNull String text, @NonNull String description, int order,
+                         long entryId);
+
+    /**
      * Runs the {@link ThreadingExecutor} - only necessary when doing UPDATE operations
      *
      * @throws NoJobsEnqueuedError when there is no job added to the queue

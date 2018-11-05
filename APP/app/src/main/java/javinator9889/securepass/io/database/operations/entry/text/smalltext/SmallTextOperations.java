@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import javinator9889.securepass.data.entry.fields.SmallText;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
+import javinator9889.securepass.io.database.operations.entry.text.ITextSetOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.threading.ThreadExceptionListener;
@@ -34,7 +35,7 @@ import javinator9889.securepass.util.values.database.SmallTextFields;
  *
  * Created by Javinator9889 on 02/11/2018 - APP.
  */
-public class SmallTextOperations extends CommonOperations implements ISmallTextSetOperations,
+public class SmallTextOperations extends CommonOperations implements ITextSetOperations,
         ISmallTextGetOperations {
     private static final String TAG = "SmallText Operations";
     private static final String TABLE_NAME = Constants.SQL.SMALL_TEXT.NAME;
@@ -172,10 +173,10 @@ public class SmallTextOperations extends CommonOperations implements ISmallTextS
      * @return {@code long} with the new small text ID
      */
     @Override
-    public long registerNewSmallText(@NonNull String text,
-                                     @NonNull String description,
-                                     int order,
-                                     long entryId) {
+    public long registerNewText(@NonNull String text,
+                                @NonNull String description,
+                                int order,
+                                long entryId) {
         ContentValues params = setParams(text, description, order, entryId);
         return insertReplaceOnConflict(TABLE_NAME, params);
     }
