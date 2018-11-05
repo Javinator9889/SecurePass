@@ -2,8 +2,8 @@ package javinator9889.securepass.database;
 
 import android.util.Log;
 
-import org.junit.After;
-import org.junit.Before;
+import net.sqlcipher.database.SQLiteException;
+
 import org.junit.Test;
 
 import java.util.Random;
@@ -32,7 +32,7 @@ public class BasicOperations extends DatabaseTests {
     private CommonOperations mOperations;
     private String mPassword;
     private String mTag;
-    private BasicOperations mInstance;
+//    private BasicOperations mInstance;
 
     public BasicOperations() {
         super();
@@ -42,15 +42,24 @@ public class BasicOperations extends DatabaseTests {
         Log.i(mTag, "Password: " + mPassword);
     }
 
-    @Before
-    public void setup() {
-        mInstance = new BasicOperations();
-    }
+//    @Before
+//    public void setup() {
+//        mInstance = new BasicOperations();
+//    }
 
     @Test
     public void test() {
-        mInstance.changePassword();
-        mInstance.registerDefaultCategory();
+        BasicOperations mInstance = new BasicOperations();
+        try {
+            mInstance.changePassword();
+            long id = mInstance.registerDefaultCategory();
+            System.out.println("ID: " + id);
+        } catch (SQLiteException e) {
+            System.err.println("Error occurred");
+            e.printStackTrace();
+        } finally {
+            mInstance.finish();
+        }
     }
 
     public void changePassword() {
@@ -59,16 +68,16 @@ public class BasicOperations extends DatabaseTests {
         Log.i(mTag, "New password: " + mPassword);
     }
 
-    public void registerDefaultCategory() {
-        mOperations.registerDefaultCategory();
+    public long registerDefaultCategory() {
+        return mOperations.registerDefaultCategory();
     }
 
     public void finish() {
         mOperations.finishConnection();
     }
 
-    @After
-    public void end() {
-        mInstance.finish();
-    }
+//    @After
+//    public void end() {
+//        mInstance.finish();
+//    }
 }

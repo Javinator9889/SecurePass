@@ -1,7 +1,6 @@
 package javinator9889.securepass.io;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 
 import com.github.javinator9889.exporter.FileToBytesExporter;
@@ -17,8 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -143,18 +140,14 @@ public class IOManager {
      * {@link FileToBytesExporter} for recovering data
      *
      * @return {@code ArrayList} with the different SQL parts.
-     * @throws URISyntaxException when the URI is malformed while recovering file from resources.
      * @throws IOException        if something happens while recovering the data from the source
      *                            file.
      * @see FileToBytesExporter#readObject(File)
      */
-    public List<String> obtainSQLScript() throws URISyntaxException, IOException {
-        String sqlScriptFilenameUri = mActivityContext
+    public List<String> obtainSQLScript() throws IOException {
+        InputStream sourceFile = mActivityContext
                 .getResources()
-                .getResourceName(R.raw.database_script);
-        Uri androidUri = Uri.parse(sqlScriptFilenameUri);
-        URI javaUri = new URI(androidUri.toString());
-        File sourceFile = new File(javaUri);
+                .openRawResource(R.raw.database_script);
         FileToBytesExporter reader = new FileToBytesExporter();
         reader.readObject(sourceFile);
         String obtainedData = reader.getReadData();

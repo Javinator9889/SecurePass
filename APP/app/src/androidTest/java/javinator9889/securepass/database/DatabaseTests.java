@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
+import javinator9889.securepass.util.values.Constants;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
@@ -29,7 +30,12 @@ public abstract class DatabaseTests {
     private Context mContext;
 
     DatabaseTests() {
-        mContext = InstrumentationRegistry.getInstrumentation().getContext();
+        mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        removePreviousDB();
+    }
+
+    private void removePreviousDB() {
+        mContext.getDatabasePath(Constants.SQL.DB_FILENAME).delete();
     }
 
     public Context getContext() {

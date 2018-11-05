@@ -137,5 +137,5 @@ dependencies {
     // android-fab - https://github.com/markormesher/android-fab
     implementation 'uk.co.markormesher:android-fab:2.4.1'
     // FileToBytesExporter - https://github.com/Javinator9889/FileToBytesExporter
-    implementation 'com.github.javinator9889:filetobytesexporter:1.0.3'
+    implementation 'com.github.javinator9889:filetobytesexporter:1.0.4'
 }

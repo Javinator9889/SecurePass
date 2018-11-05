@@ -1,13 +1,20 @@
 package javinator9889.securepass.util.resources;
 
 import android.content.SharedPreferences;
-import androidx.annotation.NonNull;
 
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import javinator9889.securepass.SecurePass;
 
-import static javinator9889.securepass.util.values.Constants.SHARED_PREF.*;
+import static javinator9889.securepass.util.values.Constants.SHARED_PREF.APP_FIRST_EXECUTED;
+import static javinator9889.securepass.util.values.Constants.SHARED_PREF.DATABASE_INIT;
+import static javinator9889.securepass.util.values.Constants.SHARED_PREF.FILENAME;
+import static javinator9889.securepass.util.values.Constants.SHARED_PREF.KEYS;
+import static javinator9889.securepass.util.values.Constants.SHARED_PREF.MODE;
+import static javinator9889.securepass.util.values.Constants.SHARED_PREF.PRIVACY_ACCEPT;
+import static javinator9889.securepass.util.values.Constants.SHARED_PREF.SOFTWARE_LICENSE_ACCEPT;
+import static javinator9889.securepass.util.values.Constants.SHARED_PREF.TERMS_OF_SERVICE_ACCEPT;
 
 /**
  * Created by Javinator9889 on 06/10/2018.
@@ -66,7 +73,8 @@ public class PreferencesManager implements ISharedPreferencesManager {
 
     @Override
     public boolean isDatabaseInitialized() {
-        return mSharedPreferences.getBoolean(mKeys.get(DATABASE_INIT), false);
+        return false;
+//        return mSharedPreferences.getBoolean(mKeys.get(DATABASE_INIT), false);
     }
 
     @Override
