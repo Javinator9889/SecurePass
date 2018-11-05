@@ -1,9 +1,6 @@
 package javinator9889.securepass;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.google.common.hash.Hashing;
 
@@ -11,18 +8,17 @@ import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import javinator9889.securepass.io.database.DatabaseManager;
+import androidx.test.InstrumentationRegistry;
 
 /**
- * Created by Javinator9889 on 03/09/2018.
+ * Created by Javinator9889 on 03/09/2018. - test must be updated
  */
-@RunWith(AndroidJUnit4.class)
+@Deprecated
 public class DatabaseExceptionTesting {
     private final Context mContext = InstrumentationRegistry.getTargetContext();
 

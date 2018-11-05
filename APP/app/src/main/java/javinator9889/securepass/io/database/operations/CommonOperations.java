@@ -31,20 +31,14 @@ public class CommonOperations {
 
     /**
      * Public constructor for creating this class - use this instead of
-     * {@link #newInstance(DatabaseManager)}
+     * {@link #newInstance(DatabaseManager)} - does not assign any {@code onExceptionListener}.
+     * For that, use {@link #CommonOperations(DatabaseManager, ThreadExceptionListener)}.
      *
-     * @param databaseInstance instance of the {@link DatabaseManager} object
+     * @param databaseInstance instance of the {@link DatabaseManager} object.
      * @see DatabaseManager
      */
     public CommonOperations(@NonNull DatabaseManager databaseInstance) {
-        try {
-            databaseInstance.getDatabaseInitializer().join();
-            this.mDatabase = databaseInstance.getDatabaseInstance();
-        } catch (InterruptedException e) {
-            Log.e(getTag(), "Error while trying to join thread \""
-                    + SQL.DB_INIT_THREAD_NAME + "\". Interrupted exception. Full trace:");
-            e.printStackTrace();
-        }
+        this(databaseInstance, null);
     }
 
     /**
@@ -57,11 +51,18 @@ public class CommonOperations {
      */
     public CommonOperations(@NonNull DatabaseManager databaseInstance,
                             @Nullable ThreadExceptionListener onExceptionListener) {
-        this(databaseInstance);
-        mExecutor = onExceptionListener == null ?
-                ThreadingExecutor.Builder().build() :
-                ThreadingExecutor.Builder().addOnThreadExceptionListener(onExceptionListener)
-                        .build();
+        try {
+            databaseInstance.getDatabaseInitializer().join();
+            mDatabase = databaseInstance.getDatabaseInstance();
+            mExecutor = onExceptionListener == null ?
+                    ThreadingExecutor.Builder().build() :
+                    ThreadingExecutor.Builder().addOnThreadExceptionListener(onExceptionListener)
+                            .build();
+        } catch (InterruptedException e) {
+            Log.e(getTag(), "Error while trying to join thread \""
+                    + SQL.DB_INIT_THREAD_NAME + "\". Interrupted exception. Full trace:");
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -7,6 +7,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -97,13 +98,13 @@ public class DatabaseManager {
                 List<String> databaseScripts;
                 try {
                     if (!preferencesManager.isDatabaseInitialized()) {
-                        databaseScripts = IOManager.newInstance(databaseContext).loadSQLScript();
+                        databaseScripts = IOManager.newInstance(databaseContext).obtainSQLScript();
                         for (String script : databaseScripts) {
                             database.execSQL(script);
                         }
                         DatabaseManager.this.createDefaultCategory();
                     }
-                } catch (IOException e) {
+                } catch (IOException | URISyntaxException e) {
                     throw new RuntimeException(e.getCause());
                 } finally {
                     database.close();

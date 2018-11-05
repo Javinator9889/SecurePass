@@ -1,13 +1,10 @@
 package javinator9889.securepass;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.google.common.io.ByteStreams;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
+import androidx.test.InstrumentationRegistry;
 import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.data.entry.Category;
 import javinator9889.securepass.data.entry.Entry;
@@ -24,9 +22,9 @@ import javinator9889.securepass.data.secret.SecurityCode;
 import javinator9889.securepass.util.cipher.FileCipherOld;
 
 /**
- * Created by Javinator9889 on 20/04/2018.
+ * Created by Javinator9889 on 20/04/2018. - test must be updated
  */
-@RunWith(AndroidJUnit4.class)
+@Deprecated
 public class CipherTest {
     private Context context = InstrumentationRegistry.getTargetContext();
     private String password = "random_password";
