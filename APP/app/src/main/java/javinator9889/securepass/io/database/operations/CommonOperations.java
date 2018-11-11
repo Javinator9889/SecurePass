@@ -10,9 +10,9 @@ import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import javinator9889.securepass.errors.ExecutorNonDefinedException;
-import javinator9889.securepass.errors.NoJobsEnqueuedError;
-import javinator9889.securepass.errors.OverriddenMethodsNotDefinedError;
+import javinator9889.securepass.errors.database.ExecutorNonDefinedException;
+import javinator9889.securepass.errors.database.NoJobsEnqueuedError;
+import javinator9889.securepass.errors.database.OverriddenMethodsNotDefinedError;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.util.threading.ThreadExceptionListener;
 import javinator9889.securepass.util.threading.ThreadingExecutor;

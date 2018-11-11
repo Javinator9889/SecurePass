@@ -1,4 +1,4 @@
-package javinator9889.securepass.errors;
+package javinator9889.securepass.errors.database;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889

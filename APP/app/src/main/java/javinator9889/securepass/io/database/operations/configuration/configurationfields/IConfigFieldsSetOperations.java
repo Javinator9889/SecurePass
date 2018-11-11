@@ -1,7 +1,7 @@
 package javinator9889.securepass.io.database.operations.configuration.configurationfields;
 
 import androidx.annotation.NonNull;
-import javinator9889.securepass.errors.NoJobsEnqueuedError;
+import javinator9889.securepass.errors.database.NoJobsEnqueuedError;
 import javinator9889.securepass.util.threading.ThreadingExecutor;
 
 /**
