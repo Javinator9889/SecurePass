@@ -3,8 +3,6 @@ package javinator9889.securepass.views.fragments.firstsetup;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,12 +14,16 @@ import com.github.paolorotolo.appintro.ISlideBackgroundColorHolder;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import javinator9889.securepass.R;
 import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.PreferencesManager;
+import javinator9889.securepass.util.scrypt.Scrypt;
 import javinator9889.securepass.views.activities.MainActivity;
 
 /**
@@ -67,17 +69,24 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                             .build();
                     savingPasswordProgress.show();
                     IOManager io = IOManager.newInstance(this);
-                    String passwordWithHashApplied = Hashing.sha256()
-                            .hashString(this.firstPasswordEntry.getText().toString(),
-                                    StandardCharsets.UTF_8).toString();
-                    io.storePassword(passwordWithHashApplied);
+                    Scrypt scrypter = new Scrypt();
+                    try {
+                        scrypter.scrypt(firstPasswordEntry.getText().toString());
+                    } catch (GeneralSecurityException ex) {
+                        ex.printStackTrace();
+                    }
+                    io.savePassword(scrypter.getHash());
+//                    String passwordWithHashApplied = Hashing.sha256()
+//                            .hashString(this.firstPasswordEntry.getText().toString(),
+//                                    StandardCharsets.UTF_8).toString();
+//                    io.storePassword(passwordWithHashApplied);
                     /*Intent googleDriveLauncher = new Intent(this, DriveContent.class);
                     startActivity(googleDriveLauncher);
                     savingPasswordProgress.dismiss();*/
                     //finish();
                     // This will try to create a DB
                     DatabaseManager manager = DatabaseManager
-                            .newInstance(this, passwordWithHashApplied);
+                            .newInstance(this, new String(scrypter.getKey()));
                     Thread databaseThread = manager.getDatabaseInitializer();
                     try {
                         databaseThread.join();

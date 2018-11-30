@@ -100,6 +100,8 @@ public class PasswordCipher implements IPasswordCipher {
     /**
      * By using {@link KeyStore}, generates new keys for the specified {@code keyAlias} if it does
      * not exist on {@code AndroidKeyStore}.
+     *
+     * @throws InvalidAlgorithmParameterException if there was not possible to generate new keys.
      */
     @SuppressLint("WrongConstant")
     @Override
@@ -132,8 +134,11 @@ public class PasswordCipher implements IPasswordCipher {
                     .setCertificateSerialNumber(serialNumber)
                     .setCertificateSubject(subject)
                     .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1)
-                    .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1,
+                            KeyProperties.ENCRYPTION_PADDING_PKCS7,
+                            KeyProperties.ENCRYPTION_PADDING_RSA_OAEP)
+                    .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1,
+                            KeyProperties.SIGNATURE_PADDING_RSA_PSS)
 //                    .setIsStrongBoxBacked(true) - need more testings
                     .setKeySize(RSA_KEY_SIZE)
                     .setRandomizedEncryptionRequired(true)
@@ -175,7 +180,7 @@ public class PasswordCipher implements IPasswordCipher {
      * password}, returning the encrypted value as {@code byte[]} for directly saving it into a
      * file.
      *
-     * @param passwordToEncrypt non-null {@code String} with the password value to encrypt.
+     * @param passwordToEncrypt non-null {@code byte[]} with the password value to encrypt.
      *
      * @return {@code byte[]} with the encrypted password.
      *
@@ -183,7 +188,7 @@ public class PasswordCipher implements IPasswordCipher {
      * @throws UnrecoverableEntryException if the specified protParam were insufficient or invalid.
      */
     @Override
-    public byte[] encryptPassword(@NonNull String passwordToEncrypt) throws InvalidKeyException,
+    public byte[] encryptPassword(@NonNull byte[] passwordToEncrypt) throws InvalidKeyException,
             UnrecoverableEntryException {
         try {
             KeyStore.Entry entry = mAndroidKeyStore.getEntry(mAlias, null);
@@ -192,7 +197,7 @@ public class PasswordCipher implements IPasswordCipher {
                         "\"%s\"", mAlias));
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.ENCRYPT_MODE, ((KeyStore.PrivateKeyEntry) entry).getCertificate());
-            return cipher.doFinal(passwordToEncrypt.getBytes());
+            return cipher.doFinal(passwordToEncrypt);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | BadPaddingException |
                 IllegalBlockSizeException | KeyStoreException ignored) {
             return null;

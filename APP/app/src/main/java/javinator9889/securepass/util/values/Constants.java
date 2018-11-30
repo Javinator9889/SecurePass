@@ -2,7 +2,9 @@ package javinator9889.securepass.util.values;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Base64;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
@@ -164,10 +166,16 @@ public class Constants {
     }
 
     public static final class CIPHER {
-
         public static final class FILE {
             public static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
             public static final String ALGORITHM = "AES";
+        }
+
+        public static final class PASSWORD {
+            public static final String ALIAS = Base64.encodeToString(
+                    "SecurePassUserPassword".getBytes(StandardCharsets.UTF_8),
+                    Base64.DEFAULT);
+            public static final String FILENAME = "usrpass";
         }
     }
 

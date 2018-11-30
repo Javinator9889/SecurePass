@@ -53,6 +53,8 @@ public interface IPasswordCipher {
     /**
      * By using {@link java.security.KeyStore}, generates new keys for the specified {@code
      * keyAlias} if it does not exist on {@code AndroidKeyStore}.
+     *
+     * @throws InvalidAlgorithmParameterException if there was not possible to generate new keys.
      */
     void createNewKeys() throws InvalidAlgorithmParameterException;
 
@@ -66,14 +68,14 @@ public interface IPasswordCipher {
      * password}, returning the encrypted value as {@code byte[]} for directly saving it into a
      * file.
      *
-     * @param passwordToEncrypt non-null {@code String} with the password value to encrypt.
+     * @param passwordToEncrypt non-null {@code byte[]} with the password value to encrypt.
      *
      * @return {@code byte[]} with the encrypted password.
      *
      * @throws InvalidKeyException         if the key at the entry is invalid.
      * @throws UnrecoverableEntryException if the specified protParam were insufficient or invalid.
      */
-    byte[] encryptPassword(@NonNull String passwordToEncrypt) throws InvalidKeyException,
+    byte[] encryptPassword(@NonNull byte[] passwordToEncrypt) throws InvalidKeyException,
             UnrecoverableEntryException;
 
     /**
