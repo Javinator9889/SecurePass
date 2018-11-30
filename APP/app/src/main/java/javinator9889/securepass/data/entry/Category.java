@@ -23,7 +23,7 @@ public class Category implements Serializable {
     }
 
     /**
-     * @deprecated Default constructor - deprecated. Use {@link #Category(int, String)} instead
+     * @deprecated Default constructor - deprecated. Use {@link #Category(long, String)} instead
      */
     @Deprecated
     public Category() {

@@ -2,24 +2,21 @@ package javinator9889.securepass.io.database.operations.configuration.configurat
 
 import androidx.annotation.NonNull;
 import javinator9889.securepass.errors.database.NoJobsEnqueuedError;
-import javinator9889.securepass.util.threading.ThreadingExecutor;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see https://www.gnu.org/licenses/.
- *
+ * <p>
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with this program.  If
+ * not, see https://www.gnu.org/licenses/.
+ * <p>
  * Created by Javinator9889 on 02/11/2018 - APP.
  */
 public interface IConfigFieldsSetOperations {
@@ -29,6 +26,7 @@ public interface IConfigFieldsSetOperations {
      * @param description     field description
      * @param order           field order for displaying at UI
      * @param configurationId parent configuration ID
+     *
      * @return {@code long} with the new ID
      */
     long registerNewConfigField(@NonNull String description, int order, long configurationId);
@@ -50,7 +48,8 @@ public interface IConfigFieldsSetOperations {
     void updateConfigurationOrder(long id, int order);
 
     /**
-     * Runs the {@link ThreadingExecutor} - only necessary when doing UPDATE operations
+     * Runs the {@link com.github.javinator9889.threading.pools.ThreadsPooling} - only necessary
+     * when doing UPDATE operations
      *
      * @throws NoJobsEnqueuedError when there is no job added to the queue
      */

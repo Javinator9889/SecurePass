@@ -11,7 +11,6 @@ import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
-import javinator9889.securepass.util.threading.ThreadExceptionListener;
 import javinator9889.securepass.util.values.Constants.SQL.CATEGORY;
 import javinator9889.securepass.util.values.database.CategoryFields;
 
@@ -46,7 +45,6 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
      * @param databaseManager instance of the {@link DatabaseManager} object
      *
      * @see DatabaseManager
-     * @see ThreadExceptionListener
      */
     public CategoryOperations(@NonNull DatabaseManager databaseManager) {
         super(databaseManager);
