@@ -13,26 +13,23 @@ import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.io.database.operations.entry.text.ITextSetOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
-import javinator9889.securepass.util.threading.ThreadExceptionListener;
 import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.SmallTextFields;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see https://www.gnu.org/licenses/.
- *
+ * <p>
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with this program.  If
+ * not, see https://www.gnu.org/licenses/.
+ * <p>
  * Created by Javinator9889 on 02/11/2018 - APP.
  */
 public class SmallTextOperations extends CommonOperations implements ITextSetOperations,
@@ -47,18 +44,15 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     private static final String WHERE_ID = ID.getFieldName() + "=?";
 
     /**
-     * Available constructor, matching
-     * {@link CommonOperations#CommonOperations(DatabaseManager, ThreadExceptionListener) super} one
+     * Available constructor, matching {@link CommonOperations#CommonOperations(DatabaseManager)
+     * super} one
      *
-     * @param databaseInstance    instance of the {@link DatabaseManager} object
-     * @param onExceptionListener class that implements {@link ThreadExceptionListener} interface
-     *                            - can be null if no listener is set up
+     * @param databaseInstance instance of the {@link DatabaseManager} object
+     *
      * @see DatabaseManager
-     * @see ThreadExceptionListener
      */
-    public SmallTextOperations(@NonNull DatabaseManager databaseInstance,
-                               @Nullable ThreadExceptionListener onExceptionListener) {
-        super(databaseInstance, onExceptionListener);
+    public SmallTextOperations(@NonNull DatabaseManager databaseInstance) {
+        super(databaseInstance);
     }
 
     /**
@@ -84,8 +78,8 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     }
 
     /**
-     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
-     * should be overridden
+     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} - should
+     * be overridden
      *
      * @return {@code String} with the TABLE NAME - null if not defined
      */
@@ -99,6 +93,7 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
      * Obtains the text's field text
      *
      * @param textId ID of the text to obtain its data
+     *
      * @return {@code String} with the text
      */
     @Override
@@ -116,6 +111,7 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
      * Obtains the text's description
      *
      * @param textId ID of the text to obtain its data
+     *
      * @return {@code String} with the description
      */
     @Override
@@ -133,6 +129,7 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
      * Obtains the text's order
      *
      * @param textId ID of the text to obtain its data
+     *
      * @return {@code int} with the ordinal order
      */
     @Override
@@ -150,6 +147,7 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
      * Obtains the text's entry ID
      *
      * @param textId ID of the text to obtain its data
+     *
      * @return {@code long} with the entry ID
      */
     @Override
@@ -170,6 +168,7 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
      * @param description small text description
      * @param order       ordinal order
      * @param entryId     parent entry ID
+     *
      * @return {@code long} with the new small text ID
      */
     @Override
@@ -231,10 +230,11 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     }
 
     /**
-     * Obtains all small texts' data and saves it inside a {@link GeneralObjectContainer} of
-     * {@link SmallText}
+     * Obtains all small texts' data and saves it inside a {@link GeneralObjectContainer} of {@link
+     * SmallText}
      *
      * @return {@code GeneralObjectContainer} of entries
+     *
      * @see ObjectContainer
      * @see SmallText
      */
@@ -262,7 +262,9 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
      * @param description text description
      * @param order       ordinal order
      * @param entryId     entry ID
+     *
      * @return {@code ContentValues} with the params
+     *
      * @see ContentValues
      */
     private ContentValues setParams(@NonNull String text,

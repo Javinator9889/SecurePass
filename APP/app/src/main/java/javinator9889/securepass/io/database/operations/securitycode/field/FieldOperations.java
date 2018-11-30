@@ -47,17 +47,14 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
 
     /**
      * Available constructor, matching
-     * {@link CommonOperations#CommonOperations(DatabaseManager, ThreadExceptionListener) super} one
+     * {@link CommonOperations#CommonOperations(DatabaseManager) super} one
      *
      * @param databaseManager     instance of the {@link DatabaseManager} object
-     * @param onExceptionListener class that implements {@link ThreadExceptionListener} interface
-     *                            - can be null if no listener is set up
      * @see DatabaseManager
      * @see ThreadExceptionListener
      */
-    public FieldOperations(@NonNull DatabaseManager databaseManager,
-                           @NonNull ThreadExceptionListener onExceptionListener) {
-        super(databaseManager, onExceptionListener);
+    public FieldOperations(@NonNull DatabaseManager databaseManager) {
+        super(databaseManager);
     }
 
     /**

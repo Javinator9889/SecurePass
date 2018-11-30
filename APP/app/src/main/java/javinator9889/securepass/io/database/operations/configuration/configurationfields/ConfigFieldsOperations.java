@@ -13,25 +13,22 @@ import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
-import javinator9889.securepass.util.threading.ThreadExceptionListener;
 import javinator9889.securepass.util.values.database.ConfigFieldsFields;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see https://www.gnu.org/licenses/.
- *
+ * <p>
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with this program.  If
+ * not, see https://www.gnu.org/licenses/.
+ * <p>
  * Created by Javinator9889 on 02/11/2018 - APP.
  */
 public abstract class ConfigFieldsOperations extends CommonOperations
@@ -44,24 +41,22 @@ public abstract class ConfigFieldsOperations extends CommonOperations
     private static final String WHERE_ID = ID.getFieldName() + "=?";
 
     /**
-     * Available constructor, matching
-     * {@link CommonOperations#CommonOperations(DatabaseManager, ThreadExceptionListener) super} one
+     * Available constructor, matching {@link CommonOperations#CommonOperations(DatabaseManager)
+     * super} one
      *
-     * @param databaseInstance    instance of the {@link DatabaseManager} object
-     * @param onExceptionListener class that implements {@link ThreadExceptionListener} interface
-     *                            - can be null if no listener is set up
+     * @param databaseInstance instance of the {@link DatabaseManager} object
+     *
      * @see DatabaseManager
-     * @see ThreadExceptionListener
      */
-    protected ConfigFieldsOperations(@NonNull DatabaseManager databaseInstance,
-                                     @Nullable ThreadExceptionListener onExceptionListener) {
-        super(databaseInstance, onExceptionListener);
+    protected ConfigFieldsOperations(@NonNull DatabaseManager databaseInstance) {
+        super(databaseInstance);
     }
 
     /**
      * Obtains the current description for the field
      *
      * @param id ID of the field where obtaining the data
+     *
      * @return {@code String} with the name
      */
     @Override
@@ -79,6 +74,7 @@ public abstract class ConfigFieldsOperations extends CommonOperations
      * Obtains the current field's order
      *
      * @param id ID of the field where obtaining the data
+     *
      * @return {@code int} with the ordinal order
      */
     @Override
@@ -96,6 +92,7 @@ public abstract class ConfigFieldsOperations extends CommonOperations
      * Obtains the current field's parent ID
      *
      * @param id ID of the field where obtaining the data
+     *
      * @return {@code long} with the ID
      */
     @Override
@@ -116,6 +113,7 @@ public abstract class ConfigFieldsOperations extends CommonOperations
      * @param description     field description
      * @param order           field order for displaying at UI
      * @param configurationId parent configuration ID
+     *
      * @return {@code long} with the new ID
      */
     @Override
@@ -158,7 +156,9 @@ public abstract class ConfigFieldsOperations extends CommonOperations
      * @param description     config field description
      * @param order           config field order
      * @param configurationId config field parent configuration ID
+     *
      * @return {@code ContentValues} with the params
+     *
      * @see ContentValues
      */
     protected ContentValues setParams(@NonNull String description,
@@ -192,8 +192,8 @@ public abstract class ConfigFieldsOperations extends CommonOperations
     public abstract String getTag();
 
     /**
-     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
-     * should be overridden
+     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} - should
+     * be overridden
      *
      * @return {@code String} with the TABLE NAME - null if not defined
      */
@@ -206,6 +206,7 @@ public abstract class ConfigFieldsOperations extends CommonOperations
      * {@link IConfigFields}
      *
      * @return {@code GeneralObjectContainer} of entries
+     *
      * @see ObjectContainer
      * @see ConfigFields
      */

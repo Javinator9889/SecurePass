@@ -6,7 +6,6 @@ import android.util.Log;
 import net.sqlcipher.Cursor;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import javinator9889.securepass.data.entry.Category;
 import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
@@ -18,20 +17,18 @@ import javinator9889.securepass.util.values.database.CategoryFields;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see https://www.gnu.org/licenses/.
- *
+ * <p>
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with this program.  If
+ * not, see https://www.gnu.org/licenses/.
+ * <p>
  * Created by Javinator9889 on 31/10/2018 - APP.
  */
 public class CategoryOperations extends CommonOperations implements ICategorySetOperations,
@@ -43,18 +40,16 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     private static final String CATEGORY_WHERE_ID = ID.getFieldName() + "=?";
 
     /**
-     * Available constructor, matching
-     * {@link CommonOperations#CommonOperations(DatabaseManager, ThreadExceptionListener) super} one
+     * Available constructor, matching {@link CommonOperations#CommonOperations(DatabaseManager)
+     * super} one
      *
-     * @param databaseManager     instance of the {@link DatabaseManager} object
-     * @param onExceptionListener class that implements {@link ThreadExceptionListener} interface
-     *                            - can be null if no listener is set up
+     * @param databaseManager instance of the {@link DatabaseManager} object
+     *
      * @see DatabaseManager
      * @see ThreadExceptionListener
      */
-    public CategoryOperations(@NonNull DatabaseManager databaseManager,
-                              @Nullable ThreadExceptionListener onExceptionListener) {
-        super(databaseManager, onExceptionListener);
+    public CategoryOperations(@NonNull DatabaseManager databaseManager) {
+        super(databaseManager);
     }
 
     /**
@@ -80,8 +75,8 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     }
 
     /**
-     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
-     * should be overridden
+     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} - should
+     * be overridden
      *
      * @return {@code String} with the TABLE NAME - null if not defined
      */
@@ -95,6 +90,7 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
      * Obtains the category name by using the given ID
      *
      * @param categoryId the category ID where obtaining the name
+     *
      * @return {@code String} with the name
      */
     @Override
@@ -109,10 +105,11 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     }
 
     /**
-     * Obtains all categories' data and saves it inside a {@link GeneralObjectContainer} of
-     * {@link Category}
+     * Obtains all categories' data and saves it inside a {@link GeneralObjectContainer} of {@link
+     * Category}
      *
      * @return {@code GeneralObjectContainer} of categories
+     *
      * @see ObjectContainer
      * @see Category
      */
@@ -134,6 +131,7 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
      * Registers a new simple category
      *
      * @param categoryName the name of the new category
+     *
      * @return {@code long} with the new category ID
      */
     @Override
@@ -168,6 +166,7 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
      * Generates a map with the provided params
      *
      * @param categoryName category name
+     *
      * @return {@code ContentValues} with the params
      */
     private ContentValues setParams(@NonNull String categoryName) {

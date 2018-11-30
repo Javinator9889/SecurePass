@@ -3,10 +3,17 @@ package javinator9889.securepass.io.database.operations;
 import android.content.ContentValues;
 import android.util.Log;
 
+import com.github.javinator9889.threading.pools.ThreadsPooling;
+import com.github.javinator9889.threading.threads.notifyingthread.NotifyingThread;
+import com.github.javinator9889.threading.threads.notifyingthread.OnThreadCompletedListener;
+
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
+import java.util.concurrent.BlockingQueue;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,62 +21,70 @@ import javinator9889.securepass.errors.database.ExecutorNonDefinedException;
 import javinator9889.securepass.errors.database.NoJobsEnqueuedError;
 import javinator9889.securepass.errors.database.OverriddenMethodsNotDefinedError;
 import javinator9889.securepass.io.database.DatabaseManager;
-import javinator9889.securepass.util.threading.ThreadExceptionListener;
-import javinator9889.securepass.util.threading.ThreadingExecutor;
-import javinator9889.securepass.util.threading.thread.NotifyingThread;
+import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.values.Constants.SQL;
+
+//import javinator9889.securepass.util.threading.ThreadExceptionListener;
+//import javinator9889.securepass.util.threading.ThreadingExecutor;
+//import javinator9889.securepass.util.threading.thread.NotifyingThread;
 
 /**
  * Created by Javinator9889 on 29/03/2018.
  */
-public class CommonOperations {
+public class CommonOperations implements OnThreadCompletedListener {
     private static final String TAG = "Database Operations";
     private static final String WHERE_ID = null;
     private static final String TABLE_NAME = null;
     private SQLiteDatabase mDatabase;
-    private ThreadingExecutor mExecutor;
+    //    private ThreadingExecutor mExecutor;
+    private ThreadsPooling mExecutor;
+    private ObjectContainer<Runnable> mWaitingThreads;
 
     /**
-     * Public constructor for creating this class - use this instead of
-     * {@link #newInstance(DatabaseManager)} - does not assign any {@code onExceptionListener}.
-     * For that, use {@link #CommonOperations(DatabaseManager, ThreadExceptionListener)}.
+     * Public constructor for creating this class - use this instead of {@link
+     * #newInstance(DatabaseManager)}.
      *
      * @param databaseInstance instance of the {@link DatabaseManager} object.
+     *
      * @see DatabaseManager
      */
     public CommonOperations(@NonNull DatabaseManager databaseInstance) {
-        this(databaseInstance, null);
+//        this(databaseInstance, null);
+        try {
+            databaseInstance.getDatabaseInitializer().join();
+            mDatabase = databaseInstance.getDatabaseInstance();
+            mExecutor = ThreadsPooling.builder().build();
+            mWaitingThreads = new ObjectContainer<>();
+        } catch (InterruptedException e) {
+            Log.e(getTag(), "Error while trying to join thread \""
+                    + SQL.DB_INIT_THREAD_NAME + "\". Interrupted exception. Full trace:", e);
+        }
     }
 
-    /**
-     * Public constructor for creating this class and providing a {@link ThreadExceptionListener}
-     *
-     * @param databaseInstance    instance of the {@link DatabaseManager} object
-     * @param onExceptionListener nullable class listening on threading errors
-     * @see DatabaseManager
-     * @see ThreadExceptionListener
-     */
+    /*@Deprecated
     public CommonOperations(@NonNull DatabaseManager databaseInstance,
                             @Nullable ThreadExceptionListener onExceptionListener) {
         try {
             databaseInstance.getDatabaseInitializer().join();
             mDatabase = databaseInstance.getDatabaseInstance();
-            mExecutor = onExceptionListener == null ?
-                    ThreadingExecutor.Builder().build() :
-                    ThreadingExecutor.Builder().addOnThreadExceptionListener(onExceptionListener)
-                            .build();
+//            mExecutor = onExceptionListener == null ?
+//                    ThreadingExecutor.Builder().build() :
+//                    ThreadingExecutor.Builder().addOnThreadExceptionListener(onExceptionListener)
+//                            .build();
         } catch (InterruptedException e) {
             Log.e(getTag(), "Error while trying to join thread \""
                     + SQL.DB_INIT_THREAD_NAME + "\". Interrupted exception. Full trace:");
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * Public class loader - uses {@link #CommonOperations(DatabaseManager) private constructor}
      *
      * @param databaseManagerInstance instance of the {@link DatabaseManager} object
+     *
      * @return <code>CommonOperations</code>
+     *
      * @deprecated use {@link #CommonOperations(DatabaseManager)} instead
      */
     @Deprecated
@@ -81,6 +96,7 @@ public class CommonOperations {
      * Method for changing the database password
      *
      * @param newDatabasePassword new password
+     *
      * @see SQLiteDatabase#changePassword(String)
      */
     public void changeDatabasePassword(@NonNull String newDatabasePassword) {
@@ -91,6 +107,7 @@ public class CommonOperations {
      * Registers the default ("Global") category
      *
      * @return <code>long</code> with the category ID (should be '1')
+     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      */
     public long registerDefaultCategory() {
@@ -122,8 +139,8 @@ public class CommonOperations {
     }
 
     /**
-     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} -
-     * should be overridden
+     * Gets the TABLE NAME for using {@link #scheduleUpdateExecutor(long, ContentValues)} - should
+     * be overridden
      *
      * @return {@code String} with the TABLE NAME - null if not defined
      */
@@ -137,7 +154,9 @@ public class CommonOperations {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
+     *
      * @return the row ID or -1 if any error occurred
+     *
      * @see SQLiteDatabase#insert(String, String, ContentValues)
      * @see ContentValues
      */
@@ -150,7 +169,9 @@ public class CommonOperations {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
+     *
      * @return the row ID or -1 if any error occurred
+     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_IGNORE
      * @see ContentValues
@@ -166,7 +187,9 @@ public class CommonOperations {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
+     *
      * @return the row ID or -1 if any error occurred
+     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_ABORT
      * @see ContentValues
@@ -181,7 +204,9 @@ public class CommonOperations {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
+     *
      * @return the row ID or -1 if any error ocurred
+     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_NONE
      * @see ContentValues
@@ -196,7 +221,9 @@ public class CommonOperations {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
+     *
      * @return the row ID or -1 if any error occurred
+     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_FAIL
      * @see ContentValues
@@ -211,7 +238,9 @@ public class CommonOperations {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
+     *
      * @return the row ID or -1 if any error occurred
+     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_REPLACE
      * @see ContentValues
@@ -227,7 +256,9 @@ public class CommonOperations {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
+     *
      * @return the row ID or -1 if any error occurred
+     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_ROLLBACK
      * @see ContentValues
@@ -245,7 +276,9 @@ public class CommonOperations {
      * @param values      new values to insert
      * @param whereClause SQL where clause
      * @param whereArgs   SQL where args (probably it is an ID)
+     *
      * @return the affected rows
+     *
      * @throws net.sqlcipher.SQLException If the SQL string is invalid for some reason
      * @throws IllegalStateException      if the database is not open
      */
@@ -263,12 +296,14 @@ public class CommonOperations {
      * @param columnsToGet which columns to get - passing null will return all columns.
      * @param whereClause  where to obtain data - passing null will return all rows.
      * @param args         args for modifying the whereClause statement.
-     * @param groupBy      a filter declaring how to group rows - passing null will cause the rows to
-     *                     not to be grouped.
-     * @param having       a filter declaring which row groups to include in the cursor, if groupBy is
-     *                     being used
+     * @param groupBy      a filter declaring how to group rows - passing null will cause the rows
+     *                     to not to be grouped.
+     * @param having       a filter declaring which row groups to include in the cursor, if groupBy
+     *                     is being used
      * @param orderBy      how to order the rows - passing null will use the default sort order
+     *
      * @return a {@link Cursor} object positioned before the first entry
+     *
      * @throws net.sqlcipher.SQLException if there is an issue executing the SQL
      * @throws IllegalStateException      if the database is not open
      * @see Cursor
@@ -288,7 +323,9 @@ public class CommonOperations {
      * Gets all fields for the given table name
      *
      * @param tableName where to obtain the values
+     *
      * @return a {@link Cursor} object positioned before the first entry
+     *
      * @throws net.sqlcipher.SQLException if there is an issue executing the SQL
      * @throws IllegalStateException      if the database is not open
      * @see Cursor
@@ -303,7 +340,9 @@ public class CommonOperations {
      * @param tableName   table to delete values
      * @param idFieldName table column name which contains the ID
      * @param id          ID of the row to delete
+     *
      * @return the number of rows affected
+     *
      * @throws net.sqlcipher.SQLException If the SQL string is invalid for some reason
      * @throws IllegalStateException      if the database is not open
      */
@@ -325,6 +364,7 @@ public class CommonOperations {
      * Casts {@code long} to a {@code String[]} array
      *
      * @param id ID to cast
+     *
      * @return {@code String[]} with the ID value
      */
     private String[] setSelectionArgs(long id) {
@@ -335,6 +375,7 @@ public class CommonOperations {
      * Converts an array of {@code Object} varargs into a {@code String} array
      *
      * @param args amount of elements to store in a {@code String} array
+     *
      * @return {@code String[]} containing the args
      */
     protected String[] whereArgs(@NonNull Object... args) {
@@ -346,14 +387,12 @@ public class CommonOperations {
      *
      * @param id     ID where changing values
      * @param params new values
-     * @throws OverriddenMethodsNotDefinedError when {@link #getTableName()} or
-     *                                          {@link #getWhereId()} are not overridden
-     * @throws ExecutorNonDefinedException      when constructor
-     *                                          {@link #CommonOperations(DatabaseManager,
-     *                                          ThreadExceptionListener)}
-     *                                          has not been used
-     * @see ThreadingExecutor#add(NotifyingThread)
-     * @see ThreadingExecutor#run()
+     *
+     * @throws OverriddenMethodsNotDefinedError when {@link #getTableName()} or {@link
+     *                                          #getWhereId()} are not overridden.
+     * @throws ExecutorNonDefinedException      if, for any reason, executor is {@code null}.
+     * @see ThreadsPooling#add(Runnable)
+     * @see ThreadsPooling#start()
      */
     protected void scheduleUpdateExecutor(long id, @NonNull ContentValues params) {
         if (getTableName() == null || getWhereId() == null) {
@@ -371,26 +410,49 @@ public class CommonOperations {
                     nonDefinedAttributes.toString());
         }
         if (mExecutor == null)
-            throw new ExecutorNonDefinedException("You must define the \"ThreadingExecutor\" by " +
-                    "using \"CommonOperations(DatabaseManager, ThreadExceptionListener)\" " +
-                    "constructor");
-        mExecutor.add(new NotifyingThread() {
-            @Override
-            public void doRun() {
-                update(getTableName(), params, getWhereId(), whereArgs(id));
-            }
-        });
+            throw new ExecutorNonDefinedException("You must define the \"ThreadsPooling\" by " +
+                    "using \"CommonOperations(DatabaseManager)\" constructor");
+        BlockingQueue<Runnable> queue = mExecutor.getWorkingThreadsQueue();
+        if (queue.remainingCapacity() == 0)
+            mWaitingThreads.storeObject(() -> update(getTableName(), params, getWhereId(),
+                    whereArgs(id)));
+        else
+            mExecutor.add(new NotifyingThread(() -> update(getTableName(), params, getWhereId(),
+                    whereArgs(id)), this));
     }
 
     /**
-     * Runs the {@link ThreadingExecutor} - only necessary when doing UPDATE operations
+     * Runs the {@link ThreadsPooling} - only necessary when doing UPDATE operations
      *
      * @throws NoJobsEnqueuedError when there is no job added to the queue
      */
     public void apply() {
-        if (mExecutor.isAnyPendingThread())
-            mExecutor.run();
-        else
+        int startedThreads = mExecutor.start();
+        if (startedThreads == 0)
             throw new NoJobsEnqueuedError("There is no pending thread waiting to be executed");
+    }
+
+    /**
+     * When a thread finish its execution, if using a {@link NotifyingThread} and the class is
+     * subscribed, this method is called, with the {@code Runnable} which corresponds the just
+     * finished thread, and the {@code Throwable} containing the exception (if any exception has
+     * benn thrown).
+     * <p>
+     * Refer to {@link NotifyingThread#addOnThreadCompletedListener(OnThreadCompletedListener)} for
+     * getting more information about subscribing classes.
+     *
+     * @param thread    the thread that has just finished its execution.
+     * @param exception the exception if happened, else {@code null}.
+     */
+    @Override
+    public void onThreadCompletedListener(@NotNull Thread thread,
+                                          @org.jetbrains.annotations.Nullable Throwable exception) {
+        if (mWaitingThreads.isAnyObjectStored()) {
+            Runnable firstObject = mWaitingThreads.getStoredObjectAtIndex(0);
+            if (firstObject != null) {
+                mExecutor.add(firstObject);
+                mWaitingThreads.removeObjectAtIndex(0);
+            }
+        }
     }
 }

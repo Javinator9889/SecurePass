@@ -12,7 +12,6 @@ import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.io.database.operations.CommonOperations;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
-import javinator9889.securepass.util.threading.ThreadExceptionListener;
 import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.PasswordFields;
 
@@ -47,17 +46,13 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
 
     /**
      * Available constructor, matching
-     * {@link CommonOperations#CommonOperations(DatabaseManager, ThreadExceptionListener) super} one
+     * {@link CommonOperations#CommonOperations(DatabaseManager) super} one
      *
      * @param databaseInstance    instance of the {@link DatabaseManager} object
-     * @param onExceptionListener class that implements {@link ThreadExceptionListener} interface
-     *                            - can be null if no listener is set up
      * @see DatabaseManager
-     * @see ThreadExceptionListener
      */
-    public PasswordOperations(@NonNull DatabaseManager databaseInstance,
-                              @Nullable ThreadExceptionListener onExceptionListener) {
-        super(databaseInstance, onExceptionListener);
+    public PasswordOperations(@NonNull DatabaseManager databaseInstance) {
+        super(databaseInstance);
     }
 
     /**
