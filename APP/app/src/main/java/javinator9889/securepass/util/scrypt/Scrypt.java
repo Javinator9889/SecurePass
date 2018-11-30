@@ -73,6 +73,16 @@ public class Scrypt {
     }
 
     /**
+     * Obtains the derived key after calling {@link #scrypt(String)} method.
+     *
+     * @return {@code byte[]} with the key if {@link #scrypt(String)} was called, else {@code null}
+     * or the latest value available.
+     */
+    public byte[] getKey() {
+        return mKey;
+    }
+
+    /**
      * Calculates the {@code log2} by using bitwise operations.
      *
      * @param n value from which obtain {@code log2}
@@ -143,16 +153,6 @@ public class Scrypt {
             return false;
         else
             return SCryptUtil.check(password, mHash);
-    }
-
-    /**
-     * Obtains the derived key after calling {@link #scrypt(String)} method.
-     *
-     * @return {@code byte[]} with the key if {@link #scrypt(String)} was called, else {@code null}
-     * or the latest value available.
-     */
-    public byte[] getKey() {
-        return mKey;
     }
 
     /**
