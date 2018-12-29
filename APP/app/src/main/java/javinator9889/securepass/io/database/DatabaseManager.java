@@ -3,10 +3,13 @@ package javinator9889.securepass.io.database;
 import android.content.Context;
 import android.util.Log;
 
+import com.github.javinator9889.exporter.FileToBytesExporter;
+
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -149,7 +152,7 @@ public class DatabaseManager {
      * Creates the default category necessary in order to allow the hole application work
      */
     private void createDefaultCategory() {
-        CommonOperations operations = CommonOperations.newInstance(this);
+        CommonOperations operations = new CommonOperations(this);
         operations.registerDefaultCategory();
         operations.finishConnection();
     }

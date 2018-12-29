@@ -3,6 +3,7 @@ package javinator9889.securepass.io.database.operations;
 import android.content.ContentValues;
 import android.util.Log;
 
+import com.github.javinator9889.exporter.FileToBytesExporter;
 import com.github.javinator9889.threading.pools.ThreadsPooling;
 import com.github.javinator9889.threading.threads.notifyingthread.NotifyingThread;
 import com.github.javinator9889.threading.threads.notifyingthread.OnThreadCompletedListener;
@@ -12,6 +13,8 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 
@@ -24,10 +27,6 @@ import javinator9889.securepass.io.database.DatabaseManager;
 import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.values.Constants.SQL;
 
-//import javinator9889.securepass.util.threading.ThreadExceptionListener;
-//import javinator9889.securepass.util.threading.ThreadingExecutor;
-//import javinator9889.securepass.util.threading.thread.NotifyingThread;
-
 /**
  * Created by Javinator9889 on 29/03/2018.
  */
@@ -36,7 +35,6 @@ public class CommonOperations implements OnThreadCompletedListener {
     private static final String WHERE_ID = null;
     private static final String TABLE_NAME = null;
     private SQLiteDatabase mDatabase;
-    //    private ThreadingExecutor mExecutor;
     private ThreadsPooling mExecutor;
     private ObjectContainer<Runnable> mWaitingThreads;
 
@@ -45,11 +43,9 @@ public class CommonOperations implements OnThreadCompletedListener {
      * #newInstance(DatabaseManager)}.
      *
      * @param databaseInstance instance of the {@link DatabaseManager} object.
-     *
      * @see DatabaseManager
      */
     public CommonOperations(@NonNull DatabaseManager databaseInstance) {
-//        this(databaseInstance, null);
         try {
             databaseInstance.getDatabaseInitializer().join();
             mDatabase = databaseInstance.getDatabaseInstance();
@@ -61,30 +57,11 @@ public class CommonOperations implements OnThreadCompletedListener {
         }
     }
 
-    /*@Deprecated
-    public CommonOperations(@NonNull DatabaseManager databaseInstance,
-                            @Nullable ThreadExceptionListener onExceptionListener) {
-        try {
-            databaseInstance.getDatabaseInitializer().join();
-            mDatabase = databaseInstance.getDatabaseInstance();
-//            mExecutor = onExceptionListener == null ?
-//                    ThreadingExecutor.Builder().build() :
-//                    ThreadingExecutor.Builder().addOnThreadExceptionListener(onExceptionListener)
-//                            .build();
-        } catch (InterruptedException e) {
-            Log.e(getTag(), "Error while trying to join thread \""
-                    + SQL.DB_INIT_THREAD_NAME + "\". Interrupted exception. Full trace:");
-            e.printStackTrace();
-        }
-    }*/
-
     /**
      * Public class loader - uses {@link #CommonOperations(DatabaseManager) private constructor}
      *
      * @param databaseManagerInstance instance of the {@link DatabaseManager} object
-     *
      * @return <code>CommonOperations</code>
-     *
      * @deprecated use {@link #CommonOperations(DatabaseManager)} instead
      */
     @Deprecated
@@ -93,10 +70,25 @@ public class CommonOperations implements OnThreadCompletedListener {
     }
 
     /**
+     * Whenever {@link SQLiteDatabase#needUpgrade(int)} is called (and the result is {@code
+     * true}), this method should be called as it will upgrade the database.
+     *
+     * @param source the new database version that will be updated.
+     * @throws IOException whenever the source does not exists or there is any error while
+     *                     reading (for example, it has been closed).
+     */
+    public void onDatabaseUpdate(@NonNull InputStream source) throws IOException {
+        FileToBytesExporter opener = new FileToBytesExporter();
+        opener.readObject(source);
+        String[] newDatabaseVersion = opener.getReadData().split("(\\r?\\n){2}");
+        for (String query : newDatabaseVersion)
+            mDatabase.execSQL(query);
+    }
+
+    /**
      * Method for changing the database password
      *
      * @param newDatabasePassword new password
-     *
      * @see SQLiteDatabase#changePassword(String)
      */
     public void changeDatabasePassword(@NonNull String newDatabasePassword) {
@@ -107,7 +99,6 @@ public class CommonOperations implements OnThreadCompletedListener {
      * Registers the default ("Global") category
      *
      * @return <code>long</code> with the category ID (should be '1')
-     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      */
     public long registerDefaultCategory() {
@@ -154,14 +145,17 @@ public class CommonOperations implements OnThreadCompletedListener {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
-     *
      * @return the row ID or -1 if any error occurred
-     *
      * @see SQLiteDatabase#insert(String, String, ContentValues)
      * @see ContentValues
      */
     protected long insert(@NonNull String tableName, @NonNull ContentValues params) {
-        return mDatabase.insert(tableName, null, params);
+        mDatabase.beginTransaction();
+        long insertResult = mDatabase.insert(tableName, null, params);
+        if (insertResult != -1)
+            mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
+        return insertResult;
     }
 
     /**
@@ -169,17 +163,20 @@ public class CommonOperations implements OnThreadCompletedListener {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
-     *
      * @return the row ID or -1 if any error occurred
-     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_IGNORE
      * @see ContentValues
      */
     protected long insertIgnoreOnConflict(@NonNull String tableName,
                                           @NonNull ContentValues params) {
-        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+        mDatabase.beginTransaction();
+        long insertResult = mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
                 .CONFLICT_IGNORE);
+        if (insertResult != -1)
+            mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
+        return insertResult;
     }
 
     /**
@@ -187,16 +184,19 @@ public class CommonOperations implements OnThreadCompletedListener {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
-     *
      * @return the row ID or -1 if any error occurred
-     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_ABORT
      * @see ContentValues
      */
     protected long insertAbortOnConflict(@NonNull String tableName, @NonNull ContentValues params) {
-        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+        mDatabase.beginTransaction();
+        long insertResult = mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
                 .CONFLICT_ABORT);
+        if (insertResult != -1)
+            mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
+        return insertResult;
     }
 
     /**
@@ -204,16 +204,19 @@ public class CommonOperations implements OnThreadCompletedListener {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
-     *
      * @return the row ID or -1 if any error ocurred
-     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_NONE
      * @see ContentValues
      */
     protected long insertNoneOnConflit(@NonNull String tableName, @NonNull ContentValues params) {
-        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+        mDatabase.beginTransaction();
+        long insertResult = mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
                 .CONFLICT_NONE);
+        if (insertResult != -1)
+            mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
+        return insertResult;
     }
 
     /**
@@ -221,16 +224,19 @@ public class CommonOperations implements OnThreadCompletedListener {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
-     *
      * @return the row ID or -1 if any error occurred
-     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_FAIL
      * @see ContentValues
      */
     protected long insertFailOnConflict(@NonNull String tableName, @NonNull ContentValues params) {
-        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+        mDatabase.beginTransaction();
+        long insertResult = mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
                 .CONFLICT_FAIL);
+        if (insertResult != -1)
+            mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
+        return insertResult;
     }
 
     /**
@@ -238,17 +244,20 @@ public class CommonOperations implements OnThreadCompletedListener {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
-     *
      * @return the row ID or -1 if any error occurred
-     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_REPLACE
      * @see ContentValues
      */
     protected long insertReplaceOnConflict(@NonNull String tableName,
                                            @NonNull ContentValues params) {
-        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+        mDatabase.beginTransaction();
+        long insertResult = mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
                 .CONFLICT_REPLACE);
+        if (insertResult != -1)
+            mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
+        return insertResult;
     }
 
     /**
@@ -256,17 +265,20 @@ public class CommonOperations implements OnThreadCompletedListener {
      *
      * @param tableName the table to insert the row
      * @param params    map containing the initial values
-     *
      * @return the row ID or -1 if any error occurred
-     *
      * @see SQLiteDatabase#insertWithOnConflict(String, String, ContentValues, int)
      * @see SQLiteDatabase#CONFLICT_ROLLBACK
      * @see ContentValues
      */
     protected long insertRollbackOnConflict(@NonNull String tableName,
                                             @NonNull ContentValues params) {
-        return mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
+        mDatabase.beginTransaction();
+        long insertResult = mDatabase.insertWithOnConflict(tableName, null, params, SQLiteDatabase
                 .CONFLICT_ROLLBACK);
+        if (insertResult != -1)
+            mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
+        return insertResult;
     }
 
     /**
@@ -276,9 +288,7 @@ public class CommonOperations implements OnThreadCompletedListener {
      * @param values      new values to insert
      * @param whereClause SQL where clause
      * @param whereArgs   SQL where args (probably it is an ID)
-     *
      * @return the affected rows
-     *
      * @throws net.sqlcipher.SQLException If the SQL string is invalid for some reason
      * @throws IllegalStateException      if the database is not open
      */
@@ -301,9 +311,7 @@ public class CommonOperations implements OnThreadCompletedListener {
      * @param having       a filter declaring which row groups to include in the cursor, if groupBy
      *                     is being used
      * @param orderBy      how to order the rows - passing null will use the default sort order
-     *
      * @return a {@link Cursor} object positioned before the first entry
-     *
      * @throws net.sqlcipher.SQLException if there is an issue executing the SQL
      * @throws IllegalStateException      if the database is not open
      * @see Cursor
@@ -323,9 +331,7 @@ public class CommonOperations implements OnThreadCompletedListener {
      * Gets all fields for the given table name
      *
      * @param tableName where to obtain the values
-     *
      * @return a {@link Cursor} object positioned before the first entry
-     *
      * @throws net.sqlcipher.SQLException if there is an issue executing the SQL
      * @throws IllegalStateException      if the database is not open
      * @see Cursor
@@ -340,9 +346,7 @@ public class CommonOperations implements OnThreadCompletedListener {
      * @param tableName   table to delete values
      * @param idFieldName table column name which contains the ID
      * @param id          ID of the row to delete
-     *
      * @return the number of rows affected
-     *
      * @throws net.sqlcipher.SQLException If the SQL string is invalid for some reason
      * @throws IllegalStateException      if the database is not open
      */
@@ -364,7 +368,6 @@ public class CommonOperations implements OnThreadCompletedListener {
      * Casts {@code long} to a {@code String[]} array
      *
      * @param id ID to cast
-     *
      * @return {@code String[]} with the ID value
      */
     private String[] setSelectionArgs(long id) {
@@ -375,7 +378,6 @@ public class CommonOperations implements OnThreadCompletedListener {
      * Converts an array of {@code Object} varargs into a {@code String} array
      *
      * @param args amount of elements to store in a {@code String} array
-     *
      * @return {@code String[]} containing the args
      */
     protected String[] whereArgs(@NonNull Object... args) {
@@ -387,7 +389,6 @@ public class CommonOperations implements OnThreadCompletedListener {
      *
      * @param id     ID where changing values
      * @param params new values
-     *
      * @throws OverriddenMethodsNotDefinedError when {@link #getTableName()} or {@link
      *                                          #getWhereId()} are not overridden.
      * @throws ExecutorNonDefinedException      if, for any reason, executor is {@code null}.

@@ -28,21 +28,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    /*compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_8
-    }*/
-//    configurations.all {
-//        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9';
-//        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-//            def requested = details.requested
-//            if (requested.group == "com.android.support") {
-//                if (!requested.name.startsWith("multidex")) {
-//                    details.useVersion "26.+"
-//                }
-//            }
-//        }
-//    }
     // Android X configuration for more interoperability
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
@@ -61,8 +46,6 @@ android {
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
-//        sourceCompatibility JavaVersion.VERSION_1_8
-//        targetCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -89,16 +72,16 @@ dependencies {
     implementation 'androidx.fragment:fragment:1.0.0'
     implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
     implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
-    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'androidx.annotation:annotation:1.0.1'
     implementation 'androidx.customview:customview:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     // Test implementation libs
-    testImplementation 'androidx.test:core:1.0.0'
+    testImplementation 'androidx.test:core:1.1.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestUtil 'androidx.test:orchestrator:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestUtil 'androidx.test:orchestrator:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     // User compilations and libraries
     // SQLCipher - https://guardianproject.info/code/sqlcipher/
     implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
@@ -138,10 +121,13 @@ dependencies {
     implementation 'uk.co.markormesher:android-fab:2.4.1'
     // FileToBytesExporter - https://github.com/Javinator9889/FileToBytesExporter
     implementation 'com.github.javinator9889:filetobytesexporter:1.0.4'
+
     // Threading Tools - https://github.com/Javinator9889/ThreadingTools
     implementation 'com.github.javinator9889:threadingtools:1.0'
     // HKDF - https://github.com/patrickfav/hkdf
     implementation group: 'at.favre.lib', name: 'hkdf', version: '1.0.0'
     // scrypt - https://github.com/wg/scrypt
     implementation group: 'com.lambdaworks', name: 'scrypt', version: '1.4.0'
+    // LocaleManager - https://github.com/Javinator9889/LocaleManager
+    implementation 'com.github.javinator9889:localemanager:1.1X'
 }
