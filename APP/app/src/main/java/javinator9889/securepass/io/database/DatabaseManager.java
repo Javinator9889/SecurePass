@@ -75,7 +75,6 @@ public class DatabaseManager {
      * @see IOManager#loadSQLScript()
      */
     private void initDB() {
-        System.out.println("Inside INITDB");
         mDatabaseInitializer = new Thread(new Runnable() {
             private final Context databaseContext = DatabaseManager.this.mActivityContext;
             private final String databasePassword = DatabaseManager.this.mUserHashedPassword;
@@ -99,24 +98,16 @@ public class DatabaseManager {
                         databasePassword,
                         null);
                 List<String> databaseScripts;
-                System.out.println("Generating tables...");
                 try {
-                    System.out.println("Inside try/catch");
-                    System.out.println(preferencesManager.isDatabaseInitialized());
                     if (!preferencesManager.isDatabaseInitialized()) {
-                        System.out.println("Inside IF");
                         databaseScripts = IOManager.newInstance(databaseContext).obtainSQLScript();
-                        System.out.println("Database scripts: ");
-                        System.out.println(databaseScripts);
                         for (String script : databaseScripts) {
-                            System.out.println(script);
                             database.execSQL(script);
                         }
                         DatabaseManager.this.createDefaultCategory();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    System.err.println(e.getMessage());
                     throw new RuntimeException(e.getCause());
                 } finally {
                     database.close();
@@ -125,7 +116,6 @@ public class DatabaseManager {
         });
         mDatabaseInitializer.setName(Constants.SQL.DB_INIT_THREAD_NAME);
         mDatabaseInitializer.setUncaughtExceptionHandler(new ThreadExceptionHandler());
-        System.out.println("Starting execution");
         mDatabaseInitializer.run();
     }
 

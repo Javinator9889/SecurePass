@@ -1,19 +1,19 @@
 CREATE TABLE IF NOT EXISTS `Category` (
-  `idCategory` INT NOT NULL DEFAULT 0,
+  `idCategory` INTEGER NOT NULL,
   `name` VARCHAR(45) NULL,
   PRIMARY KEY (`idCategory`));
 
 CREATE TABLE IF NOT EXISTS `Configuration` (
-  `idConfiguration` INT NOT NULL,
+  `idConfiguration` INTEGER NOT NULL,
   `configName` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idConfiguration`));
 
 CREATE TABLE IF NOT EXISTS `Entry` (
-  `idEntry` INT NOT NULL DEFAULT 0,
+  `idEntry` INTEGER NOT NULL DEFAULT 0,
   `icon` VARCHAR(180) NULL,
   `name` VARCHAR(45) NOT NULL,
-  `cidCategory` INT NOT NULL,
-  `idConfiguration` INT NOT NULL,
+  `cidCategory` INTEGER NOT NULL,
+  `idConfiguration` INTEGER NOT NULL,
   PRIMARY KEY (`idEntry`, `cidCategory`, `idConfiguration`),
   CONSTRAINT `fk_Entry_Category1`
     FOREIGN KEY (`cidCategory`)
@@ -27,11 +27,11 @@ CREATE TABLE IF NOT EXISTS `Entry` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `QRCode` (
-  `idQRCode` INT NOT NULL DEFAULT 0,
+  `idQRCode` INTEGER NOT NULL DEFAULT 0,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(180) NULL,
   `data` LONGTEXT NOT NULL,
-  `fidEntry` INT NOT NULL,
+  `fidEntry` INTEGER NOT NULL,
   PRIMARY KEY (`idQRCode`, `fidEntry`),
   CONSTRAINT `fk_QRCode_Entry1`
     FOREIGN KEY (`fidEntry`)
@@ -40,15 +40,15 @@ CREATE TABLE IF NOT EXISTS `QRCode` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `SecurityCodes` (
-  `idSecurityCodes` INT NOT NULL DEFAULT 0,
+  `idSecurityCodes` INTEGER NOT NULL DEFAULT 0,
   `accountName` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idSecurityCodes`));
 
 CREATE TABLE IF NOT EXISTS `Fields` (
-  `idField` INT NOT NULL DEFAULT 0,
+  `idField` INTEGER NOT NULL DEFAULT 0,
   `code` VARCHAR(180) NOT NULL,
   `used` TINYINT NOT NULL DEFAULT 0,
-  `fidSecurityCodes` INT NOT NULL,
+  `fidSecurityCodes` INTEGER NOT NULL,
   PRIMARY KEY (`idField`, `fidSecurityCodes`),
   CONSTRAINT `fk_Fields_SecurityCodes1`
     FOREIGN KEY (`fidSecurityCodes`)
@@ -57,11 +57,11 @@ CREATE TABLE IF NOT EXISTS `Fields` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `Password` (
-  `idPassword` INT NOT NULL,
+  `idPassword` INTEGER NOT NULL,
   `password` VARCHAR(256) NOT NULL,
   `field_desc` VARCHAR(45) NOT NULL,
-  `sortOrder` INT NOT NULL,
-  `idEntry` INT NOT NULL,
+  `sortOrder` INTEGER NOT NULL,
+  `idEntry` INTEGER NOT NULL,
   PRIMARY KEY (`idPassword`, `idEntry`),
   CONSTRAINT `fk_Password_Entry1`
     FOREIGN KEY (`idEntry`)
@@ -70,11 +70,11 @@ CREATE TABLE IF NOT EXISTS `Password` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `SmallText` (
-  `idSmallText` INT NOT NULL,
+  `idSmallText` INTEGER NOT NULL,
   `text` VARCHAR(180) NOT NULL,
   `field_desc` VARCHAR(45) NOT NULL,
-  `sortOrder` INT NOT NULL,
-  `idEntry` INT NOT NULL,
+  `sortOrder` INTEGER NOT NULL,
+  `idEntry` INTEGER NOT NULL,
   PRIMARY KEY (`idSmallText`, `idEntry`),
   CONSTRAINT `fk_SmallText_Entry1`
     FOREIGN KEY (`idEntry`)
@@ -83,11 +83,11 @@ CREATE TABLE IF NOT EXISTS `SmallText` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `Image` (
-  `idImage` INT NOT NULL,
+  `idImage` INTEGER NOT NULL,
   `source` LONGBLOB NOT NULL,
   `field_desc` VARCHAR(45) NOT NULL,
-  `sortOrder` INT NOT NULL,
-  `idEntry` INT NOT NULL,
+  `sortOrder` INTEGER NOT NULL,
+  `idEntry` INTEGER NOT NULL,
   PRIMARY KEY (`idImage`, `idEntry`),
   CONSTRAINT `fk_Image_Entry1`
     FOREIGN KEY (`idEntry`)
@@ -96,11 +96,11 @@ CREATE TABLE IF NOT EXISTS `Image` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `LongText` (
-  `idLongText` INT NOT NULL,
+  `idLongText` INTEGER NOT NULL,
   `text` LONGBLOB NOT NULL,
   `field_desc` VARCHAR(45) NOT NULL,
-  `sortOrder` INT NOT NULL,
-  `idEntry` INT NOT NULL,
+  `sortOrder` INTEGER NOT NULL,
+  `idEntry` INTEGER NOT NULL,
   PRIMARY KEY (`idLongText`, `idEntry`),
   CONSTRAINT `fk_LongText_Entry1`
     FOREIGN KEY (`idEntry`)
@@ -109,10 +109,10 @@ CREATE TABLE IF NOT EXISTS `LongText` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `PassConfig` (
-  `idConfig` INT NOT NULL,
+  `idConfig` INTEGER NOT NULL,
   `desc` VARCHAR(45) NOT NULL,
-  `sortOrder` INT NOT NULL,
-  `idConfiguration` INT NOT NULL,
+  `sortOrder` INTEGER NOT NULL,
+  `idConfiguration` INTEGER NOT NULL,
   PRIMARY KEY (`idConfig`, `idConfiguration`),
   CONSTRAINT `fk_PassConfig`
     FOREIGN KEY (`idConfiguration`)
@@ -121,10 +121,10 @@ CREATE TABLE IF NOT EXISTS `PassConfig` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `SmallTextConfig` (
-  `idConfig` INT NOT NULL,
+  `idConfig` INTEGER NOT NULL,
   `desc` VARCHAR(45) NOT NULL,
-  `sortOrder` INT NOT NULL,
-  `idConfiguration` INT NOT NULL,
+  `sortOrder` INTEGER NOT NULL,
+  `idConfiguration` INTEGER NOT NULL,
   PRIMARY KEY (`idConfig`, `idConfiguration`),
   CONSTRAINT `fk_SmallTextConfig`
     FOREIGN KEY (`idConfiguration`)
@@ -133,10 +133,10 @@ CREATE TABLE IF NOT EXISTS `SmallTextConfig` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `LongTextConfig` (
-  `idConfig` INT NOT NULL,
+  `idConfig` INTEGER NOT NULL,
   `desc` VARCHAR(45) NOT NULL,
-  `sortOrder` INT NOT NULL,
-  `idConfiguration` INT NOT NULL,
+  `sortOrder` INTEGER NOT NULL,
+  `idConfiguration` INTEGER NOT NULL,
   PRIMARY KEY (`idConfig`, `idConfiguration`),
   CONSTRAINT `fk_LongTextConfig`
     FOREIGN KEY (`idConfiguration`)
@@ -145,10 +145,10 @@ CREATE TABLE IF NOT EXISTS `LongTextConfig` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS `ImagesConfig` (
-  `idConfig` INT NOT NULL,
+  `idConfig` INTEGER NOT NULL,
   `desc` VARCHAR(45) NOT NULL,
-  `sortOrder` INT NOT NULL,
-  `idConfiguration` INT NOT NULL,
+  `sortOrder` INTEGER NOT NULL,
+  `idConfiguration` INTEGER NOT NULL,
   PRIMARY KEY (`idConfig`, `idConfiguration`),
   CONSTRAINT `fk_ImagesConfig`
     FOREIGN KEY (`idConfiguration`)

@@ -135,7 +135,7 @@ public class Generator {
         String path = "/media/devices/Data/Nextcloud/AndroidApps/SecurePass/APP/app/src/main/res" +
                 "/raw/";
         String source = "database_script_readable.sql";
-        String dest = "dbs.osql";
+        String dest = "database_scriptabase_script.osql";
 //        FileToBytesExporter exporter = new FileToBytesExporter(source, path);
 //        exporter.readSource(true);
 //        exporter.writeObject(new File(path + dest));

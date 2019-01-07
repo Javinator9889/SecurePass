@@ -28,6 +28,8 @@ import javinator9889.securepass.io.database.operations.category.CategoryOperatio
 import javinator9889.securepass.io.database.operations.category.ICategoryGetOperations;
 import javinator9889.securepass.io.database.operations.category.ICategorySetOperations;
 
+import static java.lang.Thread.sleep;
+
 public class TestCategoryOperations extends DatabaseTests {
     private ICategoryGetOperations mGetOperations;
     private ICategorySetOperations mSetOperations;
@@ -51,28 +53,35 @@ public class TestCategoryOperations extends DatabaseTests {
         mGetOperations = operations;
         mSetOperations = operations;
         mOperations = operations;
+        registerNewCategory();
     }
 
-    @Test
     public void registerNewCategory() {
         String categoryName = "newCategory" + mCategorySuffix;
         long id = mSetOperations.registerNewCategory(categoryName);
         Log.d(TAG, "ID: " + id);
+        getAll();
+        Log.d(TAG, "Recently created category name: " + mGetOperations.getCategoryName(id));
         mCategorySuffix = ((int) id) + 1;
     }
 
     @Test
-    public void updateCategoryName() {
+    public void updateCategoryName() throws InterruptedException {
         String newCategoryName = "updatedCategory";
         mSetOperations.updateCategoryName(mCategorySuffix - 1, newCategoryName);
         mSetOperations.apply();
+        sleep(1); // Wait until the update is done
         Log.d(TAG, "New name: " + newCategoryName);
+        Log.d(TAG, "Category: " + mGetOperations.getCategoryName(mCategorySuffix - 1));
+        getAll();
     }
 
     @Test
     public void deleteCategory() {
-        mSetOperations.removeCategory(mCategorySuffix);
+        Log.d(TAG, "Deleting ID: " + (mCategorySuffix -1));
+        mSetOperations.removeCategory(mCategorySuffix - 1);
         Log.d(TAG, "Deleted: " + (mCategorySuffix - 1));
+        getAll();
     }
 
     @Test
@@ -82,8 +91,6 @@ public class TestCategoryOperations extends DatabaseTests {
 
     @Test
     public void getCategoryName() {
-        registerNewCategory();
-        getAll();
         Log.d(TAG, mGetOperations.getCategoryName(mCategorySuffix - 1));
     }
 

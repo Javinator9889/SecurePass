@@ -5,6 +5,9 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import javinator9889.securepass.data.entry.Category;
 import javinator9889.securepass.io.database.DatabaseManager;
@@ -96,8 +99,9 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
         String name = null;
         try (Cursor categoryCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()),
                 CATEGORY_WHERE_ID, whereArgs(categoryId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> categoriesColumns = constructMapFromCursor(categoryCursor);
             if (categoryCursor.moveToNext())
-                name = categoryCursor.getString(NAME.getFieldIndex());
+                name = categoryCursor.getString(categoriesColumns.get(NAME.getFieldName()));
         }
         return name;
     }
@@ -115,12 +119,12 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     public GeneralObjectContainer<Category> getAllCategories() {
         GeneralObjectContainer<Category> categories = new ObjectContainer<>();
         try (Cursor categoriesCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
-            while (categoriesCursor.moveToNext()) {
-                long id = categoriesCursor.getLong(ID.getFieldIndex());
-                String name = categoriesCursor.getString(NAME.getFieldIndex());
-                Category currentCategory = new Category(id, name);
-                categories.storeObject(currentCategory);
-            }
+                while (categoriesCursor.moveToNext()) {
+                    long id = categoriesCursor.getLong(ID.getFieldIndex());
+                    String name = categoriesCursor.getString(NAME.getFieldIndex());
+                    Category currentCategory = new Category(id, name);
+                    categories.storeObject(currentCategory);
+                }
         }
         return categories;
     }
@@ -135,7 +139,7 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     @Override
     public long registerNewCategory(@NonNull String categoryName) {
         ContentValues params = setParams(categoryName);
-        return insertReplaceOnConflict(TABLE_NAME, params);
+        return insertFailOnConflict(TABLE_NAME, params);
     }
 
     /**
@@ -157,7 +161,8 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
      */
     @Override
     public void removeCategory(long categoryId) {
-        delete(TABLE_NAME, ID.getFieldName(), categoryId);
+        int i = delete(TABLE_NAME, ID.getFieldName(), categoryId);
+        Log.d(TAG, "Number of rows deleted: " + i);
     }
 
     /**

@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
-import java.util.stream.StreamSupport;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -237,6 +237,8 @@ public class CommonOperations implements OnThreadCompletedListener {
                 .CONFLICT_FAIL);
         if (insertResult != -1)
             mDatabase.setTransactionSuccessful();
+        else
+            throw new RuntimeException("Error occurred while inserting data");
         mDatabase.endTransaction();
         return insertResult;
     }
@@ -343,6 +345,25 @@ public class CommonOperations implements OnThreadCompletedListener {
     }
 
     /**
+     * Generates a {@link Map} of the values obtained by the cursor, assigning the {@code column
+     * name} to its index - useful for retrieving values from {@code SELECT} clause.
+     *
+     * @param cursor the source cursor from which the values will be obtained.
+     * @return {@code Map<String, Integer>} with the relation between column name and column index.
+     * @see HashMap
+     */
+    @NonNull
+    protected Map<String, Integer> constructMapFromCursor(@NonNull Cursor cursor) {
+        String[] columnNames = cursor.getColumnNames();
+        Map<String, Integer> result = new HashMap<>(cursor.getColumnCount(), 1.0f);
+        for (String columnName : columnNames) {
+            int index = cursor.getColumnIndex(columnName);
+            result.put(columnName, index);
+        }
+        return result;
+    }
+
+    /**
      * Deletes all columns for a given ID of a table
      *
      * @param tableName   table to delete values
@@ -363,7 +384,13 @@ public class CommonOperations implements OnThreadCompletedListener {
      * @see SQLiteDatabase#close()
      */
     public void finishConnection() {
-        mDatabase.close();
+        try {
+            mExecutor.shutdownWaitTermination();
+        } catch (InterruptedException e) {
+            Log.w(TAG, "Task executor was interrupted while waiting threads to finish", e);
+        } finally {
+            mDatabase.close();
+        }
     }
 
     /**
