@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.entry.fields.LongText;
@@ -101,8 +103,9 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
         String text = null;
         try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ID.getFieldName()), WHERE_ID,
                 whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);
             if (longTextsCursor.moveToNext())
-                text = longTextsCursor.getString(TEXT.getFieldIndex());
+                text = longTextsCursor.getString(longTextColumns.get(TEXT.getFieldName()));
         }
         return text;
     }
@@ -119,8 +122,9 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
         String description = null;
         try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()),
                 WHERE_ID, whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);
             if (longTextsCursor.moveToNext())
-                description = longTextsCursor.getString(DESCRIPTION.getFieldIndex());
+                description = longTextsCursor.getString(longTextColumns.get(DESCRIPTION));
         }
         return description;
     }
@@ -137,8 +141,9 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
         int order = -1;
         try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
                 whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);
             if (longTextsCursor.moveToNext())
-                order = longTextsCursor.getInt(ORDER.getFieldIndex());
+                order = longTextsCursor.getInt(longTextColumns.get(ORDER.getFieldName()));
         }
         return order;
     }
@@ -155,8 +160,9 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
         long entryId = -1;
         try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
                 whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);
             if (longTextsCursor.moveToNext())
-                entryId = longTextsCursor.getLong(ENTRY.getFieldIndex());
+                entryId = longTextsCursor.getLong(longTextColumns.get(ENTRY.getFieldName()));
         }
         return entryId;
     }
@@ -242,13 +248,15 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
     public GeneralObjectContainer<LongText> getAllSmallTexts() {
         GeneralObjectContainer<LongText> longTexts = new ObjectContainer<>();
         try (Cursor longTextsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);
             while (longTextsCursor.moveToNext()) {
-                long id = longTextsCursor.getLong(ID.getFieldIndex());
-                String text = longTextsCursor.getString(TEXT.getFieldIndex());
-                String description = longTextsCursor.getString(DESCRIPTION.getFieldIndex());
-                int order = longTextsCursor.getInt(ORDER.getFieldIndex());
-                long entryId = longTextsCursor.getLong(ENTRY.getFieldIndex());
-                LongText currentLongText = new LongText(id, entryId, text, description);
+                long id = longTextsCursor.getLong(longTextColumns.get(ID.getFieldName()));
+                String text = longTextsCursor.getString(longTextColumns.get(TEXT.getFieldName()));
+                String description =
+                        longTextsCursor.getString(longTextColumns.get(DESCRIPTION.getFieldName()));
+                int order = longTextsCursor.getInt(longTextColumns.get(ORDER.getFieldName()));
+                long entryId = longTextsCursor.getLong(longTextColumns.get(ENTRY.getFieldName()));
+                LongText currentLongText = new LongText(id, entryId, text, description, order);
                 longTexts.storeObject(currentLongText);
             }
         }

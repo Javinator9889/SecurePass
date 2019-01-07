@@ -6,20 +6,20 @@ import androidx.annotation.NonNull;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see https://www.gnu.org/licenses/.
- *
+ * <p>
  * Created by Javinator9889 on 26/10/2018 - APP.
  */
 public abstract class Text implements IText {
@@ -27,6 +27,7 @@ public abstract class Text implements IText {
     private long mParentEntryId;
     private String mText;
     private String mFieldDescription;
+    private int mOrder;
 
     /**
      * Constructor only available for inheritance classes
@@ -34,12 +35,20 @@ public abstract class Text implements IText {
      * @param id               the text ID
      * @param text             the current text
      * @param fieldDescription description
+     * @param parentEntryId    the parent entry ID
+     * @param order            the sort order
      */
-    Text(long id, long parentEntryId, @NonNull String text, @NonNull String fieldDescription) {
+    Text(long id,
+         long parentEntryId,
+         @NonNull String text,
+         @NonNull String fieldDescription,
+         int order) {
         mId = id;
         mParentEntryId = parentEntryId;
         mText = text;
+
         mFieldDescription = fieldDescription;
+        mOrder = order;
     }
 
     /**
@@ -119,6 +128,26 @@ public abstract class Text implements IText {
     }
 
     /**
+     * Gets the order of the text.
+     *
+     * @return {@code int} with the sort order.
+     */
+    @Override
+    public int getOrder() {
+        return mOrder;
+    }
+
+    /**
+     * Sets a new order of the text.
+     *
+     * @param order new text order.
+     */
+    @Override
+    public void setOrder(int order) {
+        mOrder = order;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -137,7 +166,6 @@ public abstract class Text implements IText {
      */
     @Override
     public int hashCode() {
-
         return Objects.hash(mId, mParentEntryId, mText, mFieldDescription);
     }
 }

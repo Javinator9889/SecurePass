@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.Configuration;
@@ -98,8 +100,9 @@ public class ConfigurationOperations extends CommonOperations
         String name = null;
         try (Cursor configurationCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()),
                 WHERE_ID, whereArgs(configurationId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> configurationsColumns = constructMapFromCursor(configurationCursor);
             if (configurationCursor.moveToNext())
-                name = configurationCursor.getString(NAME.getFieldIndex());
+                name = configurationCursor.getString(configurationsColumns.get(NAME.getFieldName()));
         }
         return name;
     }
@@ -117,9 +120,10 @@ public class ConfigurationOperations extends CommonOperations
     public GeneralObjectContainer<IConfiguration> getAllConfigurations() {
         GeneralObjectContainer<IConfiguration> configurations = new ObjectContainer<>();
         try (Cursor configurationsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> configColumns = constructMapFromCursor(configurationsCursor);
             while (configurationsCursor.moveToNext()) {
-                long id = configurationsCursor.getLong(ID.getFieldIndex());
-                String name = configurationsCursor.getString(NAME.getFieldIndex());
+                long id = configurationsCursor.getLong(configColumns.get(ID.getFieldName()));
+                String name = configurationsCursor.getString(configColumns.get(NAME.getFieldName()));
                 IConfiguration currentConfiguration = new Configuration(id, name, null);
                 configurations.storeObject(currentConfiguration);
             }

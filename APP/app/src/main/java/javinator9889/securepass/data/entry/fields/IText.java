@@ -48,4 +48,18 @@ public interface IText extends ICommonMethods {
      * @param id the new ID
      */
     void setTextID(long id);
+
+    /**
+     * Gets the order of the text.
+     *
+     * @return {@code int} with the sort order.
+     */
+    int getOrder();
+
+    /**
+     * Sets a new order of the text.
+     *
+     * @param order new text order.
+     */
+    void setOrder(int order);
 }

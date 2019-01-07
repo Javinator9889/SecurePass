@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.secret.Field;
@@ -18,20 +20,20 @@ import javinator9889.securepass.util.values.database.FieldsFields;
 
 /**
  * Copyright © 2018 - present | APP by Javinator9889
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see https://www.gnu.org/licenses/.
- *
+ * <p>
  * Created by Javinator9889 on 01/11/2018 - APP.
  */
 public class FieldOperations extends CommonOperations implements IFieldSetOperations,
@@ -48,7 +50,7 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
      * Available constructor, matching
      * {@link CommonOperations#CommonOperations(DatabaseManager) super} one
      *
-     * @param databaseManager     instance of the {@link DatabaseManager} object
+     * @param databaseManager instance of the {@link DatabaseManager} object
      * @see DatabaseManager
      */
     public FieldOperations(@NonNull DatabaseManager databaseManager) {
@@ -101,8 +103,9 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
         String code = null;
         try (Cursor fieldsCursor = get(TABLE_NAME, whereArgs(CODE.getFieldName()), WHERE_ID,
                 whereArgs(fieldId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> fieldsColumns = constructMapFromCursor(fieldsCursor);
             if (fieldsCursor.moveToNext())
-                code = fieldsCursor.getString(CODE.getFieldIndex());
+                code = fieldsCursor.getString(fieldsColumns.get(CODE.getFieldName()));
         }
         return code;
     }
@@ -118,8 +121,9 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
         boolean isCodeUsed = false;
         try (Cursor fieldsCursor = get(TABLE_NAME, whereArgs(USED.getFieldName()), WHERE_ID,
                 whereArgs(fieldId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> fieldsColums = constructMapFromCursor(fieldsCursor);
             if (fieldsCursor.moveToNext())
-                isCodeUsed = boolean.class.cast(fieldsCursor.getInt(USED.getFieldIndex()));
+                isCodeUsed = fieldsCursor.getInt(fieldsColums.get(USED.getFieldName())) != 0;
         }
         return isCodeUsed;
     }
@@ -136,11 +140,14 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
     public GeneralObjectContainer<Field> getAllFields() {
         GeneralObjectContainer<Field> fields = new ObjectContainer<>();
         try (Cursor fieldsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> fieldColumns = constructMapFromCursor(fieldsCursor);
             while (fieldsCursor.moveToNext()) {
-                long id = fieldsCursor.getLong(ID.getFieldIndex());
-                long securityCodeId = fieldsCursor.getLong(SECURITY_CODE.getFieldIndex());
-                String code = fieldsCursor.getString(CODE.getFieldIndex());
-                boolean isCodeUsed = boolean.class.cast(fieldsCursor.getInt(USED.getFieldIndex()));
+                long id = fieldsCursor.getLong(fieldColumns.get(ID.getFieldName()));
+                long securityCodeId =
+                        fieldsCursor.getLong(fieldColumns.get(SECURITY_CODE.getFieldName()));
+                String code = fieldsCursor.getString(fieldColumns.get(CODE.getFieldName()));
+                boolean isCodeUsed =
+                        fieldsCursor.getInt(fieldColumns.get(USED.getFieldName())) != 0;
                 Field currentField = new Field(id, code, isCodeUsed, securityCodeId);
                 fields.storeObject(currentField);
             }

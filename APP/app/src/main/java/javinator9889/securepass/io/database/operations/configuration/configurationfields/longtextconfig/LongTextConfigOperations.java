@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.IConfigFields;
@@ -83,11 +85,15 @@ public class LongTextConfigOperations extends ConfigFieldsOperations {
     public GeneralObjectContainer<IConfigFields> getAllConfigFields() {
         GeneralObjectContainer<IConfigFields> configFields = new ObjectContainer<>();
         try (Cursor longTextConfigCursor = getAll(TABLE_NAME, ORDER_BY)) {
+            Map<String, Integer> longTextColumns = constructMapFromCursor(longTextConfigCursor);
             while (longTextConfigCursor.moveToNext()) {
-                long id = longTextConfigCursor.getLong(ID.getFieldIndex());
-                String description = longTextConfigCursor.getString(DESCRIPTION.getFieldIndex());
-                int sortOrder = longTextConfigCursor.getInt(ORDER.getFieldIndex());
-                long configId = longTextConfigCursor.getLong(CONFIGURATION.getFieldIndex());
+                long id = longTextConfigCursor.getLong(longTextColumns.get(ID.getFieldName()));
+                String description = longTextConfigCursor.getString(
+                        longTextColumns.get(DESCRIPTION.getFieldName()));
+                int sortOrder =
+                        longTextConfigCursor.getInt(longTextColumns.get(ORDER.getFieldName()));
+                long configId = longTextConfigCursor.getLong(
+                        longTextColumns.get(CONFIGURATION.getFieldName()));
                 IConfigFields currentField =
                         new LongTextConfig(id, description, sortOrder, configId);
                 configFields.storeObject(currentField);

@@ -5,7 +5,6 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
-import java.util.Arrays;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -119,12 +118,13 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     public GeneralObjectContainer<Category> getAllCategories() {
         GeneralObjectContainer<Category> categories = new ObjectContainer<>();
         try (Cursor categoriesCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
-                while (categoriesCursor.moveToNext()) {
-                    long id = categoriesCursor.getLong(ID.getFieldIndex());
-                    String name = categoriesCursor.getString(NAME.getFieldIndex());
-                    Category currentCategory = new Category(id, name);
-                    categories.storeObject(currentCategory);
-                }
+            Map<String, Integer> categoriesColumns = constructMapFromCursor(categoriesCursor);
+            while (categoriesCursor.moveToNext()) {
+                long id = categoriesCursor.getLong(categoriesColumns.get(ID.getFieldName()));
+                String name = categoriesCursor.getString(categoriesColumns.get(NAME.getFieldName()));
+                Category currentCategory = new Category(id, name);
+                categories.storeObject(currentCategory);
+            }
         }
         return categories;
     }

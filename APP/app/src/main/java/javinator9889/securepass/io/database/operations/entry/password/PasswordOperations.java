@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.entry.fields.Password;
@@ -100,8 +102,9 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
         String password = null;
         try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(PASSWORD.getFieldName()), WHERE_ID,
                 whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> passwordColumns = constructMapFromCursor(passwordCursor);
             if (passwordCursor.moveToNext())
-                password = passwordCursor.getString(PASSWORD.getFieldIndex());
+                password = passwordCursor.getString(passwordColumns.get(PASSWORD.getFieldName()));
         }
         return password;
     }
@@ -117,8 +120,9 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
         String description = null;
         try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()), WHERE_ID,
                 whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> passwordColumns = constructMapFromCursor(passwordCursor);
             if (passwordCursor.moveToNext())
-                description = passwordCursor.getString(DESCRIPTION.getFieldIndex());
+                description = passwordCursor.getString(passwordColumns.get(DESCRIPTION.getFieldName()));
         }
         return description;
     }
@@ -134,8 +138,9 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
         int order = -1;
         try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
                 whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> passwordColumns = constructMapFromCursor(passwordCursor);
             if (passwordCursor.moveToNext())
-                order = passwordCursor.getInt(ORDER.getFieldIndex());
+                order = passwordCursor.getInt(passwordColumns.get(ORDER.getFieldName()));
         }
         return order;
     }
@@ -151,8 +156,9 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
         long entryId = -1;
         try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
                 whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> passwordColumns = constructMapFromCursor(passwordCursor);
             if (passwordCursor.moveToNext())
-                entryId = passwordCursor.getLong(ENTRY.getFieldIndex());
+                entryId = passwordCursor.getLong(passwordColumns.get(ENTRY.getFieldName()));
         }
         return entryId;
     }
@@ -169,11 +175,14 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     public GeneralObjectContainer<Password> getAllPasswords() {
         GeneralObjectContainer<Password> passwords = new ObjectContainer<>();
         try (Cursor passwordCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> passwordColumns = constructMapFromCursor(passwordCursor);
             while (passwordCursor.moveToNext()) {
-                long id = passwordCursor.getLong(ID.getFieldIndex());
-                long entryId = passwordCursor.getLong(ENTRY.getFieldIndex());
-                String password = passwordCursor.getString(PASSWORD.getFieldIndex());
-                String description = passwordCursor.getString(DESCRIPTION.getFieldIndex());
+                long id = passwordCursor.getLong(passwordColumns.get(ID.getFieldName()));
+                long entryId = passwordCursor.getLong(passwordColumns.get(ENTRY.getFieldName()));
+                String password =
+                        passwordCursor.getString(passwordColumns.get(PASSWORD.getFieldName()));
+                String description =
+                        passwordCursor.getString(passwordColumns.get(DESCRIPTION.getFieldName()));
                 Password currentPassword = new Password(id, entryId, password, description);
                 passwords.storeObject(currentPassword);
             }

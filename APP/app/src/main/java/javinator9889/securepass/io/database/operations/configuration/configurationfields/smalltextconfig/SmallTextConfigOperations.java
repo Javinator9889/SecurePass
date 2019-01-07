@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.IConfigFields;
@@ -83,11 +85,16 @@ public class SmallTextConfigOperations extends ConfigFieldsOperations {
     public GeneralObjectContainer<IConfigFields> getAllConfigFields() {
         GeneralObjectContainer<IConfigFields> configFields = new ObjectContainer<>();
         try (Cursor smallTextConfigCursor = getAll(TABLE_NAME, ORDER_BY)) {
+            Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextConfigCursor);
             while (smallTextConfigCursor.moveToNext()) {
-                long id = smallTextConfigCursor.getLong(ID.getFieldIndex());
-                String description = smallTextConfigCursor.getString(DESCRIPTION.getFieldIndex());
-                int sortOrder = smallTextConfigCursor.getInt(ORDER.getFieldIndex());
-                long configId = smallTextConfigCursor.getLong(CONFIGURATION.getFieldIndex());
+                long id = smallTextConfigCursor.getLong(smallTextColumns.get(ID.getFieldName()));
+                String description =
+                        smallTextConfigCursor.getString(
+                                smallTextColumns.get(DESCRIPTION.getFieldName()));
+                int sortOrder =
+                        smallTextConfigCursor.getInt(smallTextColumns.get(ORDER.getFieldName()));
+                long configId = smallTextConfigCursor.getLong(
+                        smallTextColumns.get(CONFIGURATION.getFieldName()));
                 IConfigFields currentField =
                         new SmallTextConfig(id, description, sortOrder, configId);
                 configFields.storeObject(currentField);

@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.entry.fields.Image;
@@ -100,8 +102,9 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
         String source = null;
         try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(SOURCE.getFieldName()), WHERE_ID,
                 whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> imagesColumns = constructMapFromCursor(imagesCursor);
             if (imagesCursor.moveToNext())
-                source = imagesCursor.getString(SOURCE.getFieldIndex());
+                source = imagesCursor.getString(imagesColumns.get(SOURCE.getFieldName()));
         }
         return source;
     }
@@ -118,8 +121,9 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
         String description = null;
         try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()), WHERE_ID,
                 whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> imagesColumns = constructMapFromCursor(imagesCursor);
             if (imagesCursor.moveToNext())
-                description = imagesCursor.getString(DESCRIPTION.getFieldIndex());
+                description = imagesCursor.getString(imagesColumns.get(DESCRIPTION.getFieldName()));
         }
         return description;
     }
@@ -136,8 +140,9 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
         int order = -1;
         try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
                 whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> imagesColumns = constructMapFromCursor(imagesCursor);
             if (imagesCursor.moveToNext())
-                order = imagesCursor.getInt(ORDER.getFieldIndex());
+                order = imagesCursor.getInt(imagesColumns.get(ORDER.getFieldName()));
         }
         return order;
     }
@@ -154,8 +159,9 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
         long entryId = -1;
         try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
                 whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> imagesColumns = constructMapFromCursor(imagesCursor);
             if (imagesCursor.moveToNext())
-                entryId = imagesCursor.getLong(ENTRY.getFieldIndex());
+                entryId = imagesCursor.getLong(imagesColumns.get(ENTRY.getFieldName()));
         }
         return entryId;
     }
@@ -173,11 +179,12 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     public GeneralObjectContainer<Image> getAllImages() {
         GeneralObjectContainer<Image> images = new ObjectContainer<>();
         try (Cursor imagesCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> imagesColumns = constructMapFromCursor(imagesCursor);
             while (imagesCursor.moveToNext()) {
-                long id = imagesCursor.getLong(ID.getFieldIndex());
-                long entryId = imagesCursor.getLong(ENTRY.getFieldIndex());
-                String source = imagesCursor.getString(SOURCE.getFieldIndex());
-                String description = imagesCursor.getString(DESCRIPTION.getFieldIndex());
+                long id = imagesCursor.getLong(imagesColumns.get(ID.getFieldName()));
+                long entryId = imagesCursor.getLong(imagesColumns.get(ENTRY.getFieldName()));
+                String source = imagesCursor.getString(imagesColumns.get(SOURCE.getFieldName()));
+                String description = imagesCursor.getString(imagesColumns.get(DESCRIPTION.getFieldName()));
                 Image currentImage = new Image(id, entryId, source, description);
                 images.storeObject(currentImage);
             }

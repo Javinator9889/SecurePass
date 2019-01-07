@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.entry.fields.SmallText;
@@ -101,8 +103,9 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
         String text = null;
         try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(TEXT.getFieldName()), WHERE_ID,
                 whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextsCursor);
             if (smallTextsCursor.moveToNext())
-                text = smallTextsCursor.getString(TEXT.getFieldIndex());
+                text = smallTextsCursor.getString(smallTextColumns.get(TEXT.getFieldName()));
         }
         return text;
     }
@@ -119,8 +122,9 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
         String description = null;
         try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()), WHERE_ID,
                 whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextsCursor);
             if (smallTextsCursor.moveToNext())
-                description = smallTextsCursor.getString(DESCRIPTION.getFieldIndex());
+                description = smallTextsCursor.getString(smallTextColumns.get(DESCRIPTION.getFieldName()));
         }
         return description;
     }
@@ -137,8 +141,9 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
         int order = -1;
         try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
                 whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextsCursor);
             if (smallTextsCursor.moveToNext())
-                order = smallTextsCursor.getInt(ORDER.getFieldIndex());
+                order = smallTextsCursor.getInt(smallTextColumns.get(ORDER.getFieldName()));
         }
         return order;
     }
@@ -155,8 +160,9 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
         long entryId = -1;
         try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
                 whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextsCursor);
             if (smallTextsCursor.moveToNext())
-                entryId = smallTextsCursor.getLong(ENTRY.getFieldIndex());
+                entryId = smallTextsCursor.getLong(smallTextColumns.get(ENTRY.getFieldName()));
         }
         return entryId;
     }
@@ -242,13 +248,15 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     public GeneralObjectContainer<SmallText> getAllSmallTexts() {
         GeneralObjectContainer<SmallText> smallTexts = new ObjectContainer<>();
         try (Cursor smallTextsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextsCursor);
             while (smallTextsCursor.moveToNext()) {
-                long id = smallTextsCursor.getLong(ID.getFieldIndex());
-                String text = smallTextsCursor.getString(TEXT.getFieldIndex());
-                String description = smallTextsCursor.getString(DESCRIPTION.getFieldIndex());
-                int order = smallTextsCursor.getInt(ORDER.getFieldIndex());
-                long entryId = smallTextsCursor.getLong(ENTRY.getFieldIndex());
-                SmallText currentSmallText = new SmallText(id, entryId, text, description);
+                long id = smallTextsCursor.getLong(smallTextColumns.get(ID.getFieldName()));
+                String text = smallTextsCursor.getString(smallTextColumns.get(TEXT.getFieldName()));
+                String description =
+                        smallTextsCursor.getString(smallTextColumns.get(DESCRIPTION.getFieldName()));
+                int order = smallTextsCursor.getInt(smallTextColumns.get(ORDER.getFieldName()));
+                long entryId = smallTextsCursor.getLong(smallTextColumns.get(ENTRY.getFieldName()));
+                SmallText currentSmallText = new SmallText(id, entryId, text, description, order);
                 smallTexts.storeObject(currentSmallText);
             }
         }

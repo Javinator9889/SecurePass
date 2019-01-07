@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.IConfigFields;
@@ -83,11 +85,15 @@ public class ImagesConfigOperations extends ConfigFieldsOperations {
     public GeneralObjectContainer<IConfigFields> getAllConfigFields() {
         GeneralObjectContainer<IConfigFields> configFields = new ObjectContainer<>();
         try (Cursor imagesConfigCursor = getAll(TABLE_NAME, ORDER_BY)) {
+            Map<String, Integer> imagesConfigColumns = constructMapFromCursor(imagesConfigCursor);
             while (imagesConfigCursor.moveToNext()) {
-                long id = imagesConfigCursor.getLong(ID.getFieldIndex());
-                String description = imagesConfigCursor.getString(DESCRIPTION.getFieldIndex());
-                int sortOrder = imagesConfigCursor.getInt(ORDER.getFieldIndex());
-                long configId = imagesConfigCursor.getLong(CONFIGURATION.getFieldIndex());
+                long id = imagesConfigCursor.getLong(imagesConfigColumns.get(ID.getFieldName()));
+                String description = imagesConfigCursor.getString(
+                        imagesConfigColumns.get(DESCRIPTION.getFieldName()));
+                int sortOrder =
+                        imagesConfigCursor.getInt(imagesConfigColumns.get(ORDER.getFieldName()));
+                long configId = imagesConfigCursor.getLong(
+                        imagesConfigColumns.get(CONFIGURATION.getFieldName()));
                 IConfigFields currentField = new ImagesConfig(id, description, sortOrder, configId);
                 configFields.storeObject(currentField);
             }

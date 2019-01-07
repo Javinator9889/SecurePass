@@ -9,7 +9,8 @@ import androidx.annotation.NonNull;
  */
 public class LongText extends Text implements Serializable {
     /**
-     * Public available constructor that uses {@link Text#Text(long, long, String, String) super}
+     * Public available constructor that uses
+     * {@link Text#Text(long, long, String, String, int) super}
      * constructor
      *
      * @param id               long text ID
@@ -20,8 +21,9 @@ public class LongText extends Text implements Serializable {
     public LongText(long id,
                     long parentEntryId,
                     @NonNull String text,
-                    @NonNull String fieldDescription) {
-        super(id, parentEntryId, text, fieldDescription);
+                    @NonNull String fieldDescription,
+                    int order) {
+        super(id, parentEntryId, text, fieldDescription, order);
     }
 
     /**
@@ -31,6 +33,8 @@ public class LongText extends Text implements Serializable {
     public String toString() {
         return "Text: " + getText() +
                 "\nID: " + getTextID() +
-                "\nField description: " + getFieldDescription();
+                "\nField description: " + getFieldDescription() +
+                "\nEntry ID: " + getEntryId() +
+                "\nSort order: " + getOrder();
     }
 }

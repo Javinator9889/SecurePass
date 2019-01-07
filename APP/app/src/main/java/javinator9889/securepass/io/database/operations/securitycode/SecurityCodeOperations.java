@@ -4,6 +4,8 @@ import android.content.ContentValues;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import javinator9889.securepass.data.secret.SecurityCode;
 import javinator9889.securepass.io.database.DatabaseManager;
@@ -93,8 +95,9 @@ public class SecurityCodeOperations extends CommonOperations implements
         String name = null;
         try (Cursor securityCodesCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()),
                 WHERE_ID, whereArgs(securityCodeId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> securityCodeColums = constructMapFromCursor(securityCodesCursor);
             if (securityCodesCursor.moveToNext())
-                name = securityCodesCursor.getString(NAME.getFieldIndex());
+                name = securityCodesCursor.getString(securityCodeColums.get(NAME.getFieldName()));
         }
         return name;
     }
@@ -112,9 +115,11 @@ public class SecurityCodeOperations extends CommonOperations implements
     public GeneralObjectContainer<SecurityCode> getAllSecurityCodes() {
         GeneralObjectContainer<SecurityCode> securityCodes = new ObjectContainer<>();
         try (Cursor securityCodesCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> securityCodeColumns = constructMapFromCursor(securityCodesCursor);
             while (securityCodesCursor.moveToNext()) {
-                long id = securityCodesCursor.getLong(ID.getFieldIndex());
-                String name = securityCodesCursor.getString(NAME.getFieldIndex());
+                long id = securityCodesCursor.getLong(securityCodeColumns.get(ID.getFieldName()));
+                String name =
+                        securityCodesCursor.getString(securityCodeColumns.get(NAME.getFieldName()));
                 SecurityCode currentSecurityCode = new SecurityCode(id, name);
                 securityCodes.storeObject(currentSecurityCode);
             }

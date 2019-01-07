@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.ConfigFields;
@@ -64,8 +66,9 @@ public abstract class ConfigFieldsOperations extends CommonOperations
         String description = null;
         try (Cursor configFieldsCursor = get(getTableName(), whereArgs(DESCRIPTION.getFieldName()),
                 getWhereId(), whereArgs(id), null, null, ORDER_BY)) {
+            Map<String, Integer> configurationsColumns = constructMapFromCursor(configFieldsCursor);
             if (configFieldsCursor.moveToNext())
-                description = configFieldsCursor.getString(DESCRIPTION.getFieldIndex());
+                description = configFieldsCursor.getString(configurationsColumns.get(DESCRIPTION.getFieldName()));
         }
         return description;
     }
@@ -82,8 +85,9 @@ public abstract class ConfigFieldsOperations extends CommonOperations
         int order = -1;
         try (Cursor configFieldsCursor = get(getTableName(), whereArgs(ORDER.getFieldName()),
                 getWhereId(), whereArgs(id), null, null, ORDER_BY)) {
+            Map<String, Integer> configurationsColumns = constructMapFromCursor(configFieldsCursor);
             if (configFieldsCursor.moveToNext())
-                order = configFieldsCursor.getInt(ORDER.getFieldIndex());
+                order = configFieldsCursor.getInt(configurationsColumns.get(ORDER.getFieldName()));
         }
         return order;
     }
@@ -100,8 +104,10 @@ public abstract class ConfigFieldsOperations extends CommonOperations
         long configurationId = -1;
         try (Cursor configFieldsCursor = get(getTableName(), whereArgs(CONFIGURATION.getFieldName()),
                 getWhereId(), whereArgs(id), null, null, ORDER_BY)) {
+            Map<String, Integer> configurationsColumns = constructMapFromCursor(configFieldsCursor);
             if (configFieldsCursor.moveToNext())
-                configurationId = configFieldsCursor.getLong(CONFIGURATION.getFieldIndex());
+                configurationId = configFieldsCursor.getLong(configurationsColumns.get
+                        (CONFIGURATION.getFieldName()));
         }
         return configurationId;
     }

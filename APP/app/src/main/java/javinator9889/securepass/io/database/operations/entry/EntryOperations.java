@@ -4,6 +4,8 @@ import android.content.ContentValues;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.Configuration;
@@ -212,8 +214,9 @@ public class EntryOperations extends CommonOperations implements
         String name = null;
         try (Cursor entryCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()), ENTRY_WHERE_ID,
                 whereArgs(entryId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> entryColumns = constructMapFromCursor(entryCursor);
             if (entryCursor.moveToNext())
-                name = entryCursor.getString(NAME.getFieldIndex());
+                name = entryCursor.getString(entryColumns.get(NAME.getFieldName()));
         }
         return name;
     }
@@ -231,8 +234,9 @@ public class EntryOperations extends CommonOperations implements
         String icon = null;
         try (Cursor iconCursor = get(TABLE_NAME, whereArgs(ICON.getFieldName()), ENTRY_WHERE_ID,
                 whereArgs(entryId), null, null, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> iconColumns = constructMapFromCursor(iconCursor);
             if (iconCursor.moveToNext())
-                icon = iconCursor.getString(ICON.getFieldIndex());
+                icon = iconCursor.getString(iconColumns.get(ICON.getFieldName()));
         }
         return icon;
     }
@@ -252,8 +256,9 @@ public class EntryOperations extends CommonOperations implements
         try (Cursor categoryCursor = get(TABLE_NAME, whereArgs(CATEGORY.getFieldName()),
                 ENTRY_WHERE_ID, whereArgs(entryId), null, null,
                 ID.getFieldName() + " ASC")) {
+            Map<String, Integer> categoryColumns = constructMapFromCursor(categoryCursor);
             if (categoryCursor.moveToNext())
-                id = categoryCursor.getLong(CATEGORY.getFieldIndex());
+                id = categoryCursor.getLong(categoryColumns.get(CATEGORY.getFieldName()));
         }
         return id;
     }
@@ -273,8 +278,9 @@ public class EntryOperations extends CommonOperations implements
         try (Cursor configCursor = get(TABLE_NAME, whereArgs(CONFIGURATION.getFieldName()),
                 ENTRY_WHERE_ID, whereArgs(entryId), null, null,
                 ID.getFieldName() + " ASC")) {
+            Map<String, Integer> configColumns = constructMapFromCursor(configCursor);
             if (configCursor.moveToNext())
-                id = configCursor.getLong(CONFIGURATION.getFieldIndex());
+                id = configCursor.getLong(configColumns.get(CONFIGURATION.getFieldName()));
         }
         return id;
     }
@@ -292,12 +298,14 @@ public class EntryOperations extends CommonOperations implements
     public GeneralObjectContainer<Entry> getAllEntries() {
         GeneralObjectContainer<Entry> entries = new ObjectContainer<>();
         try (Cursor entriesCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+            Map<String, Integer> entriesColumns = constructMapFromCursor(entriesCursor);
             while (entriesCursor.moveToNext()) {
-                long id = entriesCursor.getLong(ID.getFieldIndex());
-                String name = entriesCursor.getString(NAME.getFieldIndex());
-                String icon = entriesCursor.getString(ICON.getFieldIndex());
-                long categoryId = entriesCursor.getLong(CATEGORY.getFieldIndex());
-                long configurationId = entriesCursor.getLong(CONFIGURATION.getFieldIndex());
+                long id = entriesCursor.getLong(entriesColumns.get(ID.getFieldName()));
+                String name = entriesCursor.getString(entriesColumns.get(NAME.getFieldName()));
+                String icon = entriesCursor.getString(entriesColumns.get(ICON.getFieldName()));
+                long categoryId = entriesCursor.getLong(entriesColumns.get(CATEGORY.getFieldName()));
+                long configurationId =
+                        entriesCursor.getLong(entriesColumns.get(CONFIGURATION.getFieldName()));
                 Entry currentEntry = new Entry(id, name, icon, categoryId, configurationId);
                 entries.storeObject(currentEntry);
             }

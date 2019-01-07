@@ -5,6 +5,8 @@ import android.util.Log;
 
 import net.sqlcipher.Cursor;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.data.configuration.IConfigFields;
@@ -83,11 +85,14 @@ public class PassConfigOperations extends ConfigFieldsOperations {
     public GeneralObjectContainer<IConfigFields> getAllConfigFields() {
         GeneralObjectContainer<IConfigFields> configFields = new ObjectContainer<>();
         try (Cursor passConfigsCursor = getAll(TABLE_NAME, ORDER_BY)) {
+            Map<String, Integer> passConfigColumns = constructMapFromCursor(passConfigsCursor);
             while (passConfigsCursor.moveToNext()) {
-                long id = passConfigsCursor.getLong(ID.getFieldIndex());
-                String description = passConfigsCursor.getString(DESCRIPTION.getFieldIndex());
-                int order = passConfigsCursor.getInt(ORDER.getFieldIndex());
-                long configurationId = passConfigsCursor.getLong(CONFIGURATION.getFieldIndex());
+                long id = passConfigsCursor.getLong(passConfigColumns.get(ID.getFieldName()));
+                String description = passConfigsCursor.getString(
+                        passConfigColumns.get(DESCRIPTION.getFieldName()));
+                int order = passConfigsCursor.getInt(passConfigColumns.get(ORDER.getFieldName()));
+                long configurationId = passConfigsCursor.getLong(
+                        passConfigColumns.get(CONFIGURATION.getFieldName()));
                 IConfigFields currentConfigField =
                         new PassConfig(id, description, order, configurationId);
                 configFields.storeObject(currentConfigField);
