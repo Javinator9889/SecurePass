@@ -1,6 +1,7 @@
 package javinator9889.securepass.util.resources;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ import javinator9889.securepass.util.values.Constants.SHARED_PREF;
  * Created by Javinator9889 on 04/04/2018.
  */
 public class SharedPreferencesManager implements ISharedPreferencesManager {
+    private static final String TAG = "SharedPreferences";
     private SharedPreferences preferencesInstance;
     private Map<String, Object> sharedPreferencesKeys;
     private Map<String, Class> keysType;
@@ -41,6 +43,10 @@ public class SharedPreferencesManager implements ISharedPreferencesManager {
                         break;
                     case "String":
                         newEntry.putString(key, String.valueOf(sharedPreferencesKeys.get(key)));
+                        break;
+                    default:
+                        Log.w(TAG, "Missing case statement - "
+                                + keysType.get(key).getSimpleName());
                         break;
                 }
                 newEntry.apply();

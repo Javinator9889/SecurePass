@@ -94,6 +94,9 @@ public class DriveContent extends FragmentActivity implements Button.OnClickList
                 IDriveDownloader downloader = new DriveDownloader(this, this);
                 downloader.restoreData();
                 break;
+            default:
+                Log.w(TAG, "Missing ID statement - DriveContent:69 - " + v.getId());
+                break;
         }
     }
 
