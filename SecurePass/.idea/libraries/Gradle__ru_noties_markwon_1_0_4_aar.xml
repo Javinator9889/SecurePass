@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: ru.noties:markwon:1.0.4@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/jetified-markwon-1.0.4.aar/143566b3643a5e3b669cfad936912cd0/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/jetified-markwon-1.0.4.aar/143566b3643a5e3b669cfad936912cd0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/jetified-markwon-1.0.4.aar/143566b3643a5e3b669cfad936912cd0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/ru.noties/markwon/1.0.4/10150e1ffcfc31d460e3877a879e8030cc3bc9a3/markwon-1.0.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

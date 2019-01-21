@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.cloudrail:cloudrail-si-android:2.21.6@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/jetified-cloudrail-si-android-2.21.6.aar/699ff386d2bd834cb88a7a51a986df2e/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/jetified-cloudrail-si-android-2.21.6.aar/699ff386d2bd834cb88a7a51a986df2e/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
