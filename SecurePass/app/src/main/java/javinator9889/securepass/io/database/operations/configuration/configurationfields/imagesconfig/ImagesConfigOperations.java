@@ -46,7 +46,7 @@ public class ImagesConfigOperations extends ConfigFieldsOperations {
      *
      * @see DatabaseManager
      */
-    protected ImagesConfigOperations(@NonNull DatabaseManager databaseInstance) {
+    public ImagesConfigOperations(@NonNull DatabaseManager databaseInstance) {
         super(databaseInstance);
     }
 

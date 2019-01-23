@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `Entry` (
   `name` VARCHAR(45) NOT NULL,
   `cidCategory` INTEGER NOT NULL,
   `idConfiguration` INTEGER NOT NULL,
-  PRIMARY KEY (`idEntry`, `cidCategory`, `idConfiguration`),
+  PRIMARY KEY (`idEntry`),
   CONSTRAINT `fk_Entry_Category1`
     FOREIGN KEY (`cidCategory`)
     REFERENCES `Category` (`idCategory`)
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `QRCode` (
   `description` VARCHAR(180) NULL,
   `data` LONGTEXT NOT NULL,
   `fidEntry` INTEGER NOT NULL,
-  PRIMARY KEY (`idQRCode`, `fidEntry`),
+  PRIMARY KEY (`idQRCode`),
   CONSTRAINT `fk_QRCode_Entry1`
     FOREIGN KEY (`fidEntry`)
     REFERENCES `Entry` (`idEntry`)
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `Fields` (
   `code` VARCHAR(180) NOT NULL,
   `used` TINYINT NOT NULL DEFAULT 0,
   `fidSecurityCodes` INTEGER NOT NULL,
-  PRIMARY KEY (`idField`, `fidSecurityCodes`),
+  PRIMARY KEY (`idField`),
   CONSTRAINT `fk_Fields_SecurityCodes1`
     FOREIGN KEY (`fidSecurityCodes`)
     REFERENCES `SecurityCodes` (`idSecurityCodes`)
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `Password` (
   `field_desc` VARCHAR(45) NOT NULL,
   `sortOrder` INTEGER NOT NULL,
   `idEntry` INTEGER NOT NULL,
-  PRIMARY KEY (`idPassword`, `idEntry`),
+  PRIMARY KEY (`idPassword`),
   CONSTRAINT `fk_Password_Entry1`
     FOREIGN KEY (`idEntry`)
     REFERENCES `Entry` (`idEntry`)
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `SmallText` (
   `field_desc` VARCHAR(45) NOT NULL,
   `sortOrder` INTEGER NOT NULL,
   `idEntry` INTEGER NOT NULL,
-  PRIMARY KEY (`idSmallText`, `idEntry`),
+  PRIMARY KEY (`idSmallText`),
   CONSTRAINT `fk_SmallText_Entry1`
     FOREIGN KEY (`idEntry`)
     REFERENCES `Entry` (`idEntry`)
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `Image` (
   `field_desc` VARCHAR(45) NOT NULL,
   `sortOrder` INTEGER NOT NULL,
   `idEntry` INTEGER NOT NULL,
-  PRIMARY KEY (`idImage`, `idEntry`),
+  PRIMARY KEY (`idImage`),
   CONSTRAINT `fk_Image_Entry1`
     FOREIGN KEY (`idEntry`)
     REFERENCES `Entry` (`idEntry`)
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `LongText` (
   `field_desc` VARCHAR(45) NOT NULL,
   `sortOrder` INTEGER NOT NULL,
   `idEntry` INTEGER NOT NULL,
-  PRIMARY KEY (`idLongText`, `idEntry`),
+  PRIMARY KEY (`idLongText`),
   CONSTRAINT `fk_LongText_Entry1`
     FOREIGN KEY (`idEntry`)
     REFERENCES `Entry` (`idEntry`)
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `PassConfig` (
   `desc` VARCHAR(45) NOT NULL,
   `sortOrder` INTEGER NOT NULL,
   `idConfiguration` INTEGER NOT NULL,
-  PRIMARY KEY (`idConfig`, `idConfiguration`),
+  PRIMARY KEY (`idConfig`),
   CONSTRAINT `fk_PassConfig`
     FOREIGN KEY (`idConfiguration`)
     REFERENCES `Configuration` (`idConfiguration`)
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `SmallTextConfig` (
   `desc` VARCHAR(45) NOT NULL,
   `sortOrder` INTEGER NOT NULL,
   `idConfiguration` INTEGER NOT NULL,
-  PRIMARY KEY (`idConfig`, `idConfiguration`),
+  PRIMARY KEY (`idConfig`),
   CONSTRAINT `fk_SmallTextConfig`
     FOREIGN KEY (`idConfiguration`)
     REFERENCES `Configuration` (`idConfiguration`)
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `LongTextConfig` (
   `desc` VARCHAR(45) NOT NULL,
   `sortOrder` INTEGER NOT NULL,
   `idConfiguration` INTEGER NOT NULL,
-  PRIMARY KEY (`idConfig`, `idConfiguration`),
+  PRIMARY KEY (`idConfig`),
   CONSTRAINT `fk_LongTextConfig`
     FOREIGN KEY (`idConfiguration`)
     REFERENCES `Configuration` (`idConfiguration`)
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `ImagesConfig` (
   `desc` VARCHAR(45) NOT NULL,
   `sortOrder` INTEGER NOT NULL,
   `idConfiguration` INTEGER NOT NULL,
-  PRIMARY KEY (`idConfig`, `idConfiguration`),
+  PRIMARY KEY (`idConfig`),
   CONSTRAINT `fk_ImagesConfig`
     FOREIGN KEY (`idConfiguration`)
     REFERENCES `Configuration` (`idConfiguration`)

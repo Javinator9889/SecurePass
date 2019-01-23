@@ -132,8 +132,8 @@ public class Generator {
     }
 
     private static void exportDB() throws Exception {
-        String path = "/media/devices/Data/Nextcloud/AndroidApps/SecurePass/APP/app/src/main/res" +
-                "/raw/";
+        String path = "D:\\\\\\Nextcloud\\AndroidApps\\SecurePass\\APP\\app\\src\\main\\res" +
+                "\\raw\\";
         String source = "database_script_readable.sql";
         String dest = "database_scriptabase_script.osql";
 //        FileToBytesExporter exporter = new FileToBytesExporter(source, path);

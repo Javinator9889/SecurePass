@@ -46,7 +46,7 @@ public class SmallTextConfigOperations extends ConfigFieldsOperations {
      *
      * @see DatabaseManager
      */
-    protected SmallTextConfigOperations(@NonNull DatabaseManager databaseInstance) {
+    public SmallTextConfigOperations(@NonNull DatabaseManager databaseInstance) {
         super(databaseInstance);
     }
 

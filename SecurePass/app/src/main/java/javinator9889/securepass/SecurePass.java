@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.chamber.java.library.SharedChamber;
 
+import org.jetbrains.annotations.Contract;
+
 import androidx.annotation.NonNull;
 import javinator9889.securepass.util.resources.PreferencesManager;
 
@@ -16,6 +18,7 @@ public class SecurePass extends Application {
     private static SecurePass APPLICATION_INSTANCE;
     //private Context applicationContext;
 
+    @Contract(pure = true)
     @NonNull
     public static SecurePass getApplicationInstance() {
         return APPLICATION_INSTANCE;
@@ -26,7 +29,7 @@ public class SecurePass extends Application {
         super.onCreate();
         APPLICATION_INSTANCE = this;
         PreferencesManager.instantiate(this);
-        SharedChamber.initChamber(this);
+//        SharedChamber.initChamber(this);
     }
 
     public static int getNumberOfProcessors() {

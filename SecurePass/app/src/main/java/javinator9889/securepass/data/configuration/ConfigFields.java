@@ -3,6 +3,7 @@ package javinator9889.securepass.data.configuration;
 import java.io.Serializable;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.util.values.DatabaseTables;
 
@@ -173,5 +174,18 @@ public abstract class ConfigFields implements IConfigFields, Serializable {
     public int hashCode() {
 
         return Objects.hash(mId, mDescription, mSortOrder, mConfigId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NonNull
+    @Override
+    public String toString() {
+        return getTableName() + ":\n" +
+                "{ ID: " + getFieldId() + ",\n" +
+                " Description: " + getDescription() + ",\n" +
+                " Sort order: " + getSortOrder() + ",\n" +
+                " Configuration ID: " + getConfigId() + "}\n";
     }
 }

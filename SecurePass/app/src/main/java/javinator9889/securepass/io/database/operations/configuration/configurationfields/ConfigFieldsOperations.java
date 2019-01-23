@@ -127,7 +127,7 @@ public abstract class ConfigFieldsOperations extends CommonOperations
                                        int order,
                                        long configurationId) {
         ContentValues params = setParams(description, order, configurationId);
-        return insertReplaceOnConflict(getTableName(), params);
+        return insertIgnoreOnConflict(getTableName(), params);
     }
 
     /**

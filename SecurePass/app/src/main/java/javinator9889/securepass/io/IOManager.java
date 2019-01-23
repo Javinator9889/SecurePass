@@ -130,7 +130,7 @@ public class IOManager {
      */
     @Deprecated
     public List<String> loadSQLScript() throws IOException {
-        FileToBytesExporter exporter = new FileToBytesExporter();
+//        FileToBytesExporter exporter = new FileToBytesExporter();
         List<String> result = new ArrayList<>(5);
         int[] sqlScripts = new int[]{R.raw.create_category, R.raw.create_entry, R.raw.create_qrcode,
                 R.raw.create_security_code, R.raw.create_field};
@@ -161,10 +161,16 @@ public class IOManager {
         InputStream sourceFile = mActivityContext
                 .getResources()
                 .openRawResource(R.raw.database_script);
-        FileToBytesExporter reader = new FileToBytesExporter();
-        reader.readObject(sourceFile);
-        String obtainedData = reader.getReadData();
-        String[] separateScripts = obtainedData.split("(\\r?\\n){2}");
+//        FileToBytesExporter reader = new FileToBytesExporter();
+//        reader.readObject(sourceFile);
+//        String obtainedData = reader.getReadData();
+        StringBuilder data = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(sourceFile))) {
+            String line;
+            while ((line = reader.readLine()) != null)
+                data.append(line).append("\n");
+        }
+        String[] separateScripts = data.toString().split("(\\r?\\n){2}");
         return new ArrayList<>(Arrays.asList(separateScripts));
     }
 

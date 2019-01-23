@@ -2,6 +2,8 @@ package javinator9889.securepass.objects;
 
 import android.util.SparseArray;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -209,6 +211,7 @@ public class ObjectContainer<ObjectType> implements GeneralObjectContainer<Objec
      * @return <code>String</code> with the result
      * @see SparseArray#toString()
      */
+    @NotNull
     @Override
     public String toString() {
         return mObjectsList.toString();

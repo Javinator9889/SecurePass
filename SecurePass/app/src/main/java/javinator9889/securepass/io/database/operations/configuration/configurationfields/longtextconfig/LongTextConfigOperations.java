@@ -46,7 +46,7 @@ public class LongTextConfigOperations extends ConfigFieldsOperations {
      *
      * @see DatabaseManager
      */
-    protected LongTextConfigOperations(@NonNull DatabaseManager databaseInstance) {
+    public LongTextConfigOperations(@NonNull DatabaseManager databaseInstance) {
         super(databaseInstance);
     }
 
