@@ -49,7 +49,8 @@ public class CommonOperations implements OnThreadCompletedListener {
      */
     public CommonOperations(@NonNull DatabaseManager databaseInstance) {
         try {
-            databaseInstance.getDatabaseInitializer().join();
+            if (databaseInstance.getDatabaseInitializer().isAlive())
+                databaseInstance.getDatabaseInitializer().join();
             mDatabase = databaseInstance.getDatabaseInstance();
             mExecutor = ThreadsPooling.builder().build();
             mWaitingThreads = new ObjectContainer<>();
@@ -379,7 +380,7 @@ public class CommonOperations implements OnThreadCompletedListener {
     }
 
     /**
-     * Closes database connection
+     * Closes database connection.
      *
      * @see SQLiteDatabase#close()
      */
@@ -390,6 +391,7 @@ public class CommonOperations implements OnThreadCompletedListener {
             Log.w(TAG, "Task executor was interrupted while waiting threads to finish", e);
         } finally {
             mDatabase.close();
+            DatabaseManager.finish();
         }
     }
 

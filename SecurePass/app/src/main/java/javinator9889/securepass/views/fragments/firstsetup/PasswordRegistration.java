@@ -86,7 +86,7 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                     //finish();
                     // This will try to create a DB
                     DatabaseManager manager = DatabaseManager
-                            .newInstance(this, new String(scrypter.getKey()));
+                            .getInstance(this, new String(scrypter.getKey()));
                     Thread databaseThread = manager.getDatabaseInitializer();
                     try {
                         databaseThread.join();

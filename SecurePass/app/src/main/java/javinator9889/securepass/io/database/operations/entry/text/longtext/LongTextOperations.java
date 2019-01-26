@@ -245,7 +245,7 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
      * @see LongText
      */
     @Override
-    public GeneralObjectContainer<LongText> getAllSmallTexts() {
+    public GeneralObjectContainer<LongText> getAllLongTexts() {
         GeneralObjectContainer<LongText> longTexts = new ObjectContainer<>();
         try (Cursor longTextsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
             Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);

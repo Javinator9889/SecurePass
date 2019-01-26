@@ -25,27 +25,29 @@ import javinator9889.securepass.util.values.Constants;
  */
 
 public class DatabaseManager {
-    private Context mActivityContext;
+    private static DatabaseManager INSTANCE = null;
+    //    private Context mActivityContext;
     private File mDatabaseFile;
     private String mUserHashedPassword;
     private Thread mDatabaseInitializer;
 
     /**
-     * Generates a new instance and also initializes the database with {@link #initDB()} method
+     * Generates a new instance and also initializes the database with {@link #initDB(Context)} method
      *
      * @param activityContext    <code>Context</code> when instantiating the class
      * @param userHashedPassword password for encrypting/decrypting the database
      * @see Context
-     * @see #initDB()
+     * @see #initDB(Context)
      */
     private DatabaseManager(Context activityContext, @NonNull String userHashedPassword) {
-        this.mActivityContext = activityContext;
+//        this.mActivityContext = activityContext;
         this.mUserHashedPassword = userHashedPassword;
-        initDB();
+        initDB(activityContext);
+        INSTANCE = this;
     }
 
     /**
-     * Generates a <code>DatabaseManager</code> instance
+     * Generates a <code>DatabaseManager</code> instance. If the libraries are loaded
      *
      * @param activityContext    <code>Context</code> when instantiating the class
      * @param userHashedPassword password for encrypting/decrypting the database
@@ -53,9 +55,11 @@ public class DatabaseManager {
      * @see Context
      */
     @NonNull
-    public static DatabaseManager newInstance(Context activityContext,
+    public static DatabaseManager getInstance(Context activityContext,
                                               @NonNull String userHashedPassword) {
-        return new DatabaseManager(activityContext, userHashedPassword);
+        return INSTANCE == null ?
+                new DatabaseManager(activityContext, userHashedPassword) :
+                INSTANCE;
     }
 
     /**
@@ -70,13 +74,14 @@ public class DatabaseManager {
      * tables inside SQLite
      * </p>
      *
+     * @param databaseContext <code>Context</code> when instantiating the class
      * @see SQLiteDatabase
      * @see PreferencesManager
      * @see IOManager#loadSQLScript()
      */
-    private void initDB() {
+    private void initDB(@NonNull final Context databaseContext) {
         mDatabaseInitializer = new Thread(new Runnable() {
-            private final Context databaseContext = DatabaseManager.this.mActivityContext;
+            //            private final Context databaseContext = DatabaseManager.this.mActivityContext;
             private final String databasePassword = DatabaseManager.this.mUserHashedPassword;
 
             @Override
@@ -125,7 +130,7 @@ public class DatabaseManager {
      * @return <code>SQLiteDatabase</code> instance
      */
     public SQLiteDatabase getDatabaseInstance() {
-        SQLiteDatabase.loadLibs(mActivityContext);
+//        SQLiteDatabase.loadLibs(context);
         return SQLiteDatabase.openOrCreateDatabase(mDatabaseFile, mUserHashedPassword, null);
     }
 
@@ -138,6 +143,14 @@ public class DatabaseManager {
      */
     public Thread getDatabaseInitializer() {
         return mDatabaseInitializer;
+    }
+
+    /**
+     * Finalizes this instance (e.g.: the ongoing database operations are finished) - method should
+     * be called whether is going to use a new instance.
+     */
+    public static void finish() {
+        INSTANCE = null;
     }
 
     /**

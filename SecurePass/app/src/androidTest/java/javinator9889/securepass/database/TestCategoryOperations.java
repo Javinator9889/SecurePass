@@ -49,7 +49,7 @@ public class TestCategoryOperations extends DatabaseTests {
     public void preload() {
 //        new TestCategoryOperations();
         new TestCategoryOperations(false);
-        CategoryOperations operations = new CategoryOperations(super.generateInstance("password"));
+        CategoryOperations operations = new CategoryOperations(super.generateInstance(PASSWORD));
         mGetOperations = operations;
         mSetOperations = operations;
         mOperations = operations;

@@ -102,9 +102,9 @@ public class Entry implements Serializable {
     @Override
     public String toString() {
         return "Entry ID: " + mId +
-                "\nEntry mIcon: " + mIcon +
-                "\nEntry mName: " + mName +
-                "\nEntry mCategoryId: " + mCategoryId;
+                "\nEntry icon: " + mIcon +
+                "\nEntry name: " + mName +
+                "\nEntry categoryId: " + mCategoryId;
     }
 
     /**

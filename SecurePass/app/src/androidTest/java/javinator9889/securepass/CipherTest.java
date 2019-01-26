@@ -34,7 +34,7 @@ public class CipherTest {
 
 //    @Test
 //    public void storeAClassInFile() throws Exception {
-//        FileCipherOld cipher = FileCipherOld.newInstance(password, null);
+//        FileCipherOld cipher = FileCipherOld.getInstance(password, null);
 //        iv = cipher.getIv();
 //        System.out.println(Arrays.toString(iv));
 //        storeIv();

@@ -31,5 +31,5 @@ public interface ILongTextGetOperations extends ITextGetOperations {
      * @see javinator9889.securepass.objects.ObjectContainer
      * @see LongText
      */
-    GeneralObjectContainer<LongText> getAllSmallTexts();
+    GeneralObjectContainer<LongText> getAllLongTexts();
 }

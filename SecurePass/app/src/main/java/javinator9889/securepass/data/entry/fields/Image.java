@@ -1,6 +1,8 @@
 package javinator9889.securepass.data.entry.fields;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -121,6 +123,7 @@ public class Image implements IImage, Serializable {
     /**
      * {@inheritDoc}
      */
+    @NotNull
     @Override
     public String toString() {
         return "Source: " + getImageSource() +

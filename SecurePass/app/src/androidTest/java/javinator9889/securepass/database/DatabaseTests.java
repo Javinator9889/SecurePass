@@ -27,6 +27,7 @@ import javinator9889.securepass.util.values.Constants;
  * Created by Javinator9889 on 05/11/2018 - APP.
  */
 public abstract class DatabaseTests {
+    public static final String PASSWORD = "password";
     private Context mContext;
 
     DatabaseTests() {
@@ -48,11 +49,11 @@ public abstract class DatabaseTests {
     }
 
     public CommonOperations generateOperations(@NonNull String password) {
-        DatabaseManager instance = DatabaseManager.newInstance(mContext, password);
+        DatabaseManager instance = DatabaseManager.getInstance(mContext, password);
         return new CommonOperations(instance);
     }
 
     public DatabaseManager generateInstance(@NonNull String password) {
-        return DatabaseManager.newInstance(mContext, password);
+        return DatabaseManager.getInstance(mContext, password);
     }
 }

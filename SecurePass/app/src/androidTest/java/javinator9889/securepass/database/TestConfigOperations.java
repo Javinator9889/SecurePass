@@ -41,7 +41,7 @@ public class TestConfigOperations extends DatabaseTests {
 
     @Before
     public void preload() {
-        mInstance = super.generateInstance("password");
+        mInstance = super.generateInstance(PASSWORD);
         mOperations = new ConfigurationOperations(mInstance);
         mSetOperations = mOperations;
         mGetOperations = mOperations;

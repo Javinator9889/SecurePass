@@ -1,5 +1,7 @@
 package javinator9889.securepass.data.entry.fields;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,7 @@ public class SmallText extends Text implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @NotNull
     @Override
     public String toString() {
         return "Text: " + getText() +

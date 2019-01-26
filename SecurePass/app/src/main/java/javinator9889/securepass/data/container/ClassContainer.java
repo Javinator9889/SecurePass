@@ -66,7 +66,7 @@ public class ClassContainer implements Serializable {
 //    public void storeDataInDB() {
 //        Context appContext = SecurePass.getApplicationInstance().getApplicationContext();
 //        String password = IOManager.newInstance(appContext).readPassword();
-//        DatabaseManager manager = DatabaseManager.newInstance(appContext, password);
+//        DatabaseManager manager = DatabaseManager.getInstance(appContext, password);
 //        CommonOperations operations = CommonOperations.newInstance(manager);
 //        for (Category actualCategory : categories)
 //            operations.registerNewCategory(actualCategory.getName());

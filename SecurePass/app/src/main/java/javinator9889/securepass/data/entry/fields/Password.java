@@ -1,5 +1,7 @@
 package javinator9889.securepass.data.entry.fields;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -117,10 +119,12 @@ public class Password implements IPassword, Serializable {
     /**
      * {@inheritDoc}
      */
+    @NotNull
     @Override
     public String toString() {
-        return "Password: " + getPassword() + "\nID: " + getPasswordID() + "\nField description: " +
-                getFieldDescription();
+        return "Password: " + getPassword() +
+                "\nID: " + getPasswordID() +
+                "\nField description: " + getFieldDescription();
     }
 
     /**

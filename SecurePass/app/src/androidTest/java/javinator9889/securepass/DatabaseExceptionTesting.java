@@ -35,14 +35,14 @@ public class DatabaseExceptionTesting {
         }
         String firstPass = Hashing.sha256().hashString("password", StandardCharsets.UTF_8).toString();
         String secondPass = Hashing.sha256().hashString("1234", StandardCharsets.UTF_8).toString();
-//        DatabaseManager manager = DatabaseManager.newInstance(mContext, firstPass);
+//        DatabaseManager manager = DatabaseManager.getInstance(mContext, firstPass);
 //        try {
 //            manager.getDatabaseInitializer().join();
 //            manager.getDatabaseInstance().close();
 //        } catch (InterruptedException e) {
 //            System.err.println(e.getMessage());
 //        }
-//        manager = DatabaseManager.newInstance(mContext, secondPass);
+//        manager = DatabaseManager.getInstance(mContext, secondPass);
 //        try {
 //            manager.getDatabaseInitializer().join();
 //            manager.getDatabaseInstance().close();
