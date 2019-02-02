@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.paolorotolo.appintro.ISlideBackgroundColorHolder;
-import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
@@ -25,6 +24,8 @@ import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.PreferencesManager;
 import javinator9889.securepass.util.scrypt.Scrypt;
 import javinator9889.securepass.views.activities.MainActivity;
+
+import static com.google.common.hash.Hashing.sha256;
 
 /**
  * Created by Javinator9889 on 08/04/2018.
@@ -113,10 +114,10 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
 
     private boolean validate() {
         try {
-            String firstPasswordHash = Hashing.sha256()
+            String firstPasswordHash = sha256()
                     .hashString(this.firstPasswordEntry.getText().toString(),
                             StandardCharsets.UTF_8).toString();
-            String passwordConfirmationHash = Hashing.sha256()
+            String passwordConfirmationHash = sha256()
                     .hashString(this.passwordConfirmation.getText().toString(),
                             StandardCharsets.UTF_8).toString();
             return firstPasswordHash.equals(passwordConfirmationHash);
