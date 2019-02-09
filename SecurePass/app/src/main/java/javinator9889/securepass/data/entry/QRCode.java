@@ -134,7 +134,7 @@ public class QRCode implements Serializable {
     @Override
     public String toString() {
         return "QRCode ID: " + mId +
-                "\nQRCode mName: " + mName +
+                "\nQRCode name: " + mName +
                 "\nQRCode description: " + description +
                 "\nQRCode data: " + mQrData +
                 "\nQRCode entry ID: " + mParentEntryId;

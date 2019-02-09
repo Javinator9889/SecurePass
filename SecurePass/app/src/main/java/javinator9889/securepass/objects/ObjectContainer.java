@@ -150,6 +150,7 @@ public class ObjectContainer<ObjectType> implements GeneralObjectContainer<Objec
      *
      * @return an Iterator.
      */
+    @NotNull
     @Override
     public Iterator<ObjectType> iterator() {
         return new ObjectIterator();
@@ -221,7 +222,7 @@ public class ObjectContainer<ObjectType> implements GeneralObjectContainer<Objec
      * Custom class for making <code>ObjectContainer</code> iterable and applicable for "foreach"
      */
     private class ObjectIterator implements Iterator<ObjectType> {
-        private int mCurrentPosition = -1;
+        private int mCurrentPosition = -2;
         private boolean mHasBeenNextCalled = false;
 
         /**
@@ -233,7 +234,7 @@ public class ObjectContainer<ObjectType> implements GeneralObjectContainer<Objec
          */
         @Override
         public boolean hasNext() {
-            return mCurrentPosition >= mObjectsList.size();
+            return mCurrentPosition < mObjectsList.size() - 2;
         }
 
         /**
@@ -246,7 +247,8 @@ public class ObjectContainer<ObjectType> implements GeneralObjectContainer<Objec
         public synchronized ObjectType next() {
             ++mCurrentPosition;
             mHasBeenNextCalled = true;
-            return mObjectsList.get(mCurrentPosition, null);
+//            return mObjectsList.get(mCurrentPosition, null);
+            return ObjectContainer.this.getStoredObjectAtIndex(mCurrentPosition);
         }
 
         /**

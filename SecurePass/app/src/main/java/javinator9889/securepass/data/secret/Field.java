@@ -72,9 +72,10 @@ public class Field implements Serializable {
      */
     @Override
     public String toString() {
-        return "Field mCode: " + mCode +
+        return "Field Code: " + mCode +
+                "\nField ID: " + mId +
                 "\nField is used: " + mIsCodeUsed +
-                "\nField field of: " + mSecurityCodeId;
+                "\nField of: " + mSecurityCodeId + "\n";
     }
 
     /**

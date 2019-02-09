@@ -87,6 +87,10 @@ public class TestEntryOperations extends TestConfigOperations {
         mOperations.finishConnection();
     }
 
+    protected long getEntryId() {
+        return mEntryId;
+    }
+
     private void getAll() {
         Log.i(TAG, mGetOperations.getAllEntries().toString());
     }
