@@ -66,12 +66,11 @@ CREATE TABLE IF NOT EXISTS `Password` (
   `field_desc` VARCHAR(45) NOT NULL,
   `sortOrder` INT NOT NULL,
   `idEntry` INT NOT NULL,
-  `cidCategory` INT NOT NULL,
-  PRIMARY KEY (`idPassword`, `idEntry`, `cidCategory`),
-  INDEX `fk_Password` (`idEntry` ASC, `cidCategory` ASC),
+  PRIMARY KEY (`idPassword`, `idEntry`),
+  INDEX `fk_Password` (`idEntry` ASC),
   CONSTRAINT `fk_Password_Entry1`
-    FOREIGN KEY (`idEntry` , `cidCategory`)
-    REFERENCES `Entry` (`idEntry` , `cidCategory`)
+    FOREIGN KEY (`idEntry`)
+    REFERENCES `Entry` (`idEntry`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
@@ -81,12 +80,11 @@ CREATE TABLE IF NOT EXISTS `SmallText` (
   `field_desc` VARCHAR(45) NOT NULL,
   `sortOrder` INT NOT NULL,
   `idEntry` INT NOT NULL,
-  `cidCategory` INT NOT NULL,
-  PRIMARY KEY (`idSmallText`, `idEntry`, `cidCategory`),
-  INDEX `fk_SmallText` (`idEntry` ASC, `cidCategory` ASC),
+  PRIMARY KEY (`idSmallText`, `idEntry`),
+  INDEX `fk_SmallText` (`idEntry` ASC),
   CONSTRAINT `fk_SmallText_Entry1`
-    FOREIGN KEY (`idEntry` , `cidCategory`)
-    REFERENCES `Entry` (`idEntry` , `cidCategory`)
+    FOREIGN KEY (`idEntry`)
+    REFERENCES `Entry` (`idEntry`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
@@ -96,12 +94,11 @@ CREATE TABLE IF NOT EXISTS `Image` (
   `field_desc` VARCHAR(45) NOT NULL,
   `sortOrder` INT NOT NULL,
   `idEntry` INT NOT NULL,
-  `cidCategory` INT NOT NULL,
-  PRIMARY KEY (`idImage`, `idEntry`, `cidCategory`),
-  INDEX `fk_Image` (`idEntry` ASC, `cidCategory` ASC),
+  PRIMARY KEY (`idImage`, `idEntry`),
+  INDEX `fk_Image` (`idEntry` ASC),
   CONSTRAINT `fk_Image_Entry1`
-    FOREIGN KEY (`idEntry` , `cidCategory`)
-    REFERENCES `Entry` (`idEntry` , `cidCategory`)
+    FOREIGN KEY (`idEntry`)
+    REFERENCES `Entry` (`idEntry`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
@@ -111,12 +108,11 @@ CREATE TABLE IF NOT EXISTS `LongText` (
   `field_desc` VARCHAR(45) NOT NULL,
   `sortOrder` INT NOT NULL,
   `idEntry` INT NOT NULL,
-  `cidCategory` INT NOT NULL,
-  PRIMARY KEY (`idLongText`, `idEntry`, `cidCategory`),
-  INDEX `fk_LongText` (`idEntry` ASC, `cidCategory` ASC),
+  PRIMARY KEY (`idLongText`, `idEntry`),
+  INDEX `fk_LongText` (`idEntry` ASC),
   CONSTRAINT `fk_LongText_Entry1`
-    FOREIGN KEY (`idEntry` , `cidCategory`)
-    REFERENCES `Entry` (`idEntry` , `cidCategory`)
+    FOREIGN KEY (`idEntry`)
+    REFERENCES `Entry` (`idEntry`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 

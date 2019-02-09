@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS Category (
+  idCategory INTEGER NOT NULL DEFAULT 0,
+  name VARCHAR(45) NULL,
+  PRIMARY KEY (idCategory));
