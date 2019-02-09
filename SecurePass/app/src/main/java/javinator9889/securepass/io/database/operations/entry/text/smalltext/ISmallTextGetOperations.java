@@ -21,7 +21,7 @@ import javinator9889.securepass.io.database.operations.entry.text.ITextGetOperat
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
- * TODO
+ * The SET operations for the small text class.
  */
 public interface ISmallTextGetOperations extends ITextGetOperations {
     /**

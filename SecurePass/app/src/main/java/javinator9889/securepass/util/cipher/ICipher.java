@@ -30,7 +30,7 @@ import javax.crypto.NoSuchPaddingException;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * Interface that provides methods and information for the Cipher classes.
  */
 public interface ICipher {
     int IV_SIZE = 16;

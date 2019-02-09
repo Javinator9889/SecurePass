@@ -36,7 +36,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 /**
- * TODO
+ * Adapter for displaying a TabLayout.
  */
 public abstract class TabLayoutAdapter extends AppCompatActivity
         implements SmartTabLayout.OnTabClickListener, ViewPager.OnPageChangeListener {

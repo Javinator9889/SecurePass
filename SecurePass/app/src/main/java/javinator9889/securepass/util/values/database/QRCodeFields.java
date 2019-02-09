@@ -17,7 +17,7 @@
 package javinator9889.securepass.util.values.database;
 
 /**
- * TODO
+ * A list of the parameters for the QRCode.
  */
 public enum QRCodeFields implements FieldsOperations {
     ID("idQRCode", 0),

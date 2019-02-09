@@ -17,10 +17,6 @@
 package javinator9889.securepass.views.fragments.termsofservice.base;
 
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +28,16 @@ import android.widget.TextView;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.PreferencesManager;
 import ru.noties.markwon.Markwon;
 
 /**
- * TODO
+ * Base fragment with the common methods and configurations for the three available texts.
  */
 public abstract class ToSBaseFragment extends Fragment
         implements CompoundButton.OnCheckedChangeListener {

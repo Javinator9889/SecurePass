@@ -17,7 +17,7 @@
 package javinator9889.securepass.errors.database;
 
 /**
- * TODO
+ * Custom exception that is thrown when some methods are not overridden (and they should be).
  */
 public class OverriddenMethodsNotDefinedError extends RuntimeException {
     /**

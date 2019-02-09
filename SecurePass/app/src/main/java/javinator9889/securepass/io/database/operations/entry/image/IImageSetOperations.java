@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
 import javinator9889.securepass.errors.database.NoJobsEnqueuedError;
 
 /**
- * TODO
+ * Interface for accessing the SET operations for the Image class.
  */
 public interface IImageSetOperations {
     /**

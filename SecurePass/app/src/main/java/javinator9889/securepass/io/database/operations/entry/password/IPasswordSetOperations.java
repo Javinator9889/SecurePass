@@ -19,7 +19,7 @@ package javinator9889.securepass.io.database.operations.entry.password;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * Interface for accessing the SET operations for the Password class.
  */
 public interface IPasswordSetOperations {
     /**

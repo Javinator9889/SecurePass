@@ -27,7 +27,7 @@ import androidx.fragment.app.Fragment;
 import javinator9889.securepass.R;
 
 /**
- * TODO
+ * Class for showing a custom entry on MainActivity - currently not in use.
  */
 public class EntriesDisplayer extends Fragment {
     @Nullable

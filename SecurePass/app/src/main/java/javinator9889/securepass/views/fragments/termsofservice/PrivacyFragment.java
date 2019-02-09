@@ -17,20 +17,20 @@
 package javinator9889.securepass.views.fragments.termsofservice;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import javinator9889.securepass.R;
 import javinator9889.securepass.objects.SingletonFutureContainer;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.views.fragments.termsofservice.base.ToSBaseFragment;
 
 /**
- * TODO
+ * Fragment that shows the Privacy text.
  */
 public class PrivacyFragment extends ToSBaseFragment {
     @Nullable

@@ -19,13 +19,10 @@ package javinator9889.securepass.io.database;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.javinator9889.exporter.FileToBytesExporter;
-
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -36,9 +33,10 @@ import javinator9889.securepass.util.resources.PreferencesManager;
 import javinator9889.securepass.util.values.Constants;
 
 /**
- * TODO
+ * Main database class that allows the application to operate with the database file - now it is
+ * a Singleton class, this means, it can be initialized only once per database operation of a
+ * conjunction of classes.
  */
-
 public class DatabaseManager {
     private static DatabaseManager INSTANCE = null;
     //    private Context mActivityContext;

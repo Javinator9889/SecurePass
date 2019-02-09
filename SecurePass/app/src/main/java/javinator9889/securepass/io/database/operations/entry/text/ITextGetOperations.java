@@ -17,7 +17,7 @@
 package javinator9889.securepass.io.database.operations.entry.text;
 
 /**
- * TODO
+ * All GET operations for the text classes.
  */
 public interface ITextGetOperations {
     /**

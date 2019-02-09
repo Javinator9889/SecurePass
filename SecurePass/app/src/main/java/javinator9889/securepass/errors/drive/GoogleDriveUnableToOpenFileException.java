@@ -17,7 +17,7 @@
 package javinator9889.securepass.errors.drive;
 
 /**
- * TODO
+ * Custom exception that is thrown when Google Drive cannot open a file.
  */
 public class GoogleDriveUnableToOpenFileException extends RuntimeException {
     /**

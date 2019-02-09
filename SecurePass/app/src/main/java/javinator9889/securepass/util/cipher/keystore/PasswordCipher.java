@@ -51,7 +51,7 @@ import javinator9889.securepass.errors.cipher.NoPrivateKeyException;
 import javinator9889.securepass.util.cipher.sign.Signature;
 
 /**
- * TODO
+ * Class that provides methods for encrypting the master password.
  */
 public class PasswordCipher implements IPasswordCipher {
     private static final String TAG = "PasswordCipher";

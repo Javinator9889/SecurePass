@@ -20,7 +20,7 @@ import javinator9889.securepass.data.entry.fields.Password;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
- * TODO
+ * interface for accessing the GET operations for the password class.
  */
 public interface IPasswordGetOperations {
     /**

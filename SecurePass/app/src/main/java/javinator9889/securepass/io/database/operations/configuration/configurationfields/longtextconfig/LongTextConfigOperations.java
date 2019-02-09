@@ -35,7 +35,7 @@ import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.values.Constants;
 
 /**
- * TODO
+ * All the operations for the LongTextConfig class.
  */
 public class LongTextConfigOperations extends ConfigFieldsOperations {
     private static final String TAG = "LongTextConfig Operations";

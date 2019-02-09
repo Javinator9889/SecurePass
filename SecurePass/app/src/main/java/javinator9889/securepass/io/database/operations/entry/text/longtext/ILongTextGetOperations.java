@@ -21,7 +21,7 @@ import javinator9889.securepass.io.database.operations.entry.text.ITextGetOperat
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
- * TODO
+ * The GET operations for the long text class.
  */
 public interface ILongTextGetOperations extends ITextGetOperations {
     /**

@@ -17,7 +17,7 @@
 package javinator9889.securepass.util.values.database;
 
 /**
- * TODO
+ * A list of the parameter for the fields of the ConfigFields.
  */
 public enum ConfigFieldsFields implements FieldsOperations {
     ID("idConfig", 0),

@@ -21,7 +21,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * Generic class for subclasses {@link LongText} and {@link SmallText} - contains common methods.
  */
 public abstract class Text implements IText {
     private long mId;

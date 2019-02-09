@@ -34,7 +34,7 @@ import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.QRCodeFields;
 
 /**
- * TODO
+ * All the operations for the QRCode class.
  */
 public class QRCodeOperations extends CommonOperations implements
         IQRCodeSetOperations, IQRCodeGetOperations {

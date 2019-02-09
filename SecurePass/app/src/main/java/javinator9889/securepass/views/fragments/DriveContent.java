@@ -18,9 +18,6 @@ package javinator9889.securepass.views.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +33,9 @@ import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.OpenFileActivityOptions;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import javinator9889.securepass.R;
 import javinator9889.securepass.backup.drive.DriveDownloader;
 import javinator9889.securepass.backup.drive.DriveUploader;
@@ -48,7 +48,7 @@ import static javinator9889.securepass.backup.drive.base.IDriveBase.REQUEST_CODE
 import static javinator9889.securepass.backup.drive.base.IDriveBase.REQUEST_CODE_SIGN_IN;
 
 /**
- * TODO
+ * Class for testing the Drive uploads and downloads - currently not in use.
  */
 public class DriveContent extends FragmentActivity implements Button.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener {

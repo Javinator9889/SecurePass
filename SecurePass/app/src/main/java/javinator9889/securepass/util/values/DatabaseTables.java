@@ -17,7 +17,7 @@
 package javinator9889.securepass.util.values;
 
 /**
- * TODO
+ * List of database available tables.
  */
 public enum DatabaseTables {
     CATEGORY, ENTRY, QR_CODE, SECURITY_CODE, FIELD, IMAGE, PASSWORD, LONG_TEXT, SMALL_TEXT,

@@ -37,7 +37,7 @@ import uk.co.markormesher.android_fab.SpeedDialMenuAdapter;
 import uk.co.markormesher.android_fab.SpeedDialMenuItem;
 
 /**
- * TODO
+ * Custom class for displaying a custom menu inside a FloatingActionButton.
  */
 public class FloatingActionButtonMenuAdapter extends SpeedDialMenuAdapter {
     private SparseArray<SpeedDialMenuItem> mMenuItems;

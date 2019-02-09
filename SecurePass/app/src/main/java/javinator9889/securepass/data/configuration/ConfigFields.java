@@ -24,7 +24,7 @@ import androidx.annotation.Nullable;
 import javinator9889.securepass.util.values.DatabaseTables;
 
 /**
- * TODO
+ * Class that contains the parameters for ConfigFields.
  */
 public abstract class ConfigFields implements IConfigFields, Serializable {
     private long mId;

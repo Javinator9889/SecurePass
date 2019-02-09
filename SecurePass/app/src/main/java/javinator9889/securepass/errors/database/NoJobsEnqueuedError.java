@@ -17,7 +17,7 @@
 package javinator9889.securepass.errors.database;
 
 /**
- * TODO
+ * Custom exception that is thrown when there is no enqueued jobs (update jobs).
  */
 public class NoJobsEnqueuedError extends RuntimeException {
     /**

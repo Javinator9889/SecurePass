@@ -22,7 +22,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * Class that contains all the Entry available parameters inside.
  */
 public class Entry implements Serializable {
     private long mId;

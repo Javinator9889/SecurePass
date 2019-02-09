@@ -35,7 +35,7 @@ import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.LongTextFields;
 
 /**
- * TODO
+ * All the common operations for the text classes.
  */
 public class LongTextOperations extends CommonOperations implements ITextSetOperations,
         ILongTextGetOperations {

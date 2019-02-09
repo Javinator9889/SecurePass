@@ -23,7 +23,7 @@ import java.io.Serializable;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * Class that contains the available parameters for SmallText.
  */
 public class SmallText extends Text implements Serializable {
     /**

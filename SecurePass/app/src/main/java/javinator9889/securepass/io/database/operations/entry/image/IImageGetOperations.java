@@ -20,7 +20,7 @@ import javinator9889.securepass.data.entry.fields.Image;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
- * TODO
+ * The interface for accessing only the GET operations for the Image class.
  */
 public interface IImageGetOperations {
     /**

@@ -32,7 +32,7 @@ import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.SecurityCodesFields;
 
 /**
- * TODO
+ * All operations for the SecurityCode class.
  */
 public class SecurityCodeOperations extends CommonOperations implements
         ISecurityCodeSetOperations, ISecurityCodeGetOperations {

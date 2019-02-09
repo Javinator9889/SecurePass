@@ -35,7 +35,7 @@ import javinator9889.securepass.util.values.Constants.SQL.ENTRY;
 import javinator9889.securepass.util.values.database.EntryFields;
 
 /**
- * TODO
+ * All the operations for the Entry class for working with the database.
  */
 public class EntryOperations extends CommonOperations implements
         IEntrySetOperations, IEntryGetOperations {

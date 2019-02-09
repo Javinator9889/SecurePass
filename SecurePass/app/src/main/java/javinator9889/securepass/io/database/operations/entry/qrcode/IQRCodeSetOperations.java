@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * TODO
+ * All SET operations for the QRCode class.
  */
 public interface IQRCodeSetOperations {
     /**

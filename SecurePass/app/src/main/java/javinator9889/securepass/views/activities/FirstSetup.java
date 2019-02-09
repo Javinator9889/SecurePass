@@ -18,21 +18,17 @@ package javinator9889.securepass.views.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroBaseFragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import javinator9889.securepass.R;
 import javinator9889.securepass.objects.SlidesTypefacesContainer;
@@ -43,7 +39,7 @@ import javinator9889.securepass.views.fragments.firstsetup.slides.EulaConfirmati
 import javinator9889.securepass.views.fragments.firstsetup.slides.SlidePage;
 
 /**
- * TODO
+ * Activity that is launched when the user starts the application the first time.
  */
 public class FirstSetup extends AppIntro2 {
     private List<AppIntroBaseFragment> mFragmentList;

@@ -46,7 +46,9 @@ import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.values.Constants.SQL;
 
 /**
- * TODO
+ * Common operations to all elements of the database - the classes that wants to perform
+ * operations over the database should inherit from this class, as it provides useful methods for
+ * avoiding memory leaks and performance issues.
  */
 public class CommonOperations implements OnThreadCompletedListener {
     private static final String TAG = "Database Operations";

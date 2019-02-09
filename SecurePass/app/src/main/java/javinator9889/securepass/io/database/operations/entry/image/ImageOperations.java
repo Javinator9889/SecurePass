@@ -34,7 +34,7 @@ import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.ImageFields;
 
 /**
- * TODO
+ * All the operations for the Image class.
  */
 public class ImageOperations extends CommonOperations implements IImageSetOperations,
         IImageGetOperations {

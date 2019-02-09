@@ -28,7 +28,7 @@ import javinator9889.securepass.views.activities.MainActivity;
 import static com.google.common.hash.Hashing.sha256;
 
 /**
- * TODO
+ * View that is shown when asking for the master password.
  */
 public class PasswordRegistration extends FragmentActivity implements ISlideBackgroundColorHolder,
         View.OnClickListener {

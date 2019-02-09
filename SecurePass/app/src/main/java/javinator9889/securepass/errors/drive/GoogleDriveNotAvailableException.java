@@ -17,7 +17,7 @@
 package javinator9889.securepass.errors.drive;
 
 /**
- * TODO
+ * Custom exception thrown when Google Drive is not available.
  */
 public class GoogleDriveNotAvailableException extends RuntimeException {
     /**

@@ -19,7 +19,7 @@ package javinator9889.securepass.io.database.operations.securitycode.field;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * Interface for accessing only the SET operations of Fields.
  */
 public interface IFieldSetOperations {
     /**

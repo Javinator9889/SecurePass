@@ -31,7 +31,7 @@ import javinator9889.securepass.views.fragments.termsofservice.PrivacyFragment;
 import javinator9889.securepass.views.fragments.termsofservice.TermsFragment;
 
 /**
- * TODO
+ * Custom activity that displays the three texts in tabs.
  */
 public class ShowEulaActivity extends TabLayoutAdapter {
     @Override

@@ -34,7 +34,7 @@ import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.PasswordFields;
 
 /**
- * TODO
+ * All the operations for the password class.
  */
 public class PasswordOperations extends CommonOperations implements IPasswordSetOperations,
         IPasswordGetOperations {

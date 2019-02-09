@@ -33,7 +33,7 @@ import static javinator9889.securepass.util.values.Constants.SHARED_PREF.SOFTWAR
 import static javinator9889.securepass.util.values.Constants.SHARED_PREF.TERMS_OF_SERVICE_ACCEPT;
 
 /**
- * TODO
+ * Class for managing the user preferences easily.
  */
 public class PreferencesManager implements ISharedPreferencesManager {
     private Map<String, String> mKeys;
@@ -69,7 +69,7 @@ public class PreferencesManager implements ISharedPreferencesManager {
         String key = mKeys.get(keyName);
         switch (clazz.getSimpleName()) {
             case "boolean":
-                editor.putBoolean(key, Boolean.class.cast(value));
+                editor.putBoolean(key, (Boolean) value);
                 break;
             default:
                 break;

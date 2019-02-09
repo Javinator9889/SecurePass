@@ -34,7 +34,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * TODO
+ * Class for checking and generating signatures.
  */
 public class Signature {
     private String mAlgorithm;

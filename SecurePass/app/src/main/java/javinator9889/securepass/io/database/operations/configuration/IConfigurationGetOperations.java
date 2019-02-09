@@ -22,7 +22,7 @@ import javinator9889.securepass.objects.GeneralObjectContainer;
 import javinator9889.securepass.objects.ObjectContainer;
 
 /**
- * TODO
+ * Interface for accessing the GET operations for the Configuration class.
  */
 public interface IConfigurationGetOperations {
     /**

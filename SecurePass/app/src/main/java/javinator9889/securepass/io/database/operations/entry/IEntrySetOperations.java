@@ -19,7 +19,7 @@ package javinator9889.securepass.io.database.operations.entry;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * All SET operations for the Entry class.
  */
 public interface IEntrySetOperations {
     /**

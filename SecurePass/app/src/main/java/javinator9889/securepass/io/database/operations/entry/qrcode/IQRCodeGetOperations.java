@@ -21,7 +21,7 @@ import javinator9889.securepass.data.entry.QRCode;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
- * TODO
+ * All the GET operations for the QRClass.
  */
 public interface IQRCodeGetOperations {
     /**

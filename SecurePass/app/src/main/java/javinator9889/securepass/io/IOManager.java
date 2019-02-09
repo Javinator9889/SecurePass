@@ -50,9 +50,9 @@ import javinator9889.securepass.util.cipher.keystore.PasswordCipher;
 import javinator9889.securepass.util.values.Constants;
 
 /**
- * TODO
+ * IOManager is a class that provides methods for managing and accessing the IO (Input/Output) of
+ * this application.
  */
-
 public class IOManager {
     private Context mActivityContext;
     private File mFilesCache;

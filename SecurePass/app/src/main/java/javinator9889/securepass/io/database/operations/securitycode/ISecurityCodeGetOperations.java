@@ -20,7 +20,7 @@ import javinator9889.securepass.data.secret.SecurityCode;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
- * TODO
+ * Interface for accessing the GET operations for the SecurityCode class.
  */
 public interface ISecurityCodeGetOperations {
     /**

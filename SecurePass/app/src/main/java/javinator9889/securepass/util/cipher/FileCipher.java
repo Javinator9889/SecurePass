@@ -17,7 +17,6 @@
 package javinator9889.securepass.util.cipher;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.google.common.hash.Hashing;
@@ -25,7 +24,6 @@ import com.google.common.io.Files;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -42,11 +40,12 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import androidx.annotation.NonNull;
 import javinator9889.securepass.BuildConfig;
 import javinator9889.securepass.io.IOManager;
 
 /**
- * TODO
+ * Class designed for encrypting - decrypting files for Drive uploads and downloads.
  */
 public class FileCipher implements ICipher {
     private byte[] ivVector;

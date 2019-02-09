@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
 import javinator9889.securepass.errors.database.NoJobsEnqueuedError;
 
 /**
- * TODO
+ * All SET operations for the text classes.
  */
 public interface ITextSetOperations {
     /**

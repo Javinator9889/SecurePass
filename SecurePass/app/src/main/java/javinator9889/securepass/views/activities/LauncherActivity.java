@@ -19,14 +19,14 @@ package javinator9889.securepass.views.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import javinator9889.securepass.R;
 import javinator9889.securepass.SecurePass;
 import javinator9889.securepass.io.IOManager;
@@ -36,7 +36,7 @@ import javinator9889.securepass.util.resources.PreferencesManager;
 import ru.noties.markwon.Markwon;
 
 /**
- * TODO
+ * Custom activity that decides which activity must be shown.
  */
 public class LauncherActivity extends AppCompatActivity {
     @Override

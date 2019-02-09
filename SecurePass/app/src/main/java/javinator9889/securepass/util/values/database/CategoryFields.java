@@ -17,7 +17,7 @@
 package javinator9889.securepass.util.values.database;
 
 /**
- * TODO
+ * A list of the parameters for CategoryFields.
  */
 public enum CategoryFields implements FieldsOperations {
     ID("idCategory", 0),

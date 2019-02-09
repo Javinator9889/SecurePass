@@ -17,7 +17,7 @@
 package javinator9889.securepass.errors.cipher;
 
 /**
- * TODO
+ * Custom exception that is thrown when there is no private key.
  */
 public class NoPrivateKeyException extends RuntimeException {
     /**

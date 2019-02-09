@@ -19,7 +19,7 @@ package javinator9889.securepass.io.database.operations.category;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * Interface for accessing the SET operations for the Category class.
  */
 public interface ICategorySetOperations {
     /**

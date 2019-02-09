@@ -19,7 +19,7 @@ package javinator9889.securepass.data.entry.fields;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * Interface for accessing the Text methods.
  */
 public interface IText extends ICommonMethods {
     /**

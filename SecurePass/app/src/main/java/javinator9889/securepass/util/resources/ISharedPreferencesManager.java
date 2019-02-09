@@ -17,7 +17,7 @@
 package javinator9889.securepass.util.resources;
 
 /**
- * TODO
+ * Interface for accessing the PreferencesManager methods.
  */
 public interface ISharedPreferencesManager {
     boolean isApplicationInitialized();

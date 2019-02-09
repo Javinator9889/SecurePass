@@ -26,7 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 /**
- * TODO
+ * Interface for accessing the PasswordCipher.
  */
 public interface IPasswordCipher {
     /**

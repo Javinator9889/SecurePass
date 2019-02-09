@@ -35,7 +35,7 @@ import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.SmallTextFields;
 
 /**
- * TODO
+ * All the operations for the SmallText class.
  */
 public class SmallTextOperations extends CommonOperations implements ITextSetOperations,
         ISmallTextGetOperations {

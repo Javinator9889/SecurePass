@@ -17,7 +17,7 @@
 package javinator9889.securepass.errors.database;
 
 /**
- * TODO
+ * Custom exception thrown when the executor is not defined.
  */
 public class ExecutorNonDefinedException extends RuntimeException {
     /**

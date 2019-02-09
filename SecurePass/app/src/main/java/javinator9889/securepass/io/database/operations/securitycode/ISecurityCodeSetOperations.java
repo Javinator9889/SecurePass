@@ -19,7 +19,7 @@ package javinator9889.securepass.io.database.operations.securitycode;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * Interface for accessing the SET operations for the SecurityCode class.
  */
 public interface ISecurityCodeSetOperations {
     /**

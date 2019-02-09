@@ -20,7 +20,7 @@ import javinator9889.securepass.data.entry.Category;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
- * TODO
+ * Interface for accessing the GET operations for the Category class.
  */
 public interface ICategoryGetOperations {
     /**

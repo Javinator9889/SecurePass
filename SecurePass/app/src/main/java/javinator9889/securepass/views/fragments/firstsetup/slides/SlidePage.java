@@ -21,14 +21,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
-
 import com.github.paolorotolo.appintro.AppIntroBaseFragment;
 import com.github.paolorotolo.appintro.ISlideBackgroundColorHolder;
-import com.github.paolorotolo.appintro.model.SliderPage;
 import com.github.paolorotolo.appintro.R.id;
+import com.github.paolorotolo.appintro.model.SliderPage;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.FontRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +36,7 @@ import javinator9889.securepass.R;
 import javinator9889.securepass.objects.SlidesTypefacesContainer;
 
 /**
- * TODO
+ * Custom {@link AppIntroBaseFragment SlidePage} that adds Typeface personalization.
  */
 public class SlidePage extends AppIntroBaseFragment implements ISlideBackgroundColorHolder {
     private @FontRes int mTitleTypeface = -1;

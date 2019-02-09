@@ -20,7 +20,7 @@ import javinator9889.securepass.data.entry.Entry;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
- * TODO
+ * All GET operations for the Entry class.
  */
 public interface IEntryGetOperations {
     /**

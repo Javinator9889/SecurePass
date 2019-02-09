@@ -33,7 +33,7 @@ import javinator9889.securepass.util.values.Constants.SQL.CATEGORY;
 import javinator9889.securepass.util.values.database.CategoryFields;
 
 /**
- * TODO
+ * All the operations for the Category class.
  */
 public class CategoryOperations extends CommonOperations implements ICategorySetOperations,
         ICategoryGetOperations {

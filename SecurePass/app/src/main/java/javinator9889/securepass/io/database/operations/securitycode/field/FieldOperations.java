@@ -35,7 +35,7 @@ import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.FieldsFields;
 
 /**
- * TODO
+ * All the operations for working with the database of Fields.
  */
 public class FieldOperations extends CommonOperations implements IFieldSetOperations,
         IFieldGetOperations {

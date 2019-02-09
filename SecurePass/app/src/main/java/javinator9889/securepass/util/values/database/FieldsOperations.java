@@ -17,7 +17,7 @@
 package javinator9889.securepass.util.values.database;
 
 /**
- * TODO
+ * Inerface for accessing the Fields operations.
  */
 public interface FieldsOperations {
     /**

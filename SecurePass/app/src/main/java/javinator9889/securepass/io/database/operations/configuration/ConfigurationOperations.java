@@ -35,7 +35,7 @@ import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.ConfigurationFields;
 
 /**
- * TODO
+ * All operations for the Configuration class.
  */
 public class ConfigurationOperations extends CommonOperations
         implements IConfigurationSetOperations, IConfigurationGetOperations {

@@ -25,8 +25,6 @@ import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
-import java.util.Random;
-
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import javinator9889.securepass.R;
@@ -36,7 +34,7 @@ import javinator9889.securepass.views.fragments.EntriesDisplayer;
 import uk.co.markormesher.android_fab.FloatingActionButton;
 
 /**
- * TODO
+ * Application main activity - now it is just a testing activity with 100 tabs.
  */
 public class MainActivity extends TabLayoutAdapter implements View.OnClickListener {
     @Override

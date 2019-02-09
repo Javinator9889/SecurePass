@@ -35,7 +35,7 @@ import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.values.Constants;
 
 /**
- * TODO
+ * All operations for the ImagesConfig class.
  */
 public class ImagesConfigOperations extends ConfigFieldsOperations {
     private static final String TAG = "ImagesConfig Operations";

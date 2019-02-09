@@ -20,7 +20,7 @@ import javinator9889.securepass.data.secret.Field;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
 /**
- * TODO
+ * Interface for accessing only the GET operations of Fields.
  */
 public interface IFieldGetOperations {
     /**

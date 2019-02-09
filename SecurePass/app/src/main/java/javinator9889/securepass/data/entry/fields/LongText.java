@@ -23,7 +23,7 @@ import java.io.Serializable;
 import androidx.annotation.NonNull;
 
 /**
- * TODO
+ * Class that contains the parameters available for LongText.
  */
 public class LongText extends Text implements Serializable {
     /**
