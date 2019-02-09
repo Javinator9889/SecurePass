@@ -28,7 +28,7 @@ import javinator9889.securepass.views.activities.MainActivity;
 import static com.google.common.hash.Hashing.sha256;
 
 /**
- * Created by Javinator9889 on 08/04/2018.
+ * TODO
  */
 public class PasswordRegistration extends FragmentActivity implements ISlideBackgroundColorHolder,
         View.OnClickListener {

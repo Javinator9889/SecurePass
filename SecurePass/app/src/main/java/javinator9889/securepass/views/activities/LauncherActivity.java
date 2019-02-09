@@ -1,3 +1,19 @@
+/*
+ * Copyright © 2018 - present | SecurePass by Javinator9889
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program.  If
+ * not, see https://www.gnu.org/licenses/.
+ *
+ * Created by Javinator9889 on 03/04/2018 - SecurePass.
+ */
 package javinator9889.securepass.views.activities;
 
 import android.content.Context;
@@ -17,12 +33,10 @@ import javinator9889.securepass.io.IOManager;
 import javinator9889.securepass.objects.SingletonFutureContainer;
 import javinator9889.securepass.util.resources.ISharedPreferencesManager;
 import javinator9889.securepass.util.resources.PreferencesManager;
-import javinator9889.securepass.util.resources.SharedPreferencesManager;
-import javinator9889.securepass.views.fragments.DriveContent;
 import ru.noties.markwon.Markwon;
 
 /**
- * Created by Javinator9889 on 04/04/2018.
+ * TODO
  */
 public class LauncherActivity extends AppCompatActivity {
     @Override

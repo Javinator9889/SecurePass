@@ -13,13 +13,11 @@ import java.io.OutputStream;
 import java.util.Arrays;
 
 import androidx.test.InstrumentationRegistry;
-import javinator9889.securepass.data.container.ClassContainer;
 import javinator9889.securepass.data.entry.Category;
 import javinator9889.securepass.data.entry.Entry;
 import javinator9889.securepass.data.entry.QRCode;
 import javinator9889.securepass.data.secret.Field;
 import javinator9889.securepass.data.secret.SecurityCode;
-import javinator9889.securepass.util.cipher.FileCipherOld;
 
 /**
  * Created by Javinator9889 on 20/04/2018. - test must be updated
@@ -53,22 +51,7 @@ public class CipherTest {
 
     @Test
     public void readContentsFromFile() throws Exception {
-        readIv();
-        FileCipherOld cipher = FileCipherOld.newInstance(password, iv);
-        System.out.println(Arrays.toString(iv));
-        InputStream stream = new FileInputStream(filename);
-        ClassContainer restoredBackup = (ClassContainer) cipher.decrypt(stream);
-        for (Category category : restoredBackup.getCategories())
-            System.out.println(category.toString());
-        for (Entry entry : restoredBackup.getEntries())
-            System.out.println(entry.toString());
-        for (QRCode qrCode : restoredBackup.getQrCodes())
-            System.out.println(qrCode.toString());
-        for (Field field : restoredBackup.getFields())
-            System.out.println(field.toString());
-        for (SecurityCode code : restoredBackup.getSecurityCodes())
-            System.out.println(code.toString());
-        System.out.println(restoredBackup.getUserSharedPreferences().toString());
+        return;
     }
 
     private void storeIv() throws Exception {

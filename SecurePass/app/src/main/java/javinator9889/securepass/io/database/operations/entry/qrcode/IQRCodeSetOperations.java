@@ -19,6 +19,9 @@ package javinator9889.securepass.io.database.operations.entry.qrcode;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/**
+ * TODO
+ */
 public interface IQRCodeSetOperations {
     /**
      * Registers a new QRCode on the database.

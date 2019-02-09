@@ -33,6 +33,9 @@ import javinator9889.securepass.objects.ObjectContainer;
 import javinator9889.securepass.util.values.Constants;
 import javinator9889.securepass.util.values.database.QRCodeFields;
 
+/**
+ * TODO
+ */
 public class QRCodeOperations extends CommonOperations implements
         IQRCodeSetOperations, IQRCodeGetOperations {
     private static final String TAG = "Entry Operations";

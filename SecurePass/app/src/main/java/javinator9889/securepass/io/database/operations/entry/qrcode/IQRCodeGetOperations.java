@@ -20,6 +20,9 @@ import androidx.annotation.Nullable;
 import javinator9889.securepass.data.entry.QRCode;
 import javinator9889.securepass.objects.GeneralObjectContainer;
 
+/**
+ * TODO
+ */
 public interface IQRCodeGetOperations {
     /**
      * Obtains the QRCode name by using the given ID.

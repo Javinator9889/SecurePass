@@ -1,3 +1,19 @@
+/*
+ * Copyright © 2018 - present | SecurePass by Javinator9889
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program.  If
+ * not, see https://www.gnu.org/licenses/.
+ *
+ * Created by Javinator9889 on 26/03/2018 - SecurePass.
+ */
 package javinator9889.securepass.io;
 
 import android.content.Context;
@@ -29,13 +45,12 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import javinator9889.securepass.R;
-import javinator9889.securepass.util.cipher.PasswordSaver;
 import javinator9889.securepass.util.cipher.keystore.IPasswordCipher;
 import javinator9889.securepass.util.cipher.keystore.PasswordCipher;
 import javinator9889.securepass.util.values.Constants;
 
 /**
- * Created by Javinator9889 on 26/03/2018. Manage inputs-outputs from application
+ * TODO
  */
 
 public class IOManager {
@@ -288,8 +303,7 @@ public class IOManager {
      */
     @Deprecated
     public void storePassword(@NonNull String userPassword) {
-        PasswordSaver passwordSaver = PasswordSaver.instantiate(mActivityContext);
-        passwordSaver.putPassword(userPassword);
+        return;
     }
 
     /**
@@ -302,8 +316,7 @@ public class IOManager {
     @Deprecated
     @Nullable
     public String readPassword() {
-        PasswordSaver passwordReader = PasswordSaver.instantiate(mActivityContext);
-        return passwordReader.getPassword();
+        return null;
     }
 
     /**
