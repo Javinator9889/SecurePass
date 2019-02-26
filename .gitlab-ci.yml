@@ -28,7 +28,7 @@ stages:
 simpleBuild:
   stage: build
   script:
-  - ./SecurePass/gradlew clean build --stacktrace
+  - ./SecurePass/gradlew build --stacktrace
   tags:
   - docker
 
