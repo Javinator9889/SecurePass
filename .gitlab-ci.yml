@@ -29,11 +29,15 @@ simpleBuild:
   stage: build
   script:
   - ./SecurePass/gradlew build --stacktrace
+  tags:
+  - docker
 
 lintDebug:
   stage: build
   script:
   - ./SecurePass/gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+  tags:
+  - docker
 
 assembleDebug:
   stage: build
@@ -42,8 +46,12 @@ assembleDebug:
   artifacts:
     paths:
     - SecurePass/app/build/outputs/
+  tags:
+  - docker
 
 debugTests:
   stage: test
   script:
   - ./SecurePass/gradlew -Pci --console=plain :app:testDebug
+  tags:
+  - docker
