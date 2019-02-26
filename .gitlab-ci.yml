@@ -56,6 +56,8 @@ debugTests:
   stage: test
   script:
   - cd SecurePass/
-  - ./gradlew -Pci --console=plain :app:testDebug
+  - ./gradlew -Pci --console=plain testDebug
   tags:
   - docker
+# We are using InstrumentedTests for testing, and as we cannot emulate those test on a device,
+# this testing is actually not significant for determining whether everything is working OK.
