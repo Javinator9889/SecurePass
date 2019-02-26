@@ -39,6 +39,10 @@ import ru.noties.markwon.Markwon;
  * Custom activity that decides which activity must be shown.
  */
 public class LauncherActivity extends AppCompatActivity {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,12 @@ public class LauncherActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The first time the application is executed, the user must always enter inside the
+     * confirmation screen, which can take so much time to load (as it contains a considerable
+     * amount of text), so those fragments are preloaded with a {@link Future} task in order to
+     * be ready when the user needs to access them.
+     */
     private void prepareFutures() {
         Context fragmentContext = getApplicationContext();
         IOManager ioManager = IOManager.newInstance(fragmentContext);

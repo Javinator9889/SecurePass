@@ -90,14 +90,14 @@ public class SmallTextConfigOperations extends ConfigFieldsOperations {
         try (Cursor smallTextConfigCursor = getAll(TABLE_NAME, ORDER_BY)) {
             Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextConfigCursor);
             while (smallTextConfigCursor.moveToNext()) {
-                long id = smallTextConfigCursor.getLong(smallTextColumns.get(ID.getFieldName()));
+                long id = smallTextConfigCursor.getLong(smallTextColumns.get(ID));
                 String description =
                         smallTextConfigCursor.getString(
-                                smallTextColumns.get(DESCRIPTION.getFieldName()));
+                                smallTextColumns.get(DESCRIPTION));
                 int sortOrder =
-                        smallTextConfigCursor.getInt(smallTextColumns.get(ORDER.getFieldName()));
+                        smallTextConfigCursor.getInt(smallTextColumns.get(ORDER));
                 long configId = smallTextConfigCursor.getLong(
-                        smallTextColumns.get(CONFIGURATION.getFieldName()));
+                        smallTextColumns.get(CONFIGURATION));
                 IConfigFields currentField =
                         new SmallTextConfig(id, description, sortOrder, configId);
                 configFields.storeObject(currentField);

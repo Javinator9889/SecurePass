@@ -33,6 +33,9 @@ import javinator9889.securepass.views.fragments.termsofservice.base.ToSBaseFragm
  * Fragment that shows the Privacy text.
  */
 public class PrivacyFragment extends ToSBaseFragment {
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -43,18 +46,27 @@ public class PrivacyFragment extends ToSBaseFragment {
         return inflater.inflate(R.layout.privacy, container, false);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setText() {
         SingletonFutureContainer futureContainer = SingletonFutureContainer.getInstance();
         super.setSourceText(futureContainer.getPrivacyText());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setCheckbox() {
         ISharedPreferencesManager sharedPreferences = getSharedPreferences();
         super.setCheckboxStatus(sharedPreferences.isPrivacyAccepted());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         super.setCheckboxStatus(isChecked);

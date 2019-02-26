@@ -40,12 +40,12 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
         IImageGetOperations {
     private static final String TAG = "Image Operations";
     private static final String TABLE_NAME = Constants.SQL.IMAGE.NAME;
-    private static final ImageFields ID = ImageFields.ID;
-    private static final ImageFields SOURCE = ImageFields.SOURCE;
-    private static final ImageFields DESCRIPTION = ImageFields.DESCRIPTION;
-    private static final ImageFields ORDER = ImageFields.ORDER;
-    private static final ImageFields ENTRY = ImageFields.ENTRY;
-    private static final String WHERE_ID = ID.getFieldName() + "=?";
+    private static final String ID = ImageFields.ID;
+    private static final String SOURCE = ImageFields.SOURCE;
+    private static final String DESCRIPTION = ImageFields.DESCRIPTION;
+    private static final String ORDER = ImageFields.ORDER;
+    private static final String ENTRY = ImageFields.ENTRY;
+    private static final String WHERE_ID = ID + "=?";
 
     /**
      * Available constructor, matching {@link CommonOperations#CommonOperations(DatabaseManager)
@@ -103,11 +103,11 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public String getImageSource(long imageId) {
         String source = null;
-        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(SOURCE.getFieldName()), WHERE_ID,
-                whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(SOURCE), WHERE_ID,
+                whereArgs(imageId), null, null, ID + " ASC")) {
             Map<String, Integer> imagesColumns = constructMapFromCursor(imagesCursor);
             if (imagesCursor.moveToNext())
-                source = imagesCursor.getString(imagesColumns.get(SOURCE.getFieldName()));
+                source = imagesCursor.getString(imagesColumns.get(SOURCE));
         }
         return source;
     }
@@ -122,11 +122,11 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public String getImageDescription(long imageId) {
         String description = null;
-        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()), WHERE_ID,
-                whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(DESCRIPTION), WHERE_ID,
+                whereArgs(imageId), null, null, ID + " ASC")) {
             Map<String, Integer> imagesColumns = constructMapFromCursor(imagesCursor);
             if (imagesCursor.moveToNext())
-                description = imagesCursor.getString(imagesColumns.get(DESCRIPTION.getFieldName()));
+                description = imagesCursor.getString(imagesColumns.get(DESCRIPTION));
         }
         return description;
     }
@@ -141,11 +141,11 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public int getImageOrder(long imageId) {
         int order = -1;
-        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
-                whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(ORDER), WHERE_ID,
+                whereArgs(imageId), null, null, ID + " ASC")) {
             Map<String, Integer> imagesColumns = constructMapFromCursor(imagesCursor);
             if (imagesCursor.moveToNext())
-                order = imagesCursor.getInt(imagesColumns.get(ORDER.getFieldName()));
+                order = imagesCursor.getInt(imagesColumns.get(ORDER));
         }
         return order;
     }
@@ -160,11 +160,11 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public long getImageEntryId(long imageId) {
         long entryId = -1;
-        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
-                whereArgs(imageId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor imagesCursor = get(TABLE_NAME, whereArgs(ENTRY), WHERE_ID,
+                whereArgs(imageId), null, null, ID + " ASC")) {
             Map<String, Integer> imagesColumns = constructMapFromCursor(imagesCursor);
             if (imagesCursor.moveToNext())
-                entryId = imagesCursor.getLong(imagesColumns.get(ENTRY.getFieldName()));
+                entryId = imagesCursor.getLong(imagesColumns.get(ENTRY));
         }
         return entryId;
     }
@@ -181,13 +181,13 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public GeneralObjectContainer<Image> getAllImages() {
         GeneralObjectContainer<Image> images = new ObjectContainer<>();
-        try (Cursor imagesCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+        try (Cursor imagesCursor = getAll(TABLE_NAME, ID + " ASC")) {
             Map<String, Integer> imagesColumns = constructMapFromCursor(imagesCursor);
             while (imagesCursor.moveToNext()) {
-                long id = imagesCursor.getLong(imagesColumns.get(ID.getFieldName()));
-                long entryId = imagesCursor.getLong(imagesColumns.get(ENTRY.getFieldName()));
-                String source = imagesCursor.getString(imagesColumns.get(SOURCE.getFieldName()));
-                String description = imagesCursor.getString(imagesColumns.get(DESCRIPTION.getFieldName()));
+                long id = imagesCursor.getLong(imagesColumns.get(ID));
+                long entryId = imagesCursor.getLong(imagesColumns.get(ENTRY));
+                String source = imagesCursor.getString(imagesColumns.get(SOURCE));
+                String description = imagesCursor.getString(imagesColumns.get(DESCRIPTION));
                 Image currentImage = new Image(id, entryId, source, description);
                 images.storeObject(currentImage);
             }
@@ -223,7 +223,7 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public void updateImageSource(long imageId, @NonNull String newSource) {
         ContentValues params = new ContentValues(1);
-        params.put(SOURCE.getFieldName(), newSource);
+        params.put(SOURCE, newSource);
         scheduleUpdateExecutor(imageId, params);
     }
 
@@ -236,7 +236,7 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public void updateImageDescription(long imageId, @NonNull String newDescription) {
         ContentValues params = new ContentValues(1);
-        params.put(DESCRIPTION.getFieldName(), newDescription);
+        params.put(DESCRIPTION, newDescription);
         scheduleUpdateExecutor(imageId, params);
     }
 
@@ -249,7 +249,7 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
     @Override
     public void updateImageOrder(long imageId, int newOrder) {
         ContentValues params = new ContentValues(1);
-        params.put(ORDER.getFieldName(), newOrder);
+        params.put(ORDER, newOrder);
         scheduleUpdateExecutor(imageId, params);
     }
 
@@ -260,7 +260,7 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
      */
     @Override
     public void removeImage(long imageId) {
-        delete(TABLE_NAME, ID.getFieldName(), imageId);
+        delete(TABLE_NAME, ID, imageId);
     }
 
     /**
@@ -280,10 +280,10 @@ public class ImageOperations extends CommonOperations implements IImageSetOperat
                                     int order,
                                     long entryId) {
         ContentValues params = new ContentValues(4);
-        params.put(SOURCE.getFieldName(), source);
-        params.put(DESCRIPTION.getFieldName(), description);
-        params.put(ORDER.getFieldName(), order);
-        params.put(ENTRY.getFieldName(), entryId);
+        params.put(SOURCE, source);
+        params.put(DESCRIPTION, description);
+        params.put(ORDER, order);
+        params.put(ENTRY, entryId);
         return params;
     }
 }

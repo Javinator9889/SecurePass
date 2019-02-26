@@ -19,43 +19,12 @@ package javinator9889.securepass.util.values.database;
 /**
  * A list of the parameter for the fields of the ConfigFields.
  */
-public enum ConfigFieldsFields implements FieldsOperations {
-    ID("idConfig", 0),
-    DESCRIPTION("desc", 1),
-    ORDER("sortOrder", 2),
-    CONFIGURATION("idConfiguration", 3);
+public class ConfigFieldsFields {
+    public static final String ID = "idConfig";
+    public static final String DESCRIPTION = "desc";
+    public static final String ORDER = "sortOrder";
+    public static final String CONFIGURATION = "idConfiguration";
 
-    private String mFieldName;
-    private int mFieldIndex;
-
-    /**
-     * Private constructor that sets the table field name and index order
-     *
-     * @param fieldName  name for identifying the column in the database
-     * @param fieldIndex column index
-     */
-    ConfigFieldsFields(String fieldName, int fieldIndex) {
-        mFieldName = fieldName;
-        mFieldIndex = fieldIndex;
-    }
-
-    /**
-     * Obtains current field name
-     *
-     * @return {@code String} with the column identifier
-     */
-    @Override
-    public String getFieldName() {
-        return mFieldName;
-    }
-
-    /**
-     * Obtains current field index
-     *
-     * @return {@code int} with the column index
-     */
-    @Override
-    public int getFieldIndex() {
-        return mFieldIndex;
+    private ConfigFieldsFields() {
     }
 }

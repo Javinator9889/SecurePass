@@ -90,13 +90,13 @@ public class LongTextConfigOperations extends ConfigFieldsOperations {
         try (Cursor longTextConfigCursor = getAll(TABLE_NAME, ORDER_BY)) {
             Map<String, Integer> longTextColumns = constructMapFromCursor(longTextConfigCursor);
             while (longTextConfigCursor.moveToNext()) {
-                long id = longTextConfigCursor.getLong(longTextColumns.get(ID.getFieldName()));
+                long id = longTextConfigCursor.getLong(longTextColumns.get(ID));
                 String description = longTextConfigCursor.getString(
-                        longTextColumns.get(DESCRIPTION.getFieldName()));
+                        longTextColumns.get(DESCRIPTION));
                 int sortOrder =
-                        longTextConfigCursor.getInt(longTextColumns.get(ORDER.getFieldName()));
+                        longTextConfigCursor.getInt(longTextColumns.get(ORDER));
                 long configId = longTextConfigCursor.getLong(
-                        longTextColumns.get(CONFIGURATION.getFieldName()));
+                        longTextColumns.get(CONFIGURATION));
                 IConfigFields currentField =
                         new LongTextConfig(id, description, sortOrder, configId);
                 configFields.storeObject(currentField);

@@ -36,7 +36,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 /**
- * Adapter for displaying a TabLayout.
+ * Adapter for displaying a TabLayout with custom options, typefaces and more.
  */
 public abstract class TabLayoutAdapter extends AppCompatActivity
         implements SmartTabLayout.OnTabClickListener, ViewPager.OnPageChangeListener {
@@ -44,12 +44,19 @@ public abstract class TabLayoutAdapter extends AppCompatActivity
     private ViewPager mViewPager;
     private SmartTabLayout mTabLayout;
     private boolean mMustChangeTypeface = false;
-    private @FontRes int mSelectedTextFontRes = 0;
-    private @FontRes int mNonSelectedTextFontRes = 0;
-    private @IdRes int mTabIdRes;
-    private @IdRes int mViewPagerIdRes;
+    private @FontRes
+    int mSelectedTextFontRes = 0;
+    private @FontRes
+    int mNonSelectedTextFontRes = 0;
+    private @IdRes
+    int mTabIdRes;
+    private @IdRes
+    int mViewPagerIdRes;
     private boolean mMustShowBackButtonOnActionBar = false;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +74,9 @@ public abstract class TabLayoutAdapter extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(mMustShowBackButtonOnActionBar);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onBackPressed() {
         if (mCurrentPosition > 0) {
@@ -76,6 +86,9 @@ public abstract class TabLayoutAdapter extends AppCompatActivity
             super.onBackPressed();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -85,6 +98,9 @@ public abstract class TabLayoutAdapter extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onTabClicked(int position) {
         mCurrentPosition = position;
@@ -92,45 +108,92 @@ public abstract class TabLayoutAdapter extends AppCompatActivity
             changeTextTypeface(position, mSelectedTextFontRes, mNonSelectedTextFontRes);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onPageSelected(int position) {
         onTabClicked(position);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onPageScrollStateChanged(int state) {
 
     }
 
+    /**
+     * Sets if the typeface must change.
+     *
+     * @param mustChangeTypeface whether or not it has to change.
+     */
     public void setMustChangeTypeface(boolean mustChangeTypeface) {
         mMustChangeTypeface = mustChangeTypeface;
     }
 
+    /**
+     * Sets the selected font typeface.
+     *
+     * @param selectedTextFontRes the typeface.
+     */
     public void setSelectedTextFontRes(@FontRes int selectedTextFontRes) {
         mSelectedTextFontRes = selectedTextFontRes;
     }
 
+    /**
+     * Sets the non selected font typeface.
+     *
+     * @param nonSelectedTextFontRes the typeface.
+     */
     public void setNonSelectedTextFontRes(@FontRes int nonSelectedTextFontRes) {
         mNonSelectedTextFontRes = nonSelectedTextFontRes;
     }
 
+    /**
+     * Sets the tab ID resource.
+     *
+     * @param tabIdRes the ID resource.
+     */
     public void setTabIdRes(@IdRes int tabIdRes) {
         mTabIdRes = tabIdRes;
     }
 
+    /**
+     * Sets the view pager ID resource.
+     *
+     * @param viewPagerIdRes the ID resource.
+     */
     public void setViewPagerIdRes(@IdRes int viewPagerIdRes) {
         mViewPagerIdRes = viewPagerIdRes;
     }
 
+    /**
+     * Sets whether the back button should be displayed or not.
+     *
+     * @param mustShowBackButtonOnActionBar whether it must be shown or not.
+     */
     public void setMustShowBackButtonOnActionBar(boolean mustShowBackButtonOnActionBar) {
         mMustShowBackButtonOnActionBar = mustShowBackButtonOnActionBar;
     }
 
+    /**
+     * Changes the text typeface the first execution - worthless if so many values are displayed
+     * (very slow).
+     *
+     * @param position           the selected position.
+     * @param selectedFontRes    the font resource for the selected text.
+     * @param nonSelectedFontRes the font resource for the non selected text.
+     */
     void changeTextTypeface(int position,
                             @FontRes int selectedFontRes,
                             @FontRes int nonSelectedFontRes) {
@@ -146,5 +209,10 @@ public abstract class TabLayoutAdapter extends AppCompatActivity
         }
     }
 
+    /**
+     * Gets the items that conforms a tab.
+     *
+     * @return {@code FragmentPagerItems} items.
+     */
     protected abstract FragmentPagerItems getItems();
 }

@@ -41,11 +41,11 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
         IFieldGetOperations {
     private static final String TAG = "Fields Operations";
     private static final String TABLE_NAME = Constants.SQL.FIELD.NAME;
-    private static final FieldsFields ID = FieldsFields.ID;
-    private static final FieldsFields CODE = FieldsFields.CODE;
-    private static final FieldsFields USED = FieldsFields.USED;
-    private static final FieldsFields SECURITY_CODE = FieldsFields.SECURITY_CODES;
-    private static final String WHERE_ID = ID.getFieldName() + "=?";
+    private static final String ID = FieldsFields.ID;
+    private static final String CODE = FieldsFields.CODE;
+    private static final String USED = FieldsFields.USED;
+    private static final String SECURITY_CODE = FieldsFields.SECURITY_CODES;
+    private static final String WHERE_ID = ID + "=?";
 
     /**
      * Available constructor, matching
@@ -102,11 +102,11 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
     @Override
     public String getFieldCode(long fieldId) {
         String code = null;
-        try (Cursor fieldsCursor = get(TABLE_NAME, whereArgs(CODE.getFieldName()), WHERE_ID,
-                whereArgs(fieldId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor fieldsCursor = get(TABLE_NAME, whereArgs(CODE), WHERE_ID,
+                whereArgs(fieldId), null, null, ID + " ASC")) {
             Map<String, Integer> fieldsColumns = constructMapFromCursor(fieldsCursor);
             if (fieldsCursor.moveToNext())
-                code = fieldsCursor.getString(fieldsColumns.get(CODE.getFieldName()));
+                code = fieldsCursor.getString(fieldsColumns.get(CODE));
         }
         return code;
     }
@@ -120,11 +120,11 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
     @Override
     public boolean getFieldCodeBeenUsed(long fieldId) {
         boolean isCodeUsed = false;
-        try (Cursor fieldsCursor = get(TABLE_NAME, whereArgs(USED.getFieldName()), WHERE_ID,
-                whereArgs(fieldId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor fieldsCursor = get(TABLE_NAME, whereArgs(USED), WHERE_ID,
+                whereArgs(fieldId), null, null, ID + " ASC")) {
             Map<String, Integer> fieldsColums = constructMapFromCursor(fieldsCursor);
             if (fieldsCursor.moveToNext())
-                isCodeUsed = fieldsCursor.getInt(fieldsColums.get(USED.getFieldName())) != 0;
+                isCodeUsed = fieldsCursor.getInt(fieldsColums.get(USED)) != 0;
         }
         return isCodeUsed;
     }
@@ -140,15 +140,15 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
     @Override
     public GeneralObjectContainer<Field> getAllFields() {
         GeneralObjectContainer<Field> fields = new ObjectContainer<>();
-        try (Cursor fieldsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+        try (Cursor fieldsCursor = getAll(TABLE_NAME, ID + " ASC")) {
             Map<String, Integer> fieldColumns = constructMapFromCursor(fieldsCursor);
             while (fieldsCursor.moveToNext()) {
-                long id = fieldsCursor.getLong(fieldColumns.get(ID.getFieldName()));
+                long id = fieldsCursor.getLong(fieldColumns.get(ID));
                 long securityCodeId =
-                        fieldsCursor.getLong(fieldColumns.get(SECURITY_CODE.getFieldName()));
-                String code = fieldsCursor.getString(fieldColumns.get(CODE.getFieldName()));
+                        fieldsCursor.getLong(fieldColumns.get(SECURITY_CODE));
+                String code = fieldsCursor.getString(fieldColumns.get(CODE));
                 boolean isCodeUsed =
-                        fieldsCursor.getInt(fieldColumns.get(USED.getFieldName())) != 0;
+                        fieldsCursor.getInt(fieldColumns.get(USED)) != 0;
                 Field currentField = new Field(id, code, isCodeUsed, securityCodeId);
                 fields.storeObject(currentField);
             }
@@ -179,7 +179,7 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
     @Override
     public void updateFieldCode(long fieldId, @NonNull String newCode) {
         ContentValues params = new ContentValues(1);
-        params.put(CODE.getFieldName(), newCode);
+        params.put(CODE, newCode);
         scheduleUpdateExecutor(fieldId, params);
     }
 
@@ -192,7 +192,7 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
     @Override
     public void updateFieldCodeBeenUsed(long fieldId, boolean isCodeUsed) {
         ContentValues params = new ContentValues(1);
-        params.put(USED.getFieldName(), isCodeUsed);
+        params.put(USED, isCodeUsed);
         scheduleUpdateExecutor(fieldId, params);
     }
 
@@ -203,7 +203,7 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
      */
     @Override
     public void removeField(long fieldId) {
-        delete(TABLE_NAME, ID.getFieldName(), fieldId);
+        delete(TABLE_NAME, ID, fieldId);
     }
 
     /**
@@ -218,9 +218,9 @@ public class FieldOperations extends CommonOperations implements IFieldSetOperat
                                     @NonNull String code,
                                     boolean isCodeUsed) {
         ContentValues params = new ContentValues(3);
-        params.put(SECURITY_CODE.getFieldName(), securityCodeId);
-        params.put(CODE.getFieldName(), code);
-        params.put(USED.getFieldName(), isCodeUsed);
+        params.put(SECURITY_CODE, securityCodeId);
+        params.put(CODE, code);
+        params.put(USED, isCodeUsed);
         return params;
     }
 }

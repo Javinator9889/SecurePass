@@ -39,9 +39,9 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
         ICategoryGetOperations {
     private static final String TAG = "Category Operations";
     private static final String TABLE_NAME = CATEGORY.NAME;
-    private static final CategoryFields ID = CategoryFields.ID;
-    private static final CategoryFields NAME = CategoryFields.NAME;
-    private static final String CATEGORY_WHERE_ID = ID.getFieldName() + "=?";
+    private static final String ID = CategoryFields.ID;
+    private static final String NAME = CategoryFields.NAME;
+    private static final String CATEGORY_WHERE_ID = ID + "=?";
 
     /**
      * Available constructor, matching {@link CommonOperations#CommonOperations(DatabaseManager)
@@ -99,11 +99,11 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     @Override
     public String getCategoryName(long categoryId) {
         String name = null;
-        try (Cursor categoryCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()),
-                CATEGORY_WHERE_ID, whereArgs(categoryId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor categoryCursor = get(TABLE_NAME, whereArgs(NAME),
+                CATEGORY_WHERE_ID, whereArgs(categoryId), null, null, ID + " ASC")) {
             Map<String, Integer> categoriesColumns = constructMapFromCursor(categoryCursor);
             if (categoryCursor.moveToNext())
-                name = categoryCursor.getString(categoriesColumns.get(NAME.getFieldName()));
+                name = categoryCursor.getString(categoriesColumns.get(NAME));
         }
         return name;
     }
@@ -120,11 +120,11 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
     @Override
     public GeneralObjectContainer<Category> getAllCategories() {
         GeneralObjectContainer<Category> categories = new ObjectContainer<>();
-        try (Cursor categoriesCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+        try (Cursor categoriesCursor = getAll(TABLE_NAME, ID + " ASC")) {
             Map<String, Integer> categoriesColumns = constructMapFromCursor(categoriesCursor);
             while (categoriesCursor.moveToNext()) {
-                long id = categoriesCursor.getLong(categoriesColumns.get(ID.getFieldName()));
-                String name = categoriesCursor.getString(categoriesColumns.get(NAME.getFieldName()));
+                long id = categoriesCursor.getLong(categoriesColumns.get(ID));
+                String name = categoriesCursor.getString(categoriesColumns.get(NAME));
                 Category currentCategory = new Category(id, name);
                 categories.storeObject(currentCategory);
             }
@@ -164,7 +164,7 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
      */
     @Override
     public void removeCategory(long categoryId) {
-        int i = delete(TABLE_NAME, ID.getFieldName(), categoryId);
+        int i = delete(TABLE_NAME, ID, categoryId);
         Log.d(TAG, "Number of rows deleted: " + i);
     }
 
@@ -177,7 +177,7 @@ public class CategoryOperations extends CommonOperations implements ICategorySet
      */
     private ContentValues setParams(@NonNull String categoryName) {
         ContentValues params = new ContentValues(1);
-        params.put(NAME.getFieldName(), categoryName);
+        params.put(NAME, categoryName);
         return params;
     }
 }

@@ -46,12 +46,20 @@ import javinator9889.securepass.io.IOManager;
 
 /**
  * Class designed for encrypting - decrypting files for Drive uploads and downloads.
+ * @deprecated now {@link javinator9889.securepass.util.cipher.database.DatabaseCipher} is used
+ * instead.
  */
 public class FileCipher implements ICipher {
     private byte[] ivVector;
     private IvParameterSpec ivSpec;
     private byte[] password;
 
+    /**
+     * Default constructor - now deprecated.
+     *
+     * @param activityContext base context.
+     * @deprecated use {@link javinator9889.securepass.util.cipher.database.DatabaseCipher} instead.
+     */
     public FileCipher(@NonNull Context activityContext) {
         this.password = Hashing.sha256()
                 .hashString(BuildConfig.APPLICATION_ID, StandardCharsets.UTF_8)
@@ -79,12 +87,14 @@ public class FileCipher implements ICipher {
         ivSpec = new IvParameterSpec(ivVector);
     }
 
+    /**
+     * @deprecated see {@link javinator9889.securepass.util.cipher.database.DatabaseCipher} instead.
+     */
     @Override
     public void encryptFile(@NonNull File source, @NonNull File destination)
             throws NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidAlgorithmParameterException, InvalidKeyException, IOException,
-            BadPaddingException, IllegalBlockSizeException
-    {
+            BadPaddingException, IllegalBlockSizeException {
         SecretKeySpec keySpec = new SecretKeySpec(password, ALGORITHM);
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
@@ -92,11 +102,13 @@ public class FileCipher implements ICipher {
         Files.write(encryptedData, destination);
     }
 
+    /**
+     * @deprecated see {@link javinator9889.securepass.util.cipher.database.DatabaseCipher} instead.
+     */
     @Override
     public void decryptFile(@NonNull InputStream source, @NonNull File destination)
             throws NoSuchPaddingException, NoSuchAlgorithmException,
-            InvalidAlgorithmParameterException, InvalidKeyException, IOException
-    {
+            InvalidAlgorithmParameterException, InvalidKeyException, IOException {
         SecretKeySpec keySpec = new SecretKeySpec(password, ALGORITHM);
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);

@@ -34,6 +34,9 @@ import javinator9889.securepass.views.fragments.termsofservice.TermsFragment;
  * Custom activity that displays the three texts in tabs.
  */
 public class ShowEulaActivity extends TabLayoutAdapter {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.full_eula);
@@ -46,6 +49,11 @@ public class ShowEulaActivity extends TabLayoutAdapter {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Gets the items (fragments) that conforms the tabs.
+     *
+     * @return {@code FragmentPagerItems} with the tabs' items.
+     */
     @Override
     @SuppressWarnings("unchecked")
     protected FragmentPagerItems getItems() {

@@ -42,16 +42,18 @@ public class SlidePage extends AppIntroBaseFragment implements ISlideBackgroundC
     private @FontRes int mTitleTypeface = -1;
     private @FontRes int mDescriptionTypeface = -1;
 
-    @Override
-    public int getDefaultBackgroundColor() {
-        return super.getDefaultBackgroundColor();
-    }
-
-    @Override
-    public void setBackgroundColor(int backgroundColor) {
-        super.setBackgroundColor(backgroundColor);
-    }
-
+    /**
+     * Generates a new slider page for an AppIntro instance.
+     *
+     * @param title         the title.
+     * @param description   the description.
+     * @param imageDrawable the drawable.
+     * @param bgColor       the background color.
+     * @param titleColor    the title color.
+     * @param descColor     the description color.
+     * @param container     the container.
+     * @return {@code SlidePage} instance.
+     */
     public static SlidePage newInstance(CharSequence title,
                                         CharSequence description,
                                         @DrawableRes int imageDrawable,
@@ -72,6 +74,13 @@ public class SlidePage extends AppIntroBaseFragment implements ISlideBackgroundC
         return newInstance(sliderPage, container);
     }
 
+    /**
+     * Generates a new slider page for an AppIntro instance.
+     *
+     * @param sliderPage the generated options.
+     * @param container  the container.
+     * @return {@code SlidePage} instance.
+     */
     private static SlidePage newInstance(SliderPage sliderPage,
                                          @Nullable SlidesTypefacesContainer container) {
         SlidePage slide = new SlidePage();
@@ -93,6 +102,25 @@ public class SlidePage extends AppIntroBaseFragment implements ISlideBackgroundC
         return slide;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getDefaultBackgroundColor() {
+        return super.getDefaultBackgroundColor();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setBackgroundColor(int backgroundColor) {
+        super.setBackgroundColor(backgroundColor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -109,14 +137,25 @@ public class SlidePage extends AppIntroBaseFragment implements ISlideBackgroundC
         }
     }
 
+    /**
+     * Sets a custom title typeface.
+     * @param titleTypeface the title typeface.
+     */
     private void setTitleTypeface(@FontRes int titleTypeface) {
         this.mTitleTypeface = titleTypeface;
     }
 
+    /**
+     * Sets a custom description typeface.
+     * @param descriptionTypeface the description typeface.
+     */
     private void setDescriptionTypeface(@FontRes int descriptionTypeface) {
         this.mDescriptionTypeface = descriptionTypeface;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int getLayoutId() {
         return R.layout.appintro_fragment_intro;

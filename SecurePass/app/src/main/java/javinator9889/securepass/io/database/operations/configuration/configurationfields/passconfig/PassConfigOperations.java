@@ -90,12 +90,12 @@ public class PassConfigOperations extends ConfigFieldsOperations {
         try (Cursor passConfigsCursor = getAll(TABLE_NAME, ORDER_BY)) {
             Map<String, Integer> passConfigColumns = constructMapFromCursor(passConfigsCursor);
             while (passConfigsCursor.moveToNext()) {
-                long id = passConfigsCursor.getLong(passConfigColumns.get(ID.getFieldName()));
+                long id = passConfigsCursor.getLong(passConfigColumns.get(ID));
                 String description = passConfigsCursor.getString(
-                        passConfigColumns.get(DESCRIPTION.getFieldName()));
-                int order = passConfigsCursor.getInt(passConfigColumns.get(ORDER.getFieldName()));
+                        passConfigColumns.get(DESCRIPTION));
+                int order = passConfigsCursor.getInt(passConfigColumns.get(ORDER));
                 long configurationId = passConfigsCursor.getLong(
-                        passConfigColumns.get(CONFIGURATION.getFieldName()));
+                        passConfigColumns.get(CONFIGURATION));
                 IConfigFields currentConfigField =
                         new PassConfig(id, description, order, configurationId);
                 configFields.storeObject(currentConfigField);

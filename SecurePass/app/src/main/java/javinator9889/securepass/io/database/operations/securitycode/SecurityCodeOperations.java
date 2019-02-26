@@ -38,9 +38,9 @@ public class SecurityCodeOperations extends CommonOperations implements
         ISecurityCodeSetOperations, ISecurityCodeGetOperations {
     private static final String TAG = "Security Codes Operations";
     private static final String TABLE_NAME = Constants.SQL.SECURITY_CODE.NAME;
-    private static final SecurityCodesFields ID = SecurityCodesFields.ID;
-    private static final SecurityCodesFields NAME = SecurityCodesFields.NAME;
-    private static final String WHERE_ID = ID.getFieldName() + "=?";
+    private static final String ID = SecurityCodesFields.ID;
+    private static final String NAME = SecurityCodesFields.NAME;
+    private static final String WHERE_ID = ID + "=?";
 
     /**
      * Available constructor, matching {@link CommonOperations#CommonOperations(DatabaseManager)
@@ -96,11 +96,11 @@ public class SecurityCodeOperations extends CommonOperations implements
     @Override
     public String getSecurityCodeName(long securityCodeId) {
         String name = null;
-        try (Cursor securityCodesCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()),
-                WHERE_ID, whereArgs(securityCodeId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor securityCodesCursor = get(TABLE_NAME, whereArgs(NAME),
+                WHERE_ID, whereArgs(securityCodeId), null, null, ID + " ASC")) {
             Map<String, Integer> securityCodeColums = constructMapFromCursor(securityCodesCursor);
             if (securityCodesCursor.moveToNext())
-                name = securityCodesCursor.getString(securityCodeColums.get(NAME.getFieldName()));
+                name = securityCodesCursor.getString(securityCodeColums.get(NAME));
         }
         return name;
     }
@@ -117,12 +117,12 @@ public class SecurityCodeOperations extends CommonOperations implements
     @Override
     public GeneralObjectContainer<SecurityCode> getAllSecurityCodes() {
         GeneralObjectContainer<SecurityCode> securityCodes = new ObjectContainer<>();
-        try (Cursor securityCodesCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+        try (Cursor securityCodesCursor = getAll(TABLE_NAME, ID + " ASC")) {
             Map<String, Integer> securityCodeColumns = constructMapFromCursor(securityCodesCursor);
             while (securityCodesCursor.moveToNext()) {
-                long id = securityCodesCursor.getLong(securityCodeColumns.get(ID.getFieldName()));
+                long id = securityCodesCursor.getLong(securityCodeColumns.get(ID));
                 String name =
-                        securityCodesCursor.getString(securityCodeColumns.get(NAME.getFieldName()));
+                        securityCodesCursor.getString(securityCodeColumns.get(NAME));
                 SecurityCode currentSecurityCode = new SecurityCode(id, name);
                 securityCodes.storeObject(currentSecurityCode);
             }
@@ -162,7 +162,7 @@ public class SecurityCodeOperations extends CommonOperations implements
      */
     @Override
     public void removeSecurityCode(long securityCodeId) {
-        delete(TABLE_NAME, ID.getFieldName(), securityCodeId);
+        delete(TABLE_NAME, ID, securityCodeId);
     }
 
     /**
@@ -174,7 +174,7 @@ public class SecurityCodeOperations extends CommonOperations implements
      */
     private ContentValues setParams(@NonNull String securityCodeName) {
         ContentValues params = new ContentValues(1);
-        params.put(NAME.getFieldName(), securityCodeName);
+        params.put(NAME, securityCodeName);
         return params;
     }
 }

@@ -3,7 +3,7 @@
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * License, or (at your option); any later version.
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -19,44 +19,13 @@ package javinator9889.securepass.util.values.database;
 /**
  * A list of the parameters for the QRCode.
  */
-public enum QRCodeFields implements FieldsOperations {
-    ID("idQRCode", 0),
-    NAME("name", 1),
-    DESCRIPTION("description", 2),
-    DATA("data", 3),
-    ENTRY("fidEntry", 4);
+public class QRCodeFields {
+    public static final String ID = "idQRCode";
+    public static final String NAME = "name";
+    public static final String DESCRIPTION = "description";
+    public static final String DATA = "data";
+    public static final String ENTRY = "fidEntry";
 
-    private String mFieldName;
-    private int mFieldIndex;
-
-    /**
-     * Private constructor that sets the table field name and index order
-     *
-     * @param fieldName  name for identifying the column in the database
-     * @param fieldIndex column index
-     */
-    QRCodeFields(String fieldName, int fieldIndex) {
-        mFieldName = fieldName;
-        mFieldIndex = fieldIndex;
-    }
-
-    /**
-     * Obtains current field name
-     *
-     * @return {@code String} with the column identifier
-     */
-    @Override
-    public String getFieldName() {
-        return mFieldName;
-    }
-
-    /**
-     * Obtains current field index
-     *
-     * @return {@code int} with the column index
-     */
-    @Override
-    public int getFieldIndex() {
-        return mFieldIndex;
+    private QRCodeFields() {
     }
 }

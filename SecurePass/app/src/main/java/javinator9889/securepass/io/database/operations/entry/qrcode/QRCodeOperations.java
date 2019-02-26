@@ -40,12 +40,12 @@ public class QRCodeOperations extends CommonOperations implements
         IQRCodeSetOperations, IQRCodeGetOperations {
     private static final String TAG = "Entry Operations";
     private static final String TABLE_NAME = Constants.SQL.QR_CODE.NAME;
-    private static final QRCodeFields NAME = QRCodeFields.NAME;
-    private static final QRCodeFields ID = QRCodeFields.ID;
-    private static final QRCodeFields DESCRIPTION = QRCodeFields.DESCRIPTION;
-    private static final QRCodeFields DATA = QRCodeFields.DATA;
-    private static final QRCodeFields ENTRY = QRCodeFields.ENTRY;
-    private static final String QRCODE_WHERE_ID = ID.getFieldName() + "=?";
+    private static final String NAME = QRCodeFields.NAME;
+    private static final String ID = QRCodeFields.ID;
+    private static final String DESCRIPTION = QRCodeFields.DESCRIPTION;
+    private static final String DATA = QRCodeFields.DATA;
+    private static final String ENTRY = QRCodeFields.ENTRY;
+    private static final String QRCODE_WHERE_ID = ID + "=?";
 
     /**
      * Public constructor for creating this class - use this instead of {@link
@@ -101,11 +101,11 @@ public class QRCodeOperations extends CommonOperations implements
     @Override
     public String getQRCodeName(long id) {
         String name = null;
-        try (Cursor qrCodeCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()),
-                QRCODE_WHERE_ID, whereArgs(id), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor qrCodeCursor = get(TABLE_NAME, whereArgs(NAME),
+                QRCODE_WHERE_ID, whereArgs(id), null, null, ID + " ASC")) {
             Map<String, Integer> qrCodeColumns = constructMapFromCursor(qrCodeCursor);
             if (qrCodeCursor.moveToNext()) {
-                name = qrCodeCursor.getString(qrCodeColumns.get(NAME.getFieldName()));
+                name = qrCodeCursor.getString(qrCodeColumns.get(NAME));
             }
         }
         return name;
@@ -121,12 +121,12 @@ public class QRCodeOperations extends CommonOperations implements
     @Override
     public String getQRCodeDescription(long id) {
         String description = null;
-        try (Cursor qrCodeCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()),
-                QRCODE_WHERE_ID, whereArgs(id), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor qrCodeCursor = get(TABLE_NAME, whereArgs(DESCRIPTION),
+                QRCODE_WHERE_ID, whereArgs(id), null, null, ID + " ASC")) {
             Map<String, Integer> qrCodeColumns = constructMapFromCursor(qrCodeCursor);
             if (qrCodeCursor.moveToNext()) {
                 description = qrCodeCursor
-                        .getString(qrCodeColumns.get(DESCRIPTION.getFieldName()));
+                        .getString(qrCodeColumns.get(DESCRIPTION));
             }
         }
         return description;
@@ -141,12 +141,12 @@ public class QRCodeOperations extends CommonOperations implements
     @Override
     public String getQRCodeData(long id) {
         String qrCodeData = null;
-        try (Cursor qrCodeCursor = get(TABLE_NAME, whereArgs(DATA.getFieldName()),
-                QRCODE_WHERE_ID, whereArgs(id), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor qrCodeCursor = get(TABLE_NAME, whereArgs(DATA),
+                QRCODE_WHERE_ID, whereArgs(id), null, null, ID + " ASC")) {
             Map<String, Integer> qrCodeColumns = constructMapFromCursor(qrCodeCursor);
             if (qrCodeCursor.moveToNext()) {
                 qrCodeData = qrCodeCursor
-                        .getString(qrCodeColumns.get(DATA.getFieldName()));
+                        .getString(qrCodeColumns.get(DATA));
             }
         }
         return qrCodeData;
@@ -161,11 +161,11 @@ public class QRCodeOperations extends CommonOperations implements
     @Override
     public long getQRCodeEntryID(long id) {
         long entryId = -1;
-        try (Cursor qrCodeCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()),
-                QRCODE_WHERE_ID, whereArgs(id), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor qrCodeCursor = get(TABLE_NAME, whereArgs(ENTRY),
+                QRCODE_WHERE_ID, whereArgs(id), null, null, ID + " ASC")) {
             Map<String, Integer> qrCodeColumns = constructMapFromCursor(qrCodeCursor);
             if (qrCodeCursor.moveToNext()) {
-                entryId = qrCodeCursor.getLong(qrCodeColumns.get(ENTRY.getFieldName()));
+                entryId = qrCodeCursor.getLong(qrCodeColumns.get(ENTRY));
             }
         }
         return entryId;
@@ -182,15 +182,15 @@ public class QRCodeOperations extends CommonOperations implements
     @Override
     public GeneralObjectContainer<QRCode> getAllQRCodes() {
         GeneralObjectContainer<QRCode> results = new ObjectContainer<>();
-        try (Cursor qrCodes = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+        try (Cursor qrCodes = getAll(TABLE_NAME, ID + " ASC")) {
             Map<String, Integer> qrCodesColumns = constructMapFromCursor(qrCodes);
             while (qrCodes.moveToNext()) {
-                long id = qrCodes.getLong(qrCodesColumns.get(ID.getFieldName()));
-                String name = qrCodes.getString(qrCodesColumns.get(NAME.getFieldName()));
+                long id = qrCodes.getLong(qrCodesColumns.get(ID));
+                String name = qrCodes.getString(qrCodesColumns.get(NAME));
                 String description = qrCodes
-                        .getString(qrCodesColumns.get(DESCRIPTION.getFieldName()));
-                String data = qrCodes.getString(qrCodesColumns.get(DATA.getFieldName()));
-                long entryId = qrCodes.getLong(qrCodesColumns.get(ENTRY.getFieldName()));
+                        .getString(qrCodesColumns.get(DESCRIPTION));
+                String data = qrCodes.getString(qrCodesColumns.get(DATA));
+                long entryId = qrCodes.getLong(qrCodesColumns.get(ENTRY));
                 QRCode currentCode = new QRCode(id, name, description, data, entryId);
                 results.storeObject(currentCode);
             }
@@ -225,7 +225,7 @@ public class QRCodeOperations extends CommonOperations implements
     @Override
     public void updateName(long id, @NonNull String name) {
         ContentValues params = new ContentValues(1);
-        params.put(NAME.getFieldName(), name);
+        params.put(NAME, name);
         scheduleUpdateExecutor(id, params);
     }
 
@@ -238,7 +238,7 @@ public class QRCodeOperations extends CommonOperations implements
     @Override
     public void updateDescription(long id, @Nullable String description) {
         ContentValues params = new ContentValues(1);
-        params.put(DESCRIPTION.getFieldName(), description);
+        params.put(DESCRIPTION, description);
         scheduleUpdateExecutor(id, params);
     }
 
@@ -251,7 +251,7 @@ public class QRCodeOperations extends CommonOperations implements
     @Override
     public void updateQrCodeData(long id, @NonNull String qrCodeData) {
         ContentValues params = new ContentValues(1);
-        params.put(DATA.getFieldName(), qrCodeData);
+        params.put(DATA, qrCodeData);
         scheduleUpdateExecutor(id, params);
     }
 
@@ -262,7 +262,7 @@ public class QRCodeOperations extends CommonOperations implements
      */
     @Override
     public void removeQRCode(long id) {
-        delete(TABLE_NAME, ID.getFieldName(), id);
+        delete(TABLE_NAME, ID, id);
     }
 
     /**
@@ -282,10 +282,10 @@ public class QRCodeOperations extends CommonOperations implements
                                     @Nullable String description,
                                     @NonNull String data) {
         ContentValues params = new ContentValues(4);
-        params.put(ENTRY.getFieldName(), entryId);
-        params.put(NAME.getFieldName(), name);
-        params.put(DESCRIPTION.getFieldName(), description);
-        params.put(DATA.getFieldName(), data);
+        params.put(ENTRY, entryId);
+        params.put(NAME, name);
+        params.put(DESCRIPTION, description);
+        params.put(DATA, data);
         return params;
     }
 }

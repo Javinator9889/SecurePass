@@ -90,13 +90,13 @@ public class ImagesConfigOperations extends ConfigFieldsOperations {
         try (Cursor imagesConfigCursor = getAll(TABLE_NAME, ORDER_BY)) {
             Map<String, Integer> imagesConfigColumns = constructMapFromCursor(imagesConfigCursor);
             while (imagesConfigCursor.moveToNext()) {
-                long id = imagesConfigCursor.getLong(imagesConfigColumns.get(ID.getFieldName()));
+                long id = imagesConfigCursor.getLong(imagesConfigColumns.get(ID));
                 String description = imagesConfigCursor.getString(
-                        imagesConfigColumns.get(DESCRIPTION.getFieldName()));
+                        imagesConfigColumns.get(DESCRIPTION));
                 int sortOrder =
-                        imagesConfigCursor.getInt(imagesConfigColumns.get(ORDER.getFieldName()));
+                        imagesConfigCursor.getInt(imagesConfigColumns.get(ORDER));
                 long configId = imagesConfigCursor.getLong(
-                        imagesConfigColumns.get(CONFIGURATION.getFieldName()));
+                        imagesConfigColumns.get(CONFIGURATION));
                 IConfigFields currentField = new ImagesConfig(id, description, sortOrder, configId);
                 configFields.storeObject(currentField);
             }

@@ -31,14 +31,23 @@ import androidx.annotation.NonNull;
 
 /**
  * Interface that provides methods and information for the Cipher classes.
+ * @deprecated see {@link javinator9889.securepass.util.cipher.database.DatabaseCipher} instead.
  */
 public interface ICipher {
     int IV_SIZE = 16;
     String ALGORITHM = "AES";
     String TRANSFORMATION = "AES/CBC/PKCS5Padding";
+
+    /**
+     * @deprecated see {@link javinator9889.securepass.util.cipher.database.DatabaseCipher} instead.
+     */
     void encryptFile(@NonNull File source, @NonNull File destination) throws NoSuchPaddingException,
             NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             IOException, BadPaddingException, IllegalBlockSizeException;
+
+    /**
+     * @deprecated see {@link javinator9889.securepass.util.cipher.database.DatabaseCipher} instead.
+     */
     void decryptFile(@NonNull InputStream source, @NonNull File destination) throws
             NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
             InvalidKeyException, IOException;

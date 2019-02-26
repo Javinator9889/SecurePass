@@ -19,41 +19,10 @@ package javinator9889.securepass.util.values.database;
 /**
  * A list of the parameters for CategoryFields.
  */
-public enum CategoryFields implements FieldsOperations {
-    ID("idCategory", 0),
-    NAME("name", 1);
+public class CategoryFields {
+    public static final String ID = "idCategory";
+    public static final String NAME = "name";
 
-    private String mFieldName;
-    private int mFieldIndex;
-
-    /**
-     * Private constructor that sets the table field name and index order
-     *
-     * @param fieldName  name for identifying the column in the database
-     * @param fieldIndex column index
-     */
-    CategoryFields(String fieldName, int fieldIndex) {
-        mFieldName = fieldName;
-        mFieldIndex = fieldIndex;
-    }
-
-    /**
-     * Obtains current field name
-     *
-     * @return {@code String} with the column identifier
-     */
-    @Override
-    public String getFieldName() {
-        return mFieldName;
-    }
-
-    /**
-     * Obtains current field index
-     *
-     * @return {@code int} with the column index
-     */
-    @Override
-    public int getFieldIndex() {
-        return mFieldIndex;
+    private CategoryFields() {
     }
 }

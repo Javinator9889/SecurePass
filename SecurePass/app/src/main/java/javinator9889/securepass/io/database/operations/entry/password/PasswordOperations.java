@@ -40,12 +40,12 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
         IPasswordGetOperations {
     private static final String TAG = "Password Operations";
     private static final String TABLE_NAME = Constants.SQL.PASSWORD.NAME;
-    private static final PasswordFields ID = PasswordFields.ID;
-    private static final PasswordFields PASSWORD = PasswordFields.PASSWORD;
-    private static final PasswordFields DESCRIPTION = PasswordFields.DESCRIPTION;
-    private static final PasswordFields ORDER = PasswordFields.ORDER;
-    private static final PasswordFields ENTRY = PasswordFields.ENTRY;
-    private static final String WHERE_ID = ID.getFieldName() + "=?";
+    private static final String ID = PasswordFields.ID;
+    private static final String PASSWORD = PasswordFields.PASSWORD;
+    private static final String DESCRIPTION = PasswordFields.DESCRIPTION;
+    private static final String ORDER = PasswordFields.ORDER;
+    private static final String ENTRY = PasswordFields.ENTRY;
+    private static final String WHERE_ID = ID + "=?";
 
     /**
      * Available constructor, matching
@@ -101,11 +101,11 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public String getPasswordPassword(long passwordId) {
         String password = null;
-        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(PASSWORD.getFieldName()), WHERE_ID,
-                whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(PASSWORD), WHERE_ID,
+                whereArgs(passwordId), null, null, ID + " ASC")) {
             Map<String, Integer> passwordColumns = constructMapFromCursor(passwordCursor);
             if (passwordCursor.moveToNext())
-                password = passwordCursor.getString(passwordColumns.get(PASSWORD.getFieldName()));
+                password = passwordCursor.getString(passwordColumns.get(PASSWORD));
         }
         return password;
     }
@@ -119,11 +119,11 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public String getPasswordDescription(long passwordId) {
         String description = null;
-        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()), WHERE_ID,
-                whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(DESCRIPTION), WHERE_ID,
+                whereArgs(passwordId), null, null, ID + " ASC")) {
             Map<String, Integer> passwordColumns = constructMapFromCursor(passwordCursor);
             if (passwordCursor.moveToNext())
-                description = passwordCursor.getString(passwordColumns.get(DESCRIPTION.getFieldName()));
+                description = passwordCursor.getString(passwordColumns.get(DESCRIPTION));
         }
         return description;
     }
@@ -137,11 +137,11 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public int getPasswordOrder(long passwordId) {
         int order = -1;
-        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
-                whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(ORDER), WHERE_ID,
+                whereArgs(passwordId), null, null, ID + " ASC")) {
             Map<String, Integer> passwordColumns = constructMapFromCursor(passwordCursor);
             if (passwordCursor.moveToNext())
-                order = passwordCursor.getInt(passwordColumns.get(ORDER.getFieldName()));
+                order = passwordCursor.getInt(passwordColumns.get(ORDER));
         }
         return order;
     }
@@ -155,11 +155,11 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public long getPasswordEntryId(long passwordId) {
         long entryId = -1;
-        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
-                whereArgs(passwordId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor passwordCursor = get(TABLE_NAME, whereArgs(ENTRY), WHERE_ID,
+                whereArgs(passwordId), null, null, ID + " ASC")) {
             Map<String, Integer> passwordColumns = constructMapFromCursor(passwordCursor);
             if (passwordCursor.moveToNext())
-                entryId = passwordCursor.getLong(passwordColumns.get(ENTRY.getFieldName()));
+                entryId = passwordCursor.getLong(passwordColumns.get(ENTRY));
         }
         return entryId;
     }
@@ -175,15 +175,15 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public GeneralObjectContainer<Password> getAllPasswords() {
         GeneralObjectContainer<Password> passwords = new ObjectContainer<>();
-        try (Cursor passwordCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+        try (Cursor passwordCursor = getAll(TABLE_NAME, ID + " ASC")) {
             Map<String, Integer> passwordColumns = constructMapFromCursor(passwordCursor);
             while (passwordCursor.moveToNext()) {
-                long id = passwordCursor.getLong(passwordColumns.get(ID.getFieldName()));
-                long entryId = passwordCursor.getLong(passwordColumns.get(ENTRY.getFieldName()));
+                long id = passwordCursor.getLong(passwordColumns.get(ID));
+                long entryId = passwordCursor.getLong(passwordColumns.get(ENTRY));
                 String password =
-                        passwordCursor.getString(passwordColumns.get(PASSWORD.getFieldName()));
+                        passwordCursor.getString(passwordColumns.get(PASSWORD));
                 String description =
-                        passwordCursor.getString(passwordColumns.get(DESCRIPTION.getFieldName()));
+                        passwordCursor.getString(passwordColumns.get(DESCRIPTION));
                 Password currentPassword = new Password(id, entryId, password, description);
                 passwords.storeObject(currentPassword);
             }
@@ -218,7 +218,7 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public void updatePassword(long passwordId, @NonNull String password) {
         ContentValues params = new ContentValues(1);
-        params.put(PASSWORD.getFieldName(), password);
+        params.put(PASSWORD, password);
         scheduleUpdateExecutor(passwordId, params);
     }
 
@@ -231,7 +231,7 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public void updateDescription(long passwordId, @NonNull String description) {
         ContentValues params = new ContentValues(1);
-        params.put(DESCRIPTION.getFieldName(), description);
+        params.put(DESCRIPTION, description);
         scheduleUpdateExecutor(passwordId, params);
     }
 
@@ -244,7 +244,7 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
     @Override
     public void updateSortOrder(long passwordId, int order) {
         ContentValues params = new ContentValues(1);
-        params.put(ORDER.getFieldName(), order);
+        params.put(ORDER, order);
         scheduleUpdateExecutor(passwordId, params);
     }
 
@@ -255,7 +255,7 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
      */
     @Override
     public void removePassword(long passwordId) {
-        delete(TABLE_NAME, ID.getFieldName(), passwordId);
+        delete(TABLE_NAME, ID, passwordId);
     }
 
     /**
@@ -273,10 +273,10 @@ public class PasswordOperations extends CommonOperations implements IPasswordSet
                                     int order,
                                     long entryId) {
         ContentValues params = new ContentValues(4);
-        params.put(PASSWORD.getFieldName(), password);
-        params.put(DESCRIPTION.getFieldName(), description);
-        params.put(ORDER.getFieldName(), order);
-        params.put(ENTRY.getFieldName(), entryId);
+        params.put(PASSWORD, password);
+        params.put(DESCRIPTION, description);
+        params.put(ORDER, order);
+        params.put(ENTRY, entryId);
         return params;
     }
 }

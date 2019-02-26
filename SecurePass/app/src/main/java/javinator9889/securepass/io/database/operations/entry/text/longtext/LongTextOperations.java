@@ -41,12 +41,12 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
         ILongTextGetOperations {
     private static final String TAG = "LongText Operations";
     private static final String TABLE_NAME = Constants.SQL.LONG_TEXT.NAME;
-    private static final LongTextFields ID = LongTextFields.ID;
-    private static final LongTextFields TEXT = LongTextFields.TEXT;
-    private static final LongTextFields DESCRIPTION = LongTextFields.DESCRIPTION;
-    private static final LongTextFields ORDER = LongTextFields.ORDER;
-    private static final LongTextFields ENTRY = LongTextFields.ENTRY;
-    private static final String WHERE_ID = ID.getFieldName() + "=?";
+    private static final String ID = LongTextFields.ID;
+    private static final String TEXT = LongTextFields.TEXT;
+    private static final String DESCRIPTION = LongTextFields.DESCRIPTION;
+    private static final String ORDER = LongTextFields.ORDER;
+    private static final String ENTRY = LongTextFields.ENTRY;
+    private static final String WHERE_ID = ID + "=?";
 
     /**
      * Available constructor, matching {@link CommonOperations#CommonOperations(DatabaseManager)
@@ -104,11 +104,11 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
     @Override
     public String getTextText(long textId) {
         String text = null;
-        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ID.getFieldName()), WHERE_ID,
-                whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ID), WHERE_ID,
+                whereArgs(textId), null, null, ID + " ASC")) {
             Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);
             if (longTextsCursor.moveToNext())
-                text = longTextsCursor.getString(longTextColumns.get(TEXT.getFieldName()));
+                text = longTextsCursor.getString(longTextColumns.get(TEXT));
         }
         return text;
     }
@@ -123,8 +123,8 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
     @Override
     public String getTextDescription(long textId) {
         String description = null;
-        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()),
-                WHERE_ID, whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(DESCRIPTION),
+                WHERE_ID, whereArgs(textId), null, null, ID + " ASC")) {
             Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);
             if (longTextsCursor.moveToNext())
                 description = longTextsCursor.getString(longTextColumns.get(DESCRIPTION));
@@ -142,11 +142,11 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
     @Override
     public int getTextOrder(long textId) {
         int order = -1;
-        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
-                whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ORDER), WHERE_ID,
+                whereArgs(textId), null, null, ID + " ASC")) {
             Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);
             if (longTextsCursor.moveToNext())
-                order = longTextsCursor.getInt(longTextColumns.get(ORDER.getFieldName()));
+                order = longTextsCursor.getInt(longTextColumns.get(ORDER));
         }
         return order;
     }
@@ -161,11 +161,11 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
     @Override
     public long getTextEntryId(long textId) {
         long entryId = -1;
-        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
-                whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor longTextsCursor = get(TABLE_NAME, whereArgs(ENTRY), WHERE_ID,
+                whereArgs(textId), null, null, ID + " ASC")) {
             Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);
             if (longTextsCursor.moveToNext())
-                entryId = longTextsCursor.getLong(longTextColumns.get(ENTRY.getFieldName()));
+                entryId = longTextsCursor.getLong(longTextColumns.get(ENTRY));
         }
         return entryId;
     }
@@ -198,7 +198,7 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
     @Override
     public void updateTextText(long textId, @NonNull String text) {
         ContentValues params = new ContentValues(1);
-        params.put(TEXT.getFieldName(), text);
+        params.put(TEXT, text);
         scheduleUpdateExecutor(textId, params);
     }
 
@@ -211,7 +211,7 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
     @Override
     public void updateTextDescription(long textId, @NonNull String description) {
         ContentValues params = new ContentValues(1);
-        params.put(DESCRIPTION.getFieldName(), description);
+        params.put(DESCRIPTION, description);
         scheduleUpdateExecutor(textId, params);
     }
 
@@ -224,7 +224,7 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
     @Override
     public void updateTextOrder(long textId, int order) {
         ContentValues params = new ContentValues(1);
-        params.put(ORDER.getFieldName(), order);
+        params.put(ORDER, order);
         scheduleUpdateExecutor(textId, params);
     }
 
@@ -235,7 +235,7 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
      */
     @Override
     public void removeText(long textId) {
-        delete(TABLE_NAME, ID.getFieldName(), textId);
+        delete(TABLE_NAME, ID, textId);
     }
 
     /**
@@ -250,15 +250,15 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
     @Override
     public GeneralObjectContainer<LongText> getAllLongTexts() {
         GeneralObjectContainer<LongText> longTexts = new ObjectContainer<>();
-        try (Cursor longTextsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+        try (Cursor longTextsCursor = getAll(TABLE_NAME, ID + " ASC")) {
             Map<String, Integer> longTextColumns = constructMapFromCursor(longTextsCursor);
             while (longTextsCursor.moveToNext()) {
-                long id = longTextsCursor.getLong(longTextColumns.get(ID.getFieldName()));
-                String text = longTextsCursor.getString(longTextColumns.get(TEXT.getFieldName()));
+                long id = longTextsCursor.getLong(longTextColumns.get(ID));
+                String text = longTextsCursor.getString(longTextColumns.get(TEXT));
                 String description =
-                        longTextsCursor.getString(longTextColumns.get(DESCRIPTION.getFieldName()));
-                int order = longTextsCursor.getInt(longTextColumns.get(ORDER.getFieldName()));
-                long entryId = longTextsCursor.getLong(longTextColumns.get(ENTRY.getFieldName()));
+                        longTextsCursor.getString(longTextColumns.get(DESCRIPTION));
+                int order = longTextsCursor.getInt(longTextColumns.get(ORDER));
+                long entryId = longTextsCursor.getLong(longTextColumns.get(ENTRY));
                 LongText currentLongText = new LongText(id, entryId, text, description, order);
                 longTexts.storeObject(currentLongText);
             }
@@ -283,10 +283,10 @@ public class LongTextOperations extends CommonOperations implements ITextSetOper
                                     int order,
                                     long entryId) {
         ContentValues params = new ContentValues(4);
-        params.put(TEXT.getFieldName(), text);
-        params.put(DESCRIPTION.getFieldName(), description);
-        params.put(ORDER.getFieldName(), order);
-        params.put(ENTRY.getFieldName(), entryId);
+        params.put(TEXT, text);
+        params.put(DESCRIPTION, description);
+        params.put(ORDER, order);
+        params.put(ENTRY, entryId);
         return params;
     }
 }

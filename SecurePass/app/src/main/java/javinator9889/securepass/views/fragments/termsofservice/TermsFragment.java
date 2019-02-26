@@ -33,6 +33,9 @@ import javinator9889.securepass.views.fragments.termsofservice.base.ToSBaseFragm
  * Fragment that shows the Terms of Service text.
  */
 public class TermsFragment extends ToSBaseFragment {
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -43,18 +46,27 @@ public class TermsFragment extends ToSBaseFragment {
         return inflater.inflate(R.layout.terms_conditions, container, false);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setText() {
         SingletonFutureContainer futureContainer = SingletonFutureContainer.getInstance();
         super.setSourceText(futureContainer.getToSText());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setCheckbox() {
         ISharedPreferencesManager sharedPreferences = getSharedPreferences();
         super.setCheckboxStatus(sharedPreferences.areTermsOfServiceAccepted());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         super.setCheckboxStatus(isChecked);

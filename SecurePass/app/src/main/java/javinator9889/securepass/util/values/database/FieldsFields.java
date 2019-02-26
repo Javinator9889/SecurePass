@@ -19,43 +19,12 @@ package javinator9889.securepass.util.values.database;
 /**
  * A list of the parameters for the Fields.
  */
-public enum FieldsFields implements FieldsOperations {
-    ID("idField", 0),
-    CODE("code", 1),
-    USED("used", 2),
-    SECURITY_CODES("fidSecurityCodes", 3);
+public class FieldsFields {
+    public static final String ID = "idField";
+    public static final String CODE = "code";
+    public static final String USED = "used";
+    public static final String SECURITY_CODES = "fidSecurityCodes";
 
-    private String mFieldName;
-    private int mFieldIndex;
-
-    /**
-     * Private constructor that sets the table field name and index order
-     *
-     * @param fieldName  name for identifying the column in the database
-     * @param fieldIndex column index
-     */
-    FieldsFields(String fieldName, int fieldIndex) {
-        mFieldName = fieldName;
-        mFieldIndex = fieldIndex;
-    }
-
-    /**
-     * Obtains current field name
-     *
-     * @return {@code String} with the column identifier
-     */
-    @Override
-    public String getFieldName() {
-        return mFieldName;
-    }
-
-    /**
-     * Obtains current field index
-     *
-     * @return {@code int} with the column index
-     */
-    @Override
-    public int getFieldIndex() {
-        return mFieldIndex;
+    private FieldsFields() {
     }
 }

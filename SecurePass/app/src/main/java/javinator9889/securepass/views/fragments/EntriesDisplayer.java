@@ -30,6 +30,9 @@ import javinator9889.securepass.R;
  * Class for showing a custom entry on MainActivity - currently not in use.
  */
 public class EntriesDisplayer extends Fragment {
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,

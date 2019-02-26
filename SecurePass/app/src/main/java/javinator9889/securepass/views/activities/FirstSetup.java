@@ -52,6 +52,9 @@ public class FirstSetup extends AppIntro2 {
     private @Nullable String mTitleFont;
     private @Nullable String mDescFont;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,9 @@ public class FirstSetup extends AppIntro2 {
         setFadeAnimation();
     }
 
+    /**
+     * Initializes titles, descriptions, drawables, colors and fonts for the first setup activity.
+     */
     private void initParams() {
         initTitles();
         initDescriptions();
@@ -76,15 +82,24 @@ public class FirstSetup extends AppIntro2 {
         mElementsCount = mTitles.length - 1;
     }
 
+    /**
+     * Gets the titles from the String Resources.
+     */
     private void initTitles() {
         this.mTitles = getResources().getStringArray(R.array.titles);
     }
 
+    /**
+     * Gets the descriptions from the String Resources.
+     */
     private void initDescriptions() {
         this.mDescriptions = getResources()
                 .getStringArray(R.array.descriptions);
     }
 
+    /**
+     * Gets the drawables from the Drawable Resources.
+     */
     private void initDrawables() {
         this.mDrawables = new int[]{
                 R.drawable.speed,
@@ -95,6 +110,9 @@ public class FirstSetup extends AppIntro2 {
         };
     }
 
+    /**
+     * Sets the background colors.
+     */
     private void initBackgroundColors() {
         this.mBackgroundColors = new int[]{
                 Color.BLUE,
@@ -105,6 +123,9 @@ public class FirstSetup extends AppIntro2 {
         };
     }
 
+    /**
+     * Sets the font colors.
+     */
     private void initFontColors() {
         this.mFontColors = new int[] {
                 Color.WHITE,
@@ -115,6 +136,10 @@ public class FirstSetup extends AppIntro2 {
         };
     }
 
+    /**
+     * Creates the fragment list that will contain all the initial screens that will be displayed
+     * to the user when it firstly start this application.
+     */
     private void createFragmentList() {
         this.mFragmentList = new ArrayList<>();
         SlidesTypefacesContainer container = new SlidesTypefacesContainer(R.font.raleway_semibold,
@@ -144,6 +169,9 @@ public class FirstSetup extends AppIntro2 {
         mFragmentList.add(eulaConfirmation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);

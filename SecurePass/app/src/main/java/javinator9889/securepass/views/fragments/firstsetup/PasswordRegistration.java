@@ -37,6 +37,9 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
     private EditText passwordConfirmation;
     private int backgroundColor = Color.LTGRAY;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,16 +50,25 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
         confirmButton.setOnClickListener(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getDefaultBackgroundColor() {
         return this.backgroundColor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -101,8 +113,7 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }
-                else
+                } else
                     Toast.makeText(v.getContext(), R.string.passwords_does_not_match,
                             Toast.LENGTH_LONG).show();
                 break;
@@ -112,6 +123,11 @@ public class PasswordRegistration extends FragmentActivity implements ISlideBack
         }
     }
 
+    /**
+     * Validate whether the passwords are the same.
+     *
+     * @return {@code boolean} 'True' if the input is correct or 'False', in other case.
+     */
     private boolean validate() {
         try {
             String firstPasswordHash = sha256()

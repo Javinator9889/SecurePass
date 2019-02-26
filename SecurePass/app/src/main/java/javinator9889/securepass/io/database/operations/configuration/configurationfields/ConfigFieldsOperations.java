@@ -38,12 +38,12 @@ import javinator9889.securepass.util.values.database.ConfigFieldsFields;
  */
 public abstract class ConfigFieldsOperations extends CommonOperations
         implements IConfigFieldsSetOperations, IConfigFieldsGetOperations {
-    protected static final ConfigFieldsFields ID = ConfigFieldsFields.ID;
-    protected static final ConfigFieldsFields DESCRIPTION = ConfigFieldsFields.DESCRIPTION;
-    protected static final ConfigFieldsFields ORDER = ConfigFieldsFields.ORDER;
-    protected static final ConfigFieldsFields CONFIGURATION = ConfigFieldsFields.CONFIGURATION;
-    protected static final String ORDER_BY = ID.getFieldName() + " ASC";
-    private static final String WHERE_ID = ID.getFieldName() + "=?";
+    protected static final String ID = ConfigFieldsFields.ID;
+    protected static final String DESCRIPTION = ConfigFieldsFields.DESCRIPTION;
+    protected static final String ORDER = ConfigFieldsFields.ORDER;
+    protected static final String CONFIGURATION = ConfigFieldsFields.CONFIGURATION;
+    protected static final String ORDER_BY = ID + " ASC";
+    private static final String WHERE_ID = ID + "=?";
 
     /**
      * Available constructor, matching {@link CommonOperations#CommonOperations(DatabaseManager)
@@ -67,11 +67,11 @@ public abstract class ConfigFieldsOperations extends CommonOperations
     @Override
     public String getConfigFieldDescription(long id) {
         String description = null;
-        try (Cursor configFieldsCursor = get(getTableName(), whereArgs(DESCRIPTION.getFieldName()),
+        try (Cursor configFieldsCursor = get(getTableName(), whereArgs(DESCRIPTION),
                 getWhereId(), whereArgs(id), null, null, ORDER_BY)) {
             Map<String, Integer> configurationsColumns = constructMapFromCursor(configFieldsCursor);
             if (configFieldsCursor.moveToNext())
-                description = configFieldsCursor.getString(configurationsColumns.get(DESCRIPTION.getFieldName()));
+                description = configFieldsCursor.getString(configurationsColumns.get(DESCRIPTION));
         }
         return description;
     }
@@ -86,11 +86,11 @@ public abstract class ConfigFieldsOperations extends CommonOperations
     @Override
     public int getConfigFieldOrder(long id) {
         int order = -1;
-        try (Cursor configFieldsCursor = get(getTableName(), whereArgs(ORDER.getFieldName()),
+        try (Cursor configFieldsCursor = get(getTableName(), whereArgs(ORDER),
                 getWhereId(), whereArgs(id), null, null, ORDER_BY)) {
             Map<String, Integer> configurationsColumns = constructMapFromCursor(configFieldsCursor);
             if (configFieldsCursor.moveToNext())
-                order = configFieldsCursor.getInt(configurationsColumns.get(ORDER.getFieldName()));
+                order = configFieldsCursor.getInt(configurationsColumns.get(ORDER));
         }
         return order;
     }
@@ -105,12 +105,12 @@ public abstract class ConfigFieldsOperations extends CommonOperations
     @Override
     public long getConfigFieldConfigurationId(long id) {
         long configurationId = -1;
-        try (Cursor configFieldsCursor = get(getTableName(), whereArgs(CONFIGURATION.getFieldName()),
+        try (Cursor configFieldsCursor = get(getTableName(), whereArgs(CONFIGURATION),
                 getWhereId(), whereArgs(id), null, null, ORDER_BY)) {
             Map<String, Integer> configurationsColumns = constructMapFromCursor(configFieldsCursor);
             if (configFieldsCursor.moveToNext())
-                configurationId = configFieldsCursor.getLong(configurationsColumns.get
-                        (CONFIGURATION.getFieldName()));
+                configurationId = configFieldsCursor
+                        .getLong(configurationsColumns.get(CONFIGURATION));
         }
         return configurationId;
     }
@@ -142,7 +142,7 @@ public abstract class ConfigFieldsOperations extends CommonOperations
     @Override
     public void updateConfigFieldDescription(long id, @NonNull String description) {
         ContentValues params = new ContentValues(1);
-        params.put(DESCRIPTION.getFieldName(), description);
+        params.put(DESCRIPTION, description);
         scheduleUpdateExecutor(id, params);
     }
 
@@ -155,7 +155,7 @@ public abstract class ConfigFieldsOperations extends CommonOperations
     @Override
     public void updateConfigurationOrder(long id, int order) {
         ContentValues params = new ContentValues(1);
-        params.put(ORDER.getFieldName(), order);
+        params.put(ORDER, order);
         scheduleUpdateExecutor(id, params);
     }
 
@@ -174,9 +174,9 @@ public abstract class ConfigFieldsOperations extends CommonOperations
                                       int order,
                                       long configurationId) {
         ContentValues params = new ContentValues(3);
-        params.put(DESCRIPTION.getFieldName(), description);
-        params.put(ORDER.getFieldName(), order);
-        params.put(CONFIGURATION.getFieldName(), configurationId);
+        params.put(DESCRIPTION, description);
+        params.put(ORDER, order);
+        params.put(CONFIGURATION, configurationId);
         return params;
     }
 

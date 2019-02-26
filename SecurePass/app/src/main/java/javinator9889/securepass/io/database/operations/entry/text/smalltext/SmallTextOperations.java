@@ -41,12 +41,12 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
         ISmallTextGetOperations {
     private static final String TAG = "SmallText Operations";
     private static final String TABLE_NAME = Constants.SQL.SMALL_TEXT.NAME;
-    private static final SmallTextFields ID = SmallTextFields.ID;
-    private static final SmallTextFields TEXT = SmallTextFields.TEXT;
-    private static final SmallTextFields DESCRIPTION = SmallTextFields.DESCRIPTION;
-    private static final SmallTextFields ORDER = SmallTextFields.ORDER;
-    private static final SmallTextFields ENTRY = SmallTextFields.ENTRY;
-    private static final String WHERE_ID = ID.getFieldName() + "=?";
+    private static final String ID = SmallTextFields.ID;
+    private static final String TEXT = SmallTextFields.TEXT;
+    private static final String DESCRIPTION = SmallTextFields.DESCRIPTION;
+    private static final String ORDER = SmallTextFields.ORDER;
+    private static final String ENTRY = SmallTextFields.ENTRY;
+    private static final String WHERE_ID = ID + "=?";
 
     /**
      * Available constructor, matching {@link CommonOperations#CommonOperations(DatabaseManager)
@@ -104,11 +104,11 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     @Override
     public String getTextText(long textId) {
         String text = null;
-        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(TEXT.getFieldName()), WHERE_ID,
-                whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(TEXT), WHERE_ID,
+                whereArgs(textId), null, null, ID + " ASC")) {
             Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextsCursor);
             if (smallTextsCursor.moveToNext())
-                text = smallTextsCursor.getString(smallTextColumns.get(TEXT.getFieldName()));
+                text = smallTextsCursor.getString(smallTextColumns.get(TEXT));
         }
         return text;
     }
@@ -123,11 +123,11 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     @Override
     public String getTextDescription(long textId) {
         String description = null;
-        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(DESCRIPTION.getFieldName()), WHERE_ID,
-                whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(DESCRIPTION), WHERE_ID,
+                whereArgs(textId), null, null, ID + " ASC")) {
             Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextsCursor);
             if (smallTextsCursor.moveToNext())
-                description = smallTextsCursor.getString(smallTextColumns.get(DESCRIPTION.getFieldName()));
+                description = smallTextsCursor.getString(smallTextColumns.get(DESCRIPTION));
         }
         return description;
     }
@@ -142,11 +142,11 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     @Override
     public int getTextOrder(long textId) {
         int order = -1;
-        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(ORDER.getFieldName()), WHERE_ID,
-                whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(ORDER), WHERE_ID,
+                whereArgs(textId), null, null, ID + " ASC")) {
             Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextsCursor);
             if (smallTextsCursor.moveToNext())
-                order = smallTextsCursor.getInt(smallTextColumns.get(ORDER.getFieldName()));
+                order = smallTextsCursor.getInt(smallTextColumns.get(ORDER));
         }
         return order;
     }
@@ -161,11 +161,11 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     @Override
     public long getTextEntryId(long textId) {
         long entryId = -1;
-        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(ENTRY.getFieldName()), WHERE_ID,
-                whereArgs(textId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor smallTextsCursor = get(TABLE_NAME, whereArgs(ENTRY), WHERE_ID,
+                whereArgs(textId), null, null, ID + " ASC")) {
             Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextsCursor);
             if (smallTextsCursor.moveToNext())
-                entryId = smallTextsCursor.getLong(smallTextColumns.get(ENTRY.getFieldName()));
+                entryId = smallTextsCursor.getLong(smallTextColumns.get(ENTRY));
         }
         return entryId;
     }
@@ -198,7 +198,7 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     @Override
     public void updateTextText(long textId, @NonNull String text) {
         ContentValues params = new ContentValues(1);
-        params.put(TEXT.getFieldName(), text);
+        params.put(TEXT, text);
         scheduleUpdateExecutor(textId, params);
     }
 
@@ -211,7 +211,7 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     @Override
     public void updateTextDescription(long textId, @NonNull String description) {
         ContentValues params = new ContentValues(1);
-        params.put(DESCRIPTION.getFieldName(), description);
+        params.put(DESCRIPTION, description);
         scheduleUpdateExecutor(textId, params);
     }
 
@@ -224,7 +224,7 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     @Override
     public void updateTextOrder(long textId, int order) {
         ContentValues params = new ContentValues(1);
-        params.put(ORDER.getFieldName(), order);
+        params.put(ORDER, order);
         scheduleUpdateExecutor(textId, params);
     }
 
@@ -235,7 +235,7 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
      */
     @Override
     public void removeText(long textId) {
-        delete(TABLE_NAME, ID.getFieldName(), textId);
+        delete(TABLE_NAME, ID, textId);
     }
 
     /**
@@ -250,15 +250,15 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
     @Override
     public GeneralObjectContainer<SmallText> getAllSmallTexts() {
         GeneralObjectContainer<SmallText> smallTexts = new ObjectContainer<>();
-        try (Cursor smallTextsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+        try (Cursor smallTextsCursor = getAll(TABLE_NAME, ID + " ASC")) {
             Map<String, Integer> smallTextColumns = constructMapFromCursor(smallTextsCursor);
             while (smallTextsCursor.moveToNext()) {
-                long id = smallTextsCursor.getLong(smallTextColumns.get(ID.getFieldName()));
-                String text = smallTextsCursor.getString(smallTextColumns.get(TEXT.getFieldName()));
+                long id = smallTextsCursor.getLong(smallTextColumns.get(ID));
+                String text = smallTextsCursor.getString(smallTextColumns.get(TEXT));
                 String description =
-                        smallTextsCursor.getString(smallTextColumns.get(DESCRIPTION.getFieldName()));
-                int order = smallTextsCursor.getInt(smallTextColumns.get(ORDER.getFieldName()));
-                long entryId = smallTextsCursor.getLong(smallTextColumns.get(ENTRY.getFieldName()));
+                        smallTextsCursor.getString(smallTextColumns.get(DESCRIPTION));
+                int order = smallTextsCursor.getInt(smallTextColumns.get(ORDER));
+                long entryId = smallTextsCursor.getLong(smallTextColumns.get(ENTRY));
                 SmallText currentSmallText = new SmallText(id, entryId, text, description, order);
                 smallTexts.storeObject(currentSmallText);
             }
@@ -283,10 +283,10 @@ public class SmallTextOperations extends CommonOperations implements ITextSetOpe
                                     int order,
                                     long entryId) {
         ContentValues params = new ContentValues(4);
-        params.put(TEXT.getFieldName(), text);
-        params.put(DESCRIPTION.getFieldName(), description);
-        params.put(ORDER.getFieldName(), order);
-        params.put(ENTRY.getFieldName(), entryId);
+        params.put(TEXT, text);
+        params.put(DESCRIPTION, description);
+        params.put(ORDER, order);
+        params.put(ENTRY, entryId);
         return params;
     }
 }

@@ -20,15 +20,71 @@ package javinator9889.securepass.util.resources;
  * Interface for accessing the PreferencesManager methods.
  */
 public interface ISharedPreferencesManager {
+    /**
+     * Returns whether the application has been executed.
+     *
+     * @return {@code boolean} 'True' if initialized else 'False'.
+     */
     boolean isApplicationInitialized();
+
+    /**
+     * Sets the application initialized (or not, for debugging process).
+     *
+     * @param isInitialized {@code boolean} with the initialization status.
+     */
     void applicationInitialized(boolean isInitialized);
+
+    /**
+     * Returns whether the database has been initialized or not.
+     * @return {@code boolean} 'True' if initialized else 'False'.
+     */
     boolean isDatabaseInitialized();
+
+    /**
+     * Sets the database initialized (or not, for debugging process).
+     * @param isInitialized {@code boolean} whether it is or not initialized.
+     */
     void databaseInitialized(boolean isInitialized);
+
+    /**
+     * Returns whether the privacy policy has been accepted or not.
+     * @return {@code boolean} 'True' if accepted else 'False'.
+     */
     boolean isPrivacyAccepted();
+
+    /**
+     * Sets the privacy policy accepted (or not, for debugging process).
+     * @param isAccepted {@code boolean} whether it is accepted or not.
+     */
     void setPrivacyAccepted(boolean isAccepted);
+
+    /**
+     * Returns whether the terms of service have been accepted or not.
+     * @return {@code boolean} 'True' if accepted else 'False'.
+     */
     boolean areTermsOfServiceAccepted();
+
+    /**
+     * Sets the terms of service accepted (or not, for debugging process).
+     * @param isAccepted {@code boolean} whether they are accepted or not.
+     */
     void setTermsOfServiceAccepted(boolean isAccepted);
+
+    /**
+     * Returns whether the software license has been accepted or not.
+     * @return {@code boolean} 'True' if accepted else 'False'.
+     */
     boolean isSoftwareLicenseAccepted();
+
+    /**
+     * Sets the software license accepted (or not, for debugging process).
+     * @param isAccepted {@code boolean} whether it is accepted or not.
+     */
     void setSoftwareLicenseAccepted(boolean isAccepted);
+
+    /**
+     * Checks whether the application licenses are all accepted (or someone is missing).
+     * @return {@code boolean} 'True' if all accepted, else 'False'.
+     */
     boolean isApplicationLicenseAccepted();
 }

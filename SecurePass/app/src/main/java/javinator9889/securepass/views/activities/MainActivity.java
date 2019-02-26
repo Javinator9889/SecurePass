@@ -37,6 +37,9 @@ import uk.co.markormesher.android_fab.FloatingActionButton;
  * Application main activity - now it is just a testing activity with 100 tabs.
  */
 public class MainActivity extends TabLayoutAdapter implements View.OnClickListener {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.main_view);
@@ -49,6 +52,9 @@ public class MainActivity extends TabLayoutAdapter implements View.OnClickListen
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Get the different items that conforms the tabs.
+     */
     @Override
     protected FragmentPagerItems getItems() {
         // Stress test
@@ -63,6 +69,9 @@ public class MainActivity extends TabLayoutAdapter implements View.OnClickListen
         return items;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onStart() {
         FloatingActionButton button = findViewById(R.id.fab);
@@ -83,6 +92,9 @@ public class MainActivity extends TabLayoutAdapter implements View.OnClickListen
         super.onStart();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

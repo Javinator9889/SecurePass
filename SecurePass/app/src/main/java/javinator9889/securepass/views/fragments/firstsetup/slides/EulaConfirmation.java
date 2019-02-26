@@ -47,6 +47,18 @@ public class EulaConfirmation extends AppIntroBaseFragment implements Button.OnC
     private Button gotoEulaButton;
     private @Nullable SlidesTypefacesContainer mContainer;
 
+    /**
+     * Generates a new eula confirmation page for an AppIntro instance.
+     *
+     * @param title         the title.
+     * @param description   the description.
+     * @param imageDrawable the drawable.
+     * @param bgColor       the background color.
+     * @param titleColor    the title color.
+     * @param descColor     the description color.
+     * @param container     the container.
+     * @return {@code SlidePage} instance.
+     */
     public static EulaConfirmation newInstance(CharSequence title,
                                                CharSequence description,
                                                @DrawableRes int imageDrawable,
@@ -67,6 +79,13 @@ public class EulaConfirmation extends AppIntroBaseFragment implements Button.OnC
         return newInstance(sliderPage, container);
     }
 
+    /**
+     * Generates a new slider page for an AppIntro instance.
+     *
+     * @param sliderPage the generated options.
+     * @param container  the container.
+     * @return {@code SlidePage} instance.
+     */
     private static EulaConfirmation newInstance(SliderPage sliderPage,
                                                 @Nullable SlidesTypefacesContainer container) {
         EulaConfirmation slide = new EulaConfirmation();
@@ -85,29 +104,49 @@ public class EulaConfirmation extends AppIntroBaseFragment implements Button.OnC
         return slide;
     }
 
+    /**
+     * Sets the container.
+     * @param container the container.
+     */
     public void setContainer(@Nullable SlidesTypefacesContainer container) {
         this.mContainer = container;
     }
 
+    /**
+     * Updates the package context.
+     * @param packageContext the context.
+     */
     public void addPackageContext(Context packageContext) {
         this.packageContext = packageContext;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getDefaultBackgroundColor() {
         return super.getDefaultBackgroundColor();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setBackgroundColor(int backgroundColor) {
         super.setBackgroundColor(backgroundColor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int getLayoutId() {
         return R.layout.eula_intro;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         TextView titleText = view.findViewById(R.id.title);
@@ -126,10 +165,17 @@ public class EulaConfirmation extends AppIntroBaseFragment implements Button.OnC
         super.onViewCreated(view, savedInstanceState);
     }
 
+    /**
+     * Gets the EULA button.
+     * @return {@code Button}.
+     */
     public Button getGotoEulaButton() {
         return gotoEulaButton;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

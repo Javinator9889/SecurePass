@@ -41,9 +41,9 @@ public class ConfigurationOperations extends CommonOperations
         implements IConfigurationSetOperations, IConfigurationGetOperations {
     private static final String TAG = "Configuration Operations";
     private static final String TABLE_NAME = Constants.SQL.CONFIGURATION.NAME;
-    private static final ConfigurationFields ID = ConfigurationFields.ID;
-    private static final ConfigurationFields NAME = ConfigurationFields.NAME;
-    private static final String WHERE_ID = ID.getFieldName() + "=?";
+    private static final String ID = ConfigurationFields.ID;
+    private static final String NAME = ConfigurationFields.NAME;
+    private static final String WHERE_ID = ID + "=?";
 
     /**
      * Available constructor, matching {@link CommonOperations#CommonOperations(DatabaseManager)
@@ -101,11 +101,11 @@ public class ConfigurationOperations extends CommonOperations
     @Override
     public String getConfigurationName(long configurationId) {
         String name = null;
-        try (Cursor configurationCursor = get(TABLE_NAME, whereArgs(NAME.getFieldName()),
-                WHERE_ID, whereArgs(configurationId), null, null, ID.getFieldName() + " ASC")) {
+        try (Cursor configurationCursor = get(TABLE_NAME, whereArgs(NAME),
+                WHERE_ID, whereArgs(configurationId), null, null, ID + " ASC")) {
             Map<String, Integer> configurationsColumns = constructMapFromCursor(configurationCursor);
             if (configurationCursor.moveToNext())
-                name = configurationCursor.getString(configurationsColumns.get(NAME.getFieldName()));
+                name = configurationCursor.getString(configurationsColumns.get(NAME));
         }
         return name;
     }
@@ -122,11 +122,11 @@ public class ConfigurationOperations extends CommonOperations
     @Override
     public GeneralObjectContainer<IConfiguration> getAllConfigurations() {
         GeneralObjectContainer<IConfiguration> configurations = new ObjectContainer<>();
-        try (Cursor configurationsCursor = getAll(TABLE_NAME, ID.getFieldName() + " ASC")) {
+        try (Cursor configurationsCursor = getAll(TABLE_NAME, ID + " ASC")) {
             Map<String, Integer> configColumns = constructMapFromCursor(configurationsCursor);
             while (configurationsCursor.moveToNext()) {
-                long id = configurationsCursor.getLong(configColumns.get(ID.getFieldName()));
-                String name = configurationsCursor.getString(configColumns.get(NAME.getFieldName()));
+                long id = configurationsCursor.getLong(configColumns.get(ID));
+                String name = configurationsCursor.getString(configColumns.get(NAME));
                 IConfiguration currentConfiguration = new Configuration(id, name, null);
                 configurations.storeObject(currentConfiguration);
             }
@@ -166,7 +166,7 @@ public class ConfigurationOperations extends CommonOperations
      */
     @Override
     public void removeConfiguration(long configurationId) {
-        delete(TABLE_NAME, ID.getFieldName(), configurationId);
+        delete(TABLE_NAME, ID, configurationId);
     }
 
     /**
@@ -180,7 +180,7 @@ public class ConfigurationOperations extends CommonOperations
      */
     private ContentValues setParams(@NonNull String name) {
         ContentValues params = new ContentValues(1);
-        params.put(NAME.getFieldName(), name);
+        params.put(NAME, name);
         return params;
     }
 }
