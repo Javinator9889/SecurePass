@@ -28,14 +28,14 @@ stages:
 simpleBuild:
   stage: build
   script:
-  - ./SecurePass/gradlew build --stacktrace
+  - ./SecurePass/gradlew clean build --stacktrace
   tags:
   - docker
 
 lintDebug:
   stage: build
   script:
-  - ./SecurePass/gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+  - ./SecurePass/gradlew -Pci --console=plain :application:lintDebug -PbuildDir=lint
   tags:
   - docker
 
